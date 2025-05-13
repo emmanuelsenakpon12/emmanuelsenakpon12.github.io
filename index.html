@@ -9,19 +9,22 @@
 </head>
 
 <body>
+  <div id="bg-animation"></div> <!-- arrière-plan animé -->
+
   <div class="container">
     <aside class="sidebar">
       <h1>Mohamed<br>Amine Sobhi</h1>
       <nav>
         <ul>
-          <li><a href="#profil"><i class="fa-solid fa-user"></i> Profil</a></li>
-          <li><a href="#competences"><i class="fa-solid fa-gears"></i> Compétences</a></li>
-          <li><a href="#projets"><i class="fa-solid fa-diagram-project"></i> Projets</a></li>
-          <li><a href="#contact"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
+          <li><a href="#profil">Profil</a></li>
+          <li><a href="#competences">Compétences</a></li>
+          <li><a href="#certifications">Certifications</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
       <div class="contact-info">
-        <p><i class="fa-solid fa-envelope"></i> etudeefr@gmail.com</p>
+        <p><i class="fa-solid fa-envelope"></i> <a href="mailto:etudeefr@gmail.com">etudeefr@gmail.com</a></p>
         <p><i class="fa-solid fa-phone"></i> +33 6 02 40 13 55</p>
         <p><i class="fa-solid fa-location-dot"></i> Amiens, France</p>
         <p><i class="fa-brands fa-linkedin"></i> <a href="https://linkedin.com/in/mohamed-amine-s" target="_blank">LinkedIn</a></p>
@@ -29,55 +32,66 @@
     </aside>
 
     <main class="content">
-      <section id="profil">
+      <section id="profil" class="fade-in">
         <h2>Profil</h2>
-        <p>Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une <strong>alternance de 24 mois</strong> à partir de septembre 2025. Compétences solides en apprentissage automatique, traitement de données et modélisation algorithmique.</p>
+        <p>Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une <strong>alternance de 24 mois</strong> à partir de septembre 2025.</p>
         <div class="tags">
           <span>IA</span><span>ML</span><span>BI</span><span>Python</span><span>Data Engineering</span><span>Toulouse</span>
         </div>
       </section>
 
-      <section id="competences">
+      <section id="competences" class="fade-in">
         <h2>Compétences</h2>
         <ul>
           <li><strong>Langages :</strong> Python, SQL, Java, C, Bash, PHP</li>
-          <li><strong>IA/Data :</strong> Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Flask, Power BI</li>
-          <li><strong>Bases de données :</strong> Oracle, MySQL, MERISE, UML</li>
-          <li><strong>Systèmes :</strong> Linux, Shell, Windows</li>
+          <li><strong>IA/Data :</strong> Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Flask</li>
+          <li><strong>Base de données :</strong> Oracle, MySQL, MERISE, UML</li>
           <li><strong>Outils :</strong> Git, Jupyter, Docker, Conda, Figma</li>
         </ul>
       </section>
 
-      <section id="projets">
-        <h2>Projets académiques</h2>
+      <section id="certifications" class="fade-in">
+        <h2>Certifications</h2>
+        <ul class="cert-list">
+          <li><i class="fa-solid fa-certificate"></i> ML & Deep Learning – LinkedIn (2025)</li>
+          <li><i class="fa-solid fa-certificate"></i> Power Platform – Microsoft (2025)</li>
+          <li><i class="fa-solid fa-certificate"></i> CCNA – Cisco (2025)</li>
+          <li><i class="fa-solid fa-language"></i> Anglais – Niveau C1 (CECR)</li>
+        </ul>
+      </section>
+
+      <section id="projets" class="fade-in">
+        <h2>Projets</h2>
         <div class="projet">
-          <h3>Détection de caries – IA/CNN</h3>
-          <p>CNN personnalisé, validation croisée, API Flask avec Keras/TensorFlow.</p>
+          <h3>Détection de caries – CNN</h3>
+          <p>CNN personnalisé avec Flask + TensorFlow. Visualisation de couches. API REST.</p>
         </div>
         <div class="projet">
           <h3>Système logistique – Oracle/Docker</h3>
-          <p>MCD MERISE, SQL avancé, déploiement Oracle containerisé.</p>
+          <p>Modélisation MERISE, SQL avancé, déploiement Dockerisé.</p>
         </div>
         <div class="projet">
           <h3>Dashboard Power BI</h3>
-          <p>Automatisation via Power Automate, intégration MS Forms et Glide.</p>
-        </div>
-        <div class="projet">
-          <h3>Projet MACSI</h3>
-          <p>Prototypage Figma, UML, Gantt, étude comparative Moodle/Odoo.</p>
+          <p>Intégration Forms, automatisation avec Power Automate.</p>
         </div>
       </section>
 
-      <section id="contact">
+      <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <form>
           <input type="text" name="name" placeholder="Votre nom" required>
           <input type="email" name="email" placeholder="Votre email" required>
-          <textarea name="message" rows="4" placeholder="Votre message" required></textarea>
+          <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
           <button type="submit">Envoyer</button>
         </form>
       </section>
+
+      <footer>
+        <p>&copy; 2025 Mohamed Amine Sobhi</p>
+      </footer>
     </main>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

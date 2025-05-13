@@ -1,3 +1,4 @@
+/* Reset & base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,8 +10,27 @@ body {
   background-color: #f0f2f5;
   color: #333;
   display: flex;
+  overflow-x: hidden;
 }
 
+/* Background animation container */
+#bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: linear-gradient(120deg, #003366, #005588);
+  animation: gradientShift 10s infinite linear;
+}
+
+@keyframes gradientShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Layout */
 .container {
   display: flex;
   width: 100%;
@@ -23,10 +43,12 @@ body {
   min-height: 100vh;
   padding: 30px 20px;
   position: fixed;
+  left: 0;
+  top: 0;
 }
 
 .sidebar h1 {
-  font-size: 1.5em;
+  font-size: 1.6em;
   margin-bottom: 20px;
 }
 
@@ -42,10 +64,12 @@ body {
 .sidebar nav ul li a {
   color: #ffcc66;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .sidebar nav ul li a:hover {
   text-decoration: underline;
+  color: #fff9cc;
 }
 
 .contact-info {
@@ -64,6 +88,11 @@ body {
   width: calc(100% - 260px);
 }
 
+/* Sections */
+section {
+  margin-bottom: 50px;
+}
+
 h2 {
   color: #003366;
   margin-bottom: 10px;
@@ -71,6 +100,7 @@ h2 {
   padding-bottom: 5px;
 }
 
+/* Tags */
 .tags span {
   display: inline-block;
   background: #e1e1e1;
@@ -80,11 +110,27 @@ h2 {
   font-size: 0.85em;
 }
 
+/* Lists */
 ul {
   margin-top: 10px;
   margin-left: 20px;
 }
 
+.cert-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cert-list li {
+  margin-bottom: 10px;
+}
+
+.cert-list i {
+  color: #0077cc;
+  margin-right: 8px;
+}
+
+/* Projets */
 .projet {
   background: white;
   padding: 15px;
@@ -92,19 +138,28 @@ ul {
   border-left: 5px solid #003366;
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.projet:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Formulaire */
 form {
   display: flex;
   flex-direction: column;
   max-width: 500px;
   gap: 10px;
+  margin-top: 20px;
 }
 
 form input, form textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  font-size: 1em;
 }
 
 form button {
@@ -118,4 +173,23 @@ form button {
 
 form button:hover {
   background-color: #002244;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #666;
+}
+
+/* Scroll animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
