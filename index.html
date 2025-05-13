@@ -2,18 +2,30 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio – Mohamed Amine Sobhi</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("VOTRE_PUBLIC_KEY"); // Remplace par ta clé publique EmailJS
+    })();
+  </script>
 </head>
 
 <body>
-  <div id="bg-animation"></div> <!-- arrière-plan animé -->
+  <div id="bg-animation"></div>
+  <div id="bg-overlay"></div>
 
   <div class="container">
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <button class="menu-toggle" aria-label="Ouvrir/fermer le menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
       <h1>Mohamed<br>Amine Sobhi</h1>
+
       <nav>
         <ul>
           <li><a href="#profil">Profil</a></li>
@@ -23,6 +35,7 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
+
       <div class="contact-info">
         <p><i class="fa-solid fa-envelope"></i> <a href="mailto:etudeefr@gmail.com">etudeefr@gmail.com</a></p>
         <p><i class="fa-solid fa-phone"></i> +33 6 02 40 13 55</p>
@@ -34,7 +47,10 @@
     <main class="content">
       <section id="profil" class="fade-in">
         <h2>Profil</h2>
-        <p>Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une <strong>alternance de 24 mois</strong> à partir de septembre 2025.</p>
+        <p>
+          Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une
+          <strong>alternance de 24 mois</strong> à partir de septembre 2025.
+        </p>
         <div class="tags">
           <span>IA</span><span>ML</span><span>BI</span><span>Python</span><span>Data Engineering</span><span>Toulouse</span>
         </div>
@@ -45,7 +61,7 @@
         <ul>
           <li><strong>Langages :</strong> Python, SQL, Java, C, Bash, PHP</li>
           <li><strong>IA/Data :</strong> Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Flask</li>
-          <li><strong>Base de données :</strong> Oracle, MySQL, MERISE, UML</li>
+          <li><strong>Bases de données :</strong> Oracle, MySQL, MERISE, UML</li>
           <li><strong>Outils :</strong> Git, Jupyter, Docker, Conda, Figma</li>
         </ul>
       </section>
@@ -64,30 +80,31 @@
         <h2>Projets</h2>
         <div class="projet">
           <h3>Détection de caries – CNN</h3>
-          <p>CNN personnalisé avec Flask + TensorFlow. Visualisation de couches. API REST.</p>
+          <p>Réseau CNN personnalisé avec Flask & TensorFlow. Visualisation de couches. API REST complète.</p>
         </div>
         <div class="projet">
           <h3>Système logistique – Oracle/Docker</h3>
-          <p>Modélisation MERISE, SQL avancé, déploiement Dockerisé.</p>
+          <p>Modélisation MERISE, vues SQL avancées, déploiement containerisé sous Docker.</p>
         </div>
         <div class="projet">
           <h3>Dashboard Power BI</h3>
-          <p>Intégration Forms, automatisation avec Power Automate.</p>
+          <p>Visualisation dynamique avec Power BI, automatisation via Power Automate + Forms.</p>
         </div>
       </section>
 
       <section id="contact" class="fade-in">
         <h2>Contact</h2>
-        <form>
-          <input type="text" name="name" placeholder="Votre nom" required>
-          <input type="email" name="email" placeholder="Votre email" required>
+        <form id="contact-form">
+          <input type="text" name="from_name" placeholder="Votre nom" required />
+          <input type="email" name="reply_to" placeholder="Votre email" required />
           <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+          <input type="hidden" name="date" value="" id="message-date" />
           <button type="submit">Envoyer</button>
         </form>
       </section>
 
       <footer>
-        <p>&copy; 2025 Mohamed Amine Sobhi</p>
+        <p>&copy; 2025 Mohamed Amine Sobhi. Tous droits réservés.</p>
       </footer>
     </main>
   </div>
