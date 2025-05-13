@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio de Mohamed Amine Sobhi, étudiant en Master IA/Data à Toulouse, spécialisé en machine learning, data engineering et développement de solutions intelligentes." />
   <title>Portfolio – Mohamed Amine Sobhi</title>
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+  <!-- EmailJS -->
+  <script defer src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    (function(){
+    document.addEventListener("DOMContentLoaded", function () {
       emailjs.init("VOTRE_PUBLIC_KEY"); // Remplace par ta clé publique EmailJS
-    })();
+    });
   </script>
 </head>
 
@@ -19,8 +24,9 @@
   <div id="bg-overlay"></div>
 
   <div class="container">
-    <aside class="sidebar" aria-label="Navigation principale">
-      <button class="menu-toggle" aria-label="Ouvrir/fermer le menu">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Navigation latérale">
+      <button class="menu-toggle" aria-label="Basculer le menu">
         <i class="fa-solid fa-bars"></i>
       </button>
 
@@ -40,22 +46,22 @@
         <p><i class="fa-solid fa-envelope"></i> <a href="mailto:etudeefr@gmail.com">etudeefr@gmail.com</a></p>
         <p><i class="fa-solid fa-phone"></i> +33 6 02 40 13 55</p>
         <p><i class="fa-solid fa-location-dot"></i> Amiens, France</p>
-        <p><i class="fa-brands fa-linkedin"></i> <a href="https://linkedin.com/in/mohamed-amine-s" target="_blank">LinkedIn</a></p>
+        <p><i class="fa-brands fa-linkedin"></i> <a href="https://linkedin.com/in/mohamed-amine-s" target="_blank" rel="noopener">LinkedIn</a></p>
       </div>
     </aside>
 
-    <main class="content">
+    <!-- MAIN CONTENT -->
+    <main class="content" role="main">
+      <!-- Profil -->
       <section id="profil" class="fade-in">
         <h2>Profil</h2>
-        <p>
-          Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une
-          <strong>alternance de 24 mois</strong> à partir de septembre 2025.
-        </p>
+        <p>Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une <strong>alternance de 24 mois</strong> à partir de septembre 2025.</p>
         <div class="tags">
           <span>IA</span><span>ML</span><span>BI</span><span>Python</span><span>Data Engineering</span><span>Toulouse</span>
         </div>
       </section>
 
+      <!-- Compétences -->
       <section id="competences" class="fade-in">
         <h2>Compétences</h2>
         <ul>
@@ -66,6 +72,7 @@
         </ul>
       </section>
 
+      <!-- Certifications -->
       <section id="certifications" class="fade-in">
         <h2>Certifications</h2>
         <ul class="cert-list">
@@ -76,39 +83,43 @@
         </ul>
       </section>
 
+      <!-- Projets -->
       <section id="projets" class="fade-in">
         <h2>Projets</h2>
         <div class="projet">
           <h3>Détection de caries – CNN</h3>
-          <p>Réseau CNN personnalisé avec Flask & TensorFlow. Visualisation de couches. API REST complète.</p>
+          <p>Réseau personnalisé avec TensorFlow & Flask. Visualisation des activations, API REST complète.</p>
         </div>
         <div class="projet">
           <h3>Système logistique – Oracle/Docker</h3>
-          <p>Modélisation MERISE, vues SQL avancées, déploiement containerisé sous Docker.</p>
+          <p>Modélisation MERISE, requêtes avancées SQL, déploiement Dockerisé.</p>
         </div>
         <div class="projet">
           <h3>Dashboard Power BI</h3>
-          <p>Visualisation dynamique avec Power BI, automatisation via Power Automate + Forms.</p>
+          <p>Dashboards dynamiques Power BI, connecteurs Forms et Power Automate.</p>
         </div>
       </section>
 
+      <!-- Contact -->
       <section id="contact" class="fade-in">
         <h2>Contact</h2>
         <form id="contact-form">
           <input type="text" name="from_name" placeholder="Votre nom" required />
           <input type="email" name="reply_to" placeholder="Votre email" required />
           <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
-          <input type="hidden" name="date" value="" id="message-date" />
-          <button type="submit">Envoyer</button>
+          <input type="hidden" name="date" id="message-date" />
+          <button type="submit"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
         </form>
       </section>
 
+      <!-- Footer -->
       <footer>
         <p>&copy; 2025 Mohamed Amine Sobhi. Tous droits réservés.</p>
       </footer>
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <!-- JS -->
+  <script src="script.js" defer></script>
 </body>
 </html>
