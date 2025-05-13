@@ -1,102 +1,121 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  line-height: 1.6;
-  color: #333;
 }
 
-header {
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 260px;
   background-color: #003366;
   color: white;
-  text-align: center;
+  min-height: 100vh;
   padding: 30px 20px;
+  position: fixed;
 }
 
-header a {
+.sidebar h1 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
   color: #ffcc66;
   text-decoration: none;
-  margin: 0 10px;
 }
 
-header a:hover {
+.sidebar nav ul li a:hover {
   text-decoration: underline;
 }
 
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
+.contact-info {
+  margin-top: 40px;
+  font-size: 0.9em;
+}
+
+.contact-info a {
+  color: #ffcc66;
+  text-decoration: none;
+}
+
+.content {
+  margin-left: 260px;
+  padding: 40px;
+  width: calc(100% - 260px);
 }
 
 h2 {
   color: #003366;
+  margin-bottom: 10px;
   border-bottom: 2px solid #003366;
   padding-bottom: 5px;
-  margin-top: 40px;
 }
 
 .tags span {
   display: inline-block;
   background: #e1e1e1;
-  padding: 6px 10px;
-  margin: 4px 4px 0 0;
+  padding: 5px 10px;
+  margin: 4px;
   border-radius: 20px;
-  font-size: 0.9em;
+  font-size: 0.85em;
 }
 
 ul {
-  padding-left: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .projet {
   background: white;
+  padding: 15px;
+  margin: 20px 0;
   border-left: 5px solid #003366;
-  margin: 15px 0;
-  padding: 15px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
-}
-
-.projet:hover {
-  transform: translateY(-3px);
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 form {
   display: flex;
   flex-direction: column;
+  max-width: 500px;
   gap: 10px;
-  max-width: 600px;
-  margin-top: 20px;
 }
 
 form input, form textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1em;
 }
 
 form button {
-  padding: 10px;
-  border: none;
   background-color: #003366;
   color: white;
-  font-size: 1em;
+  padding: 10px;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
 }
 
 form button:hover {
   background-color: #002244;
-}
-
-footer {
-  text-align: center;
-  background: #003366;
-  color: white;
-  padding: 15px 0;
-  margin-top: 40px;
 }
