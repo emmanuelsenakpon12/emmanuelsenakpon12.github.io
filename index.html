@@ -3,123 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio de Mohamed Amine Sobhi, étudiant en Master IA/Data à Toulouse, spécialisé en machine learning, data engineering et développement de solutions intelligentes." />
-  <title>Portfolio – Mohamed Amine Sobhi</title>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <!-- EmailJS -->
-  <script defer src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      emailjs.init("VOTRE_PUBLIC_KEY"); // Remplace par ta clé publique EmailJS
-    });
-  </script>
+  <title>Mohamed Amine Sobhi - Portfolio MIAGE</title>
+  <meta name="description" content="Portfolio professionnel de Mohamed Amine Sobhi, étudiant en Master MIAGE, spécialisé en Data Science et Gestion de Projet SI.">
+  <meta name="author" content="Mohamed Amine Sobhi" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
-
 <body>
-  <div id="bg-animation"></div>
-  <div id="bg-overlay"></div>
 
-  <div class="container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Navigation latérale">
-      <button class="menu-toggle" aria-label="Basculer le menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">MS</div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#home">Accueil</a></li>
+        <li><a href="#about">Profil</a></li>
+        <li><a href="#projects">Projets</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#skills">Compétences</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="lang-toggle">
+      <button>FR</button>
+      <button>EN</button>
+    </div>
+  </header>
 
-      <h1>Mohamed<br>Amine Sobhi</h1>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <img src="img/profile.jpg" alt="Photo de Mohamed Amine Sobhi" class="profile-img">
+    <h1>Mohamed Amine Sobhi — Alternant MIAGE</h1>
+    <p class="tagline">J'analyse, je modélise et je développe des solutions intelligentes orientées données.</p>
+    <div class="hero-buttons">
+      <a href="CV_MohamedSobhi.pdf" class="btn">Télécharger le CV</a>
+      <a href="#projects" class="btn secondary">Voir les projets</a>
+    </div>
+  </section>
 
-      <nav>
-        <ul>
-          <li><a href="#profil">Profil</a></li>
-          <li><a href="#competences">Compétences</a></li>
-          <li><a href="#certifications">Certifications</a></li>
-          <li><a href="#projets">Projets</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <h2>À propos</h2>
+    <p>Étudiant en Master MIAGE, je me spécialise en Data Science et en Gestion de Projet SI. Je possède des compétences techniques solides couplées à une vision business.</p>
 
-      <div class="contact-info">
-        <p><i class="fa-solid fa-envelope"></i> <a href="mailto:etudeefr@gmail.com">etudeefr@gmail.com</a></p>
-        <p><i class="fa-solid fa-phone"></i> +33 6 02 40 13 55</p>
-        <p><i class="fa-solid fa-location-dot"></i> Amiens, France</p>
-        <p><i class="fa-brands fa-linkedin"></i> <a href="https://linkedin.com/in/mohamed-amine-s" target="_blank" rel="noopener">LinkedIn</a></p>
+    <h3>Qualités</h3>
+    <ul class="soft-skills">
+      <li>Adaptabilité</li>
+      <li>Communication</li>
+      <li>Résolution de problèmes</li>
+      <li>Travail en équipe</li>
+      <li>Pensée critique</li>
+    </ul>
+
+    <h3>Formation</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>Master MIAGE – Data Science</h4>
+        <span>Université XXX, 2022 - Présent</span>
+        <p>Spécialisation en data analytics, machine learning, systèmes d’information.</p>
       </div>
-    </aside>
+      <div class="timeline-item">
+        <h4>Licence Informatique</h4>
+        <span>Université XXX, 2019 - 2022</span>
+        <p>Algorithmes, programmation, développement logiciel.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Baccalauréat Scientifique</h4>
+        <span>Lycée XXX, 2019</span>
+        <p>Mathématiques, physique, logique scientifique.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- MAIN CONTENT -->
-    <main class="content" role="main">
-      <!-- Profil -->
-      <section id="profil" class="fade-in">
-        <h2>Profil</h2>
-        <p>Étudiant en <strong>Master TRIED (IA/Data)</strong> au CNAM Toulouse, à la recherche d’une <strong>alternance de 24 mois</strong> à partir de septembre 2025.</p>
-        <div class="tags">
-          <span>IA</span><span>ML</span><span>BI</span><span>Python</span><span>Data Engineering</span><span>Toulouse</span>
-        </div>
-      </section>
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <h2>Projets</h2>
+    <div class="filters">
+      <button>All</button>
+      <button>AI</button>
+      <button>BI</button>
+      <button>ERP</button>
+      <button>Web</button>
+    </div>
+    <div class="project-grid">
+      <!-- Projet Exemple -->
+      <div class="project-card">
+        <img src="img/project1.jpg" alt="Dashboard analytique">
+        <h3>Dashboard Prédictif</h3>
+        <p>Un tableau de bord prédictif qui anticipe les KPIs grâce à l’apprentissage automatique.</p>
+        <ul class="tech-tags">
+          <li>Python</li>
+          <li>TensorFlow</li>
+          <li>Power BI</li>
+        </ul>
+        <a href="#" class="btn small">Voir le projet</a>
+      </div>
+      <!-- Ajouter d'autres cartes projets -->
+    </div>
+  </section>
 
-      <!-- Compétences -->
-      <section id="competences" class="fade-in">
-        <h2>Compétences</h2>
+  <!-- Certifications Section -->
+  <section id="certifications" class="certifications-section">
+    <h2>Certifications & Badges</h2>
+    <div class="certification-grid">
+      <div class="cert-card">
+        <img src="img/cert-azure.png" alt="Certif Azure">
+        <h3>Azure Data Scientist</h3>
+        <p>Microsoft — Jan 2023</p>
+        <a href="#">Vérifier</a>
+      </div>
+      <!-- Répéter pour d'autres certifs -->
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="skills-section">
+    <h2>Compétences</h2>
+    <div class="skills-categories">
+      <div>
+        <h3>Langages & Frameworks</h3>
         <ul>
-          <li><strong>Langages :</strong> Python, SQL, Java, C, Bash, PHP</li>
-          <li><strong>IA/Data :</strong> Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Flask</li>
-          <li><strong>Bases de données :</strong> Oracle, MySQL, MERISE, UML</li>
-          <li><strong>Outils :</strong> Git, Jupyter, Docker, Conda, Figma</li>
+          <li>Python - 90%</li>
+          <li>JavaScript - 75%</li>
+          <li>R - 65%</li>
         </ul>
-      </section>
-
-      <!-- Certifications -->
-      <section id="certifications" class="fade-in">
-        <h2>Certifications</h2>
-        <ul class="cert-list">
-          <li><i class="fa-solid fa-certificate"></i> ML & Deep Learning – LinkedIn (2025)</li>
-          <li><i class="fa-solid fa-certificate"></i> Power Platform – Microsoft (2025)</li>
-          <li><i class="fa-solid fa-certificate"></i> CCNA – Cisco (2025)</li>
-          <li><i class="fa-solid fa-language"></i> Anglais – Niveau C1 (CECR)</li>
+      </div>
+      <div>
+        <h3>Outils Data / IA</h3>
+        <ul>
+          <li>TensorFlow - 85%</li>
+          <li>Pandas - 95%</li>
+          <li>Power BI - 80%</li>
         </ul>
-      </section>
+      </div>
+      <div>
+        <h3>Bases de données</h3>
+        <ul>
+          <li>SQL - 90%</li>
+          <li>MongoDB - 75%</li>
+          <li>Redis - 60%</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Outils collaboratifs</h3>
+        <ul>
+          <li>SharePoint</li>
+          <li>MS Project</li>
+          <li>UML, BPMN</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-      <!-- Projets -->
-      <section id="projets" class="fade-in">
-        <h2>Projets</h2>
-        <div class="projet">
-          <h3>Détection de caries – CNN</h3>
-          <p>Réseau personnalisé avec TensorFlow & Flask. Visualisation des activations, API REST complète.</p>
-        </div>
-        <div class="projet">
-          <h3>Système logistique – Oracle/Docker</h3>
-          <p>Modélisation MERISE, requêtes avancées SQL, déploiement Dockerisé.</p>
-        </div>
-        <div class="projet">
-          <h3>Dashboard Power BI</h3>
-          <p>Dashboards dynamiques Power BI, connecteurs Forms et Power Automate.</p>
-        </div>
-      </section>
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Contact</h2>
+    <p>Vous avez un projet ou une opportunité ? N'hésitez pas à me contacter !</p>
+    <form>
+      <input type="text" name="name" placeholder="Nom" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="subject" placeholder="Sujet">
+      <textarea name="message" rows="5" placeholder="Votre message..." required></textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+    <div class="social-links">
+      <a href="mailto:mohamed.sobhi@example.com">Email</a>
+      <a href="https://github.com/mohamedsobhi" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/mohamedsobhi" target="_blank">LinkedIn</a>
+    </div>
+  </section>
 
-      <!-- Contact -->
-      <section id="contact" class="fade-in">
-        <h2>Contact</h2>
-        <form id="contact-form">
-          <input type="text" name="from_name" placeholder="Votre nom" required />
-          <input type="email" name="reply_to" placeholder="Votre email" required />
-          <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
-          <input type="hidden" name="date" id="message-date" />
-          <button type="submit"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
-        </form>
-      </section>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>&copy; 2025 Mohamed Amine Sobhi. Tous droits réservés.</p>
+  </footer>
 
-      <!-- Footer -->
-      <footer>
-        <p>&copy; 2025 Mohamed Amine Sobhi. Tous droits réservés.</p>
-      </footer>
-    </main>
-  </div>
-
-  <!-- JS -->
-  <script src="script.js" defer></script>
 </body>
 </html>
