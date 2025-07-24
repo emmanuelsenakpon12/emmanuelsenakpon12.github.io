@@ -106,10 +106,11 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.85); /* fond sombre et flouté */
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
   transition: var(--transition);
+  color: #ffffff; /* forçage du texte blanc */
 }
 
 .header-content {
@@ -148,13 +149,13 @@ h1, h2, h3, h4, h5, h6 {
 .logo .initials {
   font-weight: 700;
   font-size: 1.2rem;
-  color: white;
+  color: #ffffff;
 }
 
 .name {
   font-weight: 600;
   font-size: 1.1rem;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .nav-list {
@@ -165,7 +166,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-list a {
   text-decoration: none;
-  color: var(--text-secondary);
+  color: #e2e8f0; /* texte clair */
   font-weight: 500;
   transition: var(--transition);
   position: relative;
@@ -178,12 +179,12 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--gradient-primary);
+  background: #38bdf8; /* turquoise visible */
   transition: var(--transition);
 }
 
 .nav-list a:hover {
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .nav-list a:hover::after {
@@ -197,18 +198,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .theme-toggle, .lang-toggle {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--border-radius);
   padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--text-secondary);
+  color: #e2e8f0;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .theme-toggle:hover, .lang-toggle:hover {
-  background: var(--bg-glass-hover);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .menu-toggle {
@@ -223,7 +224,7 @@ h1, h2, h3, h4, h5, h6 {
 .hamburger .line {
   width: 25px;
   height: 2px;
-  background: var(--text-primary);
+  background: #ffffff;
   transition: var(--transition);
 }
 
