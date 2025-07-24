@@ -1,47 +1,46 @@
-/* Reset et Variables CSS */
 :root {
   /* Couleurs principales */
-  --primary-color: #6366f1;
-  --primary-light: #8b5cf6;
-  --primary-dark: #4338ca;
-  --secondary-color: #10b981;
-  --accent-color: #f59e0b;
-  
-  /* Couleurs de fond */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --bg-glass-hover: rgba(255, 255, 255, 0.1);
-  
+  --primary-color: #007acc;          /* Bleu technique */
+  --primary-light: #66bfff;          /* Bleu ciel clair */
+  --primary-dark: #005a99;           /* Bleu nuit foncé */
+  --secondary-color: #22c55e;        /* Vert clair, moderne */
+  --accent-color: #06b6d4;           /* Turquoise douce */
+
+  /* Couleurs de fond (plus claires, plus contrastées) */
+  --bg-primary: #f8fafc;             /* Fond clair pour light mode */
+  --bg-secondary: #e2e8f0;           /* Gris clair */
+  --bg-tertiary: #cbd5e1;            /* Gris légèrement plus soutenu */
+  --bg-glass: rgba(255, 255, 255, 0.6);
+  --bg-glass-hover: rgba(255, 255, 255, 0.75);
+
   /* Texte */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  
+  --text-primary: #0f172a;           /* Bleu foncé lisible */
+  --text-secondary: #334155;         /* Gris-bleu équilibré */
+  --text-muted: #64748b;             /* Gris discret */
+
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  --gradient-secondary: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
-  
+  --gradient-primary: linear-gradient(135deg, #007acc, #66bfff);
+  --gradient-secondary: linear-gradient(135deg, #22c55e, #16a34a);
+  --gradient-accent: linear-gradient(135deg, #06b6d4, #0ea5e9);
+  --gradient-bg: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(0, 122, 204, 0.3);
+
   /* Bordures */
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(0, 0, 0, 0.1);
   --border-radius: 0.75rem;
   --border-radius-lg: 1rem;
   --border-radius-xl: 1.5rem;
-  
+
   /* Transitions */
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  
+  --transition: all 0.3s ease-in-out;
+  --transition-slow: all 0.5s ease-in-out;
+
   /* Espacements */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -51,6 +50,7 @@
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
 }
+
 
 /* Reset CSS */
 * {
