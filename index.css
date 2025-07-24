@@ -1405,3 +1405,16 @@ select:focus {
 }
 
 .form
+
+.construction-banner {
+  background-color: #fffbcc;
+  color: #665c00;
+  text-align: center;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #e0c000;
+  font-family: 'Poppins', sans-serif;
+  z-index: 1001;
+  position: relative;
+}
