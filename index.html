@@ -11,14 +11,29 @@
 </head>
 <body>
 
-   <!-- Pop-up de construction -->
-    <div id="construction-popup" class="popup-visible">
-        <p>💡 Ce site est encore en cours de construction. Certaines sections peuvent évoluer.</p>
-        <button id="close-popup">Fermer</button>
+    <!-- Pop-up de construction centrée -->
+    <div id="construction-popup" class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <div class="popup-icon">
+                        <span>🚧</span>
+                    </div>
+                    <h3>Site en Construction</h3>
+                    <button id="close-popup" class="popup-close-btn" aria-label="Fermer la popup">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="popup-body">
+                    <p>Ce portfolio est encore en cours de construction. Certaines sections peuvent évoluer.</p>
+                    <p class="popup-subtitle">Merci pour votre visite et votre compréhension !</p>
+                </div>
+                <div class="popup-footer">
+                    <button id="popup-ok-btn" class="popup-ok-btn">Compris</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
 
     <div class="main-container">
         <!-- Header/Navigation -->
@@ -71,13 +86,13 @@
                         qui allient technologie et efficacité.
                     </p>
                     <div class="hero-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" id="download-cv-btn">
                             <span>Télécharger CV</span>
                             <div class="btn-icon">
                                 <div class="icon"></div>
                             </div>
                         </button>
-                        <button class="btn btn-secondary">
+                        <button class="btn btn-secondary" id="view-projects-btn">
                             <span>Voir Projets</span>
                             <div class="btn-icon">
                                 <div class="icon"></div>
@@ -131,7 +146,6 @@
                 <div class="education-timeline">
                     <h3>Parcours Académique</h3>
                     <div class="timeline">
-                        
                         <div class="timeline-item">
                             <div class="timeline-icon">
                                 <div class="icon"></div>
@@ -175,7 +189,6 @@
                                 <p>Solide formation en mathématiques, physique et sciences de l'ingénieur.</p>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
 
@@ -733,10 +746,60 @@
             // Gestion de la popup de construction
             const popup = document.getElementById("construction-popup");
             const closeBtn = document.getElementById("close-popup");
+            const okBtn = document.getElementById("popup-ok-btn");
 
-            if (closeBtn) {
-                closeBtn.addEventListener("click", function () {
+            // Fonction pour fermer la popup
+            function closePopup() {
+                popup.classList.add('popup-closing');
+                setTimeout(() => {
                     popup.style.display = "none";
+                    popup.classList.remove('popup-closing');
+                }, 300); // Animation de fermeture
+            }
+
+            // Événements pour fermer la popup
+            if (closeBtn) {
+                closeBtn.addEventListener("click", closePopup);
+            }
+
+            if (okBtn) {
+                okBtn.addEventListener("click", closePopup);
+            }
+
+            // Fermer en cliquant sur l'overlay (optionnel)
+            popup.addEventListener("click", function(e) {
+                if (e.target === popup) {
+                    closePopup();
+                }
+            });
+
+            // Fermer avec la touche Escape
+            document.addEventListener("keydown", function(e) {
+                if (e.key === "Escape" && popup.style.display !== "none") {
+                    closePopup();
+                }
+            });
+
+            // Gestion des boutons hero
+            const downloadCvBtn = document.getElementById("download-cv-btn");
+            const viewProjectsBtn = document.getElementById("view-projects-btn");
+
+            if (downloadCvBtn) {
+                downloadCvBtn.addEventListener("click", function() {
+                    // Ajouter ici la logique pour télécharger le CV
+                    console.log("Téléchargement du CV...");
+                });
+            }
+
+            if (viewProjectsBtn) {
+                viewProjectsBtn.addEventListener("click", function() {
+                    const projectsSection = document.getElementById("projets");
+                    if (projectsSection) {
+                        projectsSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 });
             }
 
@@ -752,13 +815,20 @@
                     projectFilters.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Filtrage des cartes
+                    // Filtrage des cartes avec animation
                     projectCards.forEach(card => {
                         const category = card.getAttribute('data-category');
                         if (filterValue === 'all' || category.includes(filterValue)) {
                             card.style.display = 'block';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                            }, 10);
                         } else {
-                            card.style.display = 'none';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
                         }
                     });
                 });
@@ -776,13 +846,20 @@
                     certificationFilters.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Filtrage des cartes
+                    // Filtrage des cartes avec animation
                     certificationCards.forEach(card => {
                         const category = card.getAttribute('data-category');
                         if (filterValue === 'all' || category.includes(filterValue)) {
                             card.style.display = 'block';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                            }, 10);
                         } else {
-                            card.style.display = 'none';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
                         }
                     });
                 });
@@ -804,28 +881,64 @@
                 });
             });
 
-            // Menu mobile toggle (si nécessaire)
+            // Menu mobile toggle
             const menuToggle = document.querySelector('.menu-toggle');
             const nav = document.querySelector('.nav');
             
-            if (menuToggle) {
+            if (menuToggle && nav) {
                 menuToggle.addEventListener('click', function() {
                     nav.classList.toggle('mobile-open');
+                    menuToggle.classList.toggle('active');
                 });
             }
 
-            // Toggle thème (si nécessaire)
+            // Toggle thème
             const themeToggle = document.querySelector('.theme-toggle');
             if (themeToggle) {
                 themeToggle.addEventListener('click', function() {
                     document.body.classList.toggle('dark-theme');
+                    
+                    // Sauvegarder la préférence (optionnel)
+                    const isDark = document.body.classList.contains('dark-theme');
+                    try {
+                        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    } catch (e) {
+                        // Gestion silencieuse si localStorage n'est pas disponible
+                    }
                 });
+
+                // Charger la préférence de thème (optionnel)
+                try {
+                    const savedTheme = localStorage.getItem('theme');
+                    if (savedTheme === 'dark') {
+                        document.body.classList.add('dark-theme');
+                    }
+                } catch (e) {
+                    // Gestion silencieuse si localStorage n'est pas disponible
+                }
             }
+
+            // Animation d'apparition des éléments au scroll (optionnel)
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observer les sections pour l'animation
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
         });
     </script>
 
- 
-
 </body>
-
 </html>
