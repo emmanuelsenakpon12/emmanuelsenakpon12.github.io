@@ -12,12 +12,12 @@
 <body>
 
    <!-- Pop-up de construction -->
-    <div id="construction-popup" class="popup-overlay">
-    <div class="popup-modal">
-        <p>🚧 Ce portfolio est en cours de construction. Merci pour votre visite et votre compréhension ! 🚧</p>
-        <button id="close-popup" class="popup-close">Fermer</button>
+    <div id="construction-popup" class="popup-visible">
+        <p>💡 Ce site est encore en cours de construction. Certaines sections peuvent évoluer.</p>
+        <button id="close-popup">Fermer</button>
     </div>
-    </div>
+
+
 
 
     <div class="main-container">
@@ -824,17 +824,7 @@
         });
     </script>
 
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const popup = document.getElementById("construction-popup");
-        const closeBtn = document.getElementById("close-popup");
-
-        closeBtn.addEventListener("click", function () {
-        popup.style.display = "none";
-        });
-    });
-    </script>
-
+ 
 
 </body>
 

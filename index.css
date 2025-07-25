@@ -1406,56 +1406,27 @@ select:focus {
 
 .form
 
-/* Overlay plein écran */
-.popup-overlay {
+#construction-popup {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99999; /* Plus élevé que ton header ! */
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Contenu du pop-up */
-.popup-modal {
-  background-color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: white;
   padding: 2rem;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 400px;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  font-family: 'Poppins', sans-serif;
-  animation: fadeIn 0.3s ease;
 }
 
-/* Animation douce */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Bouton */
-.popup-close {
+#close-popup {
   margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #1e293b;
-  color: #fff;
+  padding: 0.5rem 1rem;
+  background: #1e293b;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-}
-
-.popup-close:hover {
-  background-color: #111827;
 }
