@@ -11,13 +11,14 @@
 </head>
 <body>
 
-    <!-- Pop-up de construction -->
+   <!-- Pop-up de construction -->
     <div id="construction-popup" class="popup-overlay">
-        <div class="popup-content">
-            <p>🚧 Ce portfolio est encore en cours de construction. Merci pour votre visite et votre compréhension ! 🚧</p>
-            <button id="close-popup" class="popup-close">Fermer</button>
-        </div>
+    <div class="popup-modal">
+        <p>🚧 Ce portfolio est en cours de construction. Merci pour votre visite et votre compréhension ! 🚧</p>
+        <button id="close-popup" class="popup-close">Fermer</button>
     </div>
+    </div>
+
 
     <div class="main-container">
         <!-- Header/Navigation -->
@@ -823,15 +824,15 @@
         });
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const popup = document.getElementById("construction-popup");
-            const closeBtn = document.getElementById("close-popup");
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const popup = document.getElementById("construction-popup");
+        const closeBtn = document.getElementById("close-popup");
 
-            closeBtn.addEventListener("click", function () {
-            popup.style.display = "none";
-            });
+        closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
         });
+    });
     </script>
 
 

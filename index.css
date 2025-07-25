@@ -1411,7 +1411,7 @@ select:focus {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999; /* Plus élevé que le header */
+  z-index: 99999; /* Plus élevé que ton header ! */
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
@@ -1420,43 +1420,42 @@ select:focus {
   align-items: center;
 }
 
-/* Fenêtre modale */
+/* Contenu du pop-up */
 .popup-modal {
-  background-color: white;
+  background-color: #fff;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.3);
-  text-align: center;
   max-width: 500px;
   width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   font-family: 'Poppins', sans-serif;
-  animation: scaleIn 0.3s ease-out;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Animation d’apparition */
-@keyframes scaleIn {
+/* Animation douce */
+@keyframes fadeIn {
   from {
-    transform: scale(0.9);
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
-    transform: scale(1);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Bouton de fermeture */
+/* Bouton */
 .popup-close {
-  margin-top: 1.5rem;
-  padding: 10px 20px;
-  font-weight: 500;
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
   background-color: #1e293b;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
 }
 
 .popup-close:hover {
-  background-color: #0f172a;
+  background-color: #111827;
 }
