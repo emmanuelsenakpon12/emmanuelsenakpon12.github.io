@@ -451,9 +451,25 @@
                 
                 <div class="projects-grid">
                     <div class="project-card featured" data-category="ai bi">
-                        <div class="project-image">
+                        <div class="project-media">
                             <div class="featured-badge">Mis en avant</div>
-                            <div class="image-placeholder"></div>
+                            <!-- Vidéo démo - Option 1: Hébergée sur GitHub -->
+                            <video class="project-video" poster="./assets/videos/thumbnails/predictive-dashboard-thumb.jpg" preload="metadata" muted>
+                                <source src="./assets/videos/predictive-dashboard-demo.mp4" type="video/mp4">
+                                <source src="./assets/videos/predictive-dashboard-demo.webm" type="video/webm">
+                                <!-- Fallback si vidéo non disponible -->
+                                <div class="image-placeholder"></div>
+                            </video>
+                            <!-- Contrôles vidéo personnalisés -->
+                            <div class="video-controls">
+                                <button class="video-play-btn" aria-label="Lire la vidéo">
+                                    <span class="play-icon">▶</span>
+                                    <span class="pause-icon" style="display: none;">⏸</span>
+                                </button>
+                                <div class="video-overlay">
+                                    <span class="video-duration">2:30</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="project-info">
                             <h3>Tableau de Bord d'Analyse Prédictive</h3>
@@ -463,18 +479,32 @@
                                 <span class="tag">Power BI</span>
                             </div>
                             <p>Un tableau de bord d'analyse prédictive qui prédit les métriques business utilisant des algorithmes de machine learning.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link demo-btn" data-video="predictive-dashboard">
+                                    <span>Voir Démo</span>
+                                    <div class="link-icon">
+                                        <div class="icon">🎥</div>
+                                    </div>
+                                </button>
+                                <button class="project-link">
+                                    <span>Code Source</span>
+                                    <div class="link-icon">
+                                        <div class="icon">📁</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="project-card" data-category="web">
-                        <div class="project-image">
-                            <div class="image-placeholder"></div>
+                        <div class="project-media">
+                            <!-- Option 2: Vidéo YouTube intégrée -->
+                            <div class="youtube-embed" data-video-id="dQw4w9WgXcQ">
+                                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Thumbnail E-Commerce" class="youtube-thumbnail">
+                                <button class="youtube-play-btn" aria-label="Lire la vidéo YouTube">
+                                    <span class="play-icon">▶</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="project-info">
                             <h3>Plateforme E-Commerce</h3>
@@ -484,18 +514,32 @@
                                 <span class="tag">React</span>
                             </div>
                             <p>Une plateforme e-commerce full-stack avec gestion d'inventaire et analytics clients.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link youtube-demo-btn" data-youtube="dQw4w9WgXcQ">
+                                    <span>Voir Démo</span>
+                                    <div class="link-icon">
+                                        <div class="icon">🎥</div>
+                                    </div>
+                                </button>
+                                <button class="project-link">
+                                    <span>Demo Live</span>
+                                    <div class="link-icon">
+                                        <div class="icon">🔗</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="project-card" data-category="erp">
-                        <div class="project-image">
-                            <div class="image-placeholder"></div>
+                        <div class="project-media">
+                            <!-- Option 3: GIF animé pour démo courte -->
+                            <div class="gif-demo">
+                                <img src="./assets/images/erp-integration-demo.gif" alt="Démo ERP Integration" class="demo-gif">
+                                <div class="gif-overlay">
+                                    <span class="gif-label">GIF Démo</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="project-info">
                             <h3>Intégration Système ERP</h3>
@@ -505,18 +549,29 @@
                                 <span class="tag">ETL</span>
                             </div>
                             <p>Intégration de systèmes ERP avec modules personnalisés pour des besoins métiers spécifiques.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link">
+                                    <span>Voir Détails</span>
+                                    <div class="link-icon">
+                                        <div class="icon">📄</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="project-card" data-category="ai">
-                        <div class="project-image">
-                            <div class="image-placeholder"></div>
+                        <div class="project-media">
+                            <!-- Option 4: Image avec modal vidéo -->
+                            <div class="image-with-video" data-modal-video="sentiment-analysis">
+                                <img src="./assets/images/sentiment-analysis-preview.jpg" alt="Analyse de Sentiment" class="project-image">
+                                <div class="video-play-overlay">
+                                    <button class="modal-play-btn" aria-label="Ouvrir la vidéo en modal">
+                                        <span class="play-icon">▶</span>
+                                    </button>
+                                    <span class="video-label">Voir la démo</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="project-info">
                             <h3>Outil d'Analyse de Sentiment</h3>
@@ -526,17 +581,19 @@
                                 <span class="tag">Flask</span>
                             </div>
                             <p>Un outil qui analyse les commentaires clients et mentions sur les réseaux sociaux pour détecter le sentiment.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link modal-video-btn" data-video="./assets/videos/sentiment-analysis-demo.mp4">
+                                    <span>Voir Démo</span>
+                                    <div class="link-icon">
+                                        <div class="icon">🎥</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="project-card" data-category="web">
-                        <div class="project-image">
+                        <div class="project-media">
                             <div class="image-placeholder"></div>
                         </div>
                         <div class="project-info">
@@ -547,17 +604,19 @@
                                 <span class="tag">MongoDB</span>
                             </div>
                             <p>Un système de gestion de projets collaboratif avec mises à jour en temps réel et analytics.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link">
+                                    <span>Voir le Projet</span>
+                                    <div class="link-icon">
+                                        <div class="icon">📁</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="project-card" data-category="ai">
-                        <div class="project-image">
+                        <div class="project-media">
                             <div class="image-placeholder"></div>
                         </div>
                         <div class="project-info">
@@ -568,17 +627,39 @@
                                 <span class="tag">Flask</span>
                             </div>
                             <p>Un moteur de recommandations qui suggère des produits basés sur le comportement utilisateur.</p>
-                            <button class="project-link">
-                                <span>Voir le Projet</span>
-                                <div class="link-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                            <div class="project-actions">
+                                <button class="project-link">
+                                    <span>Voir le Projet</span>
+                                    <div class="link-icon">
+                                        <div class="icon">📁</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Modal pour vidéos -->
+        <div id="video-modal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="modal-title">Démo du Projet</h3>
+                        <button id="modal-close" class="modal-close-btn" aria-label="Fermer la modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video id="modal-video" controls preload="metadata">
+                            <source id="modal-video-source" src="" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Certifications Section -->
         <section id="certifications" class="certifications">
@@ -803,9 +884,124 @@
                 });
             }
 
-            // Gestion des filtres de projets
-            const projectFilters = document.querySelectorAll('.projects .filter-btn');
-            const projectCards = document.querySelectorAll('.project-card');
+            // Gestion des vidéos de projets
+            const videoElements = document.querySelectorAll('.project-video');
+            const videoPlayBtns = document.querySelectorAll('.video-play-btn');
+            const youtubeEmbeds = document.querySelectorAll('.youtube-embed');
+            const modalVideoBtns = document.querySelectorAll('.modal-video-btn');
+            const videoModal = document.getElementById('video-modal');
+            const modalVideo = document.getElementById('modal-video');
+            const modalVideoSource = document.getElementById('modal-video-source');
+            const modalTitle = document.getElementById('modal-title');
+            const modalClose = document.getElementById('modal-close');
+
+            // Gestion lecture/pause vidéos inline
+            videoPlayBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    const video = videoElements[index];
+                    const playIcon = btn.querySelector('.play-icon');
+                    const pauseIcon = btn.querySelector('.pause-icon');
+                    
+                    if (video.paused) {
+                        video.play();
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'inline';
+                    } else {
+                        video.pause();
+                        playIcon.style.display = 'inline';
+                        pauseIcon.style.display = 'none';
+                    }
+                });
+            });
+
+            // Gestion des vidéos YouTube
+            youtubeEmbeds.forEach(embed => {
+                embed.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video-id');
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                    iframe.width = '100%';
+                    iframe.height = '100%';
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    iframe.allowFullscreen = true;
+                    
+                    this.innerHTML = '';
+                    this.appendChild(iframe);
+                });
+            });
+
+            // Gestion des boutons YouTube dans les actions
+            const youtubeDemoBtns = document.querySelectorAll('.youtube-demo-btn');
+            youtubeDemoBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-youtube');
+                    window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+                });
+            });
+
+            // Gestion modal vidéo
+            modalVideoBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const videoSrc = this.getAttribute('data-video');
+                    const projectTitle = this.closest('.project-card').querySelector('h3').textContent;
+                    
+                    modalVideoSource.src = videoSrc;
+                    modalTitle.textContent = `Démo - ${projectTitle}`;
+                    modalVideo.load();
+                    videoModal.style.display = 'flex';
+                    
+                    // Animation d'ouverture
+                    setTimeout(() => {
+                        videoModal.classList.add('modal-open');
+                    }, 10);
+                });
+            });
+
+            // Fermeture modal
+            function closeVideoModal() {
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+                videoModal.classList.remove('modal-open');
+                setTimeout(() => {
+                    videoModal.style.display = 'none';
+                    modalVideoSource.src = '';
+                }, 300);
+            }
+
+            if (modalClose) {
+                modalClose.addEventListener('click', closeVideoModal);
+            }
+
+            // Fermer modal en cliquant sur l'overlay
+            videoModal.addEventListener('click', function(e) {
+                if (e.target === videoModal) {
+                    closeVideoModal();
+                }
+            });
+
+            // Fermer modal avec Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && videoModal.style.display === 'flex') {
+                    closeVideoModal();
+                }
+            });
+
+            // Pause toutes les vidéos lors du filtrage
+            projectFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    videoElements.forEach(video => {
+                        video.pause();
+                        video.currentTime = 0;
+                    });
+                    
+                    // Reset boutons play
+                    videoPlayBtns.forEach(btn => {
+                        btn.querySelector('.play-icon').style.display = 'inline';
+                        btn.querySelector('.pause-icon').style.display = 'none';
+                    });
+                });
+            });
 
             projectFilters.forEach(filter => {
                 filter.addEventListener('click', function() {
