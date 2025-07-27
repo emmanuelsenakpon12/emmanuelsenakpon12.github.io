@@ -691,108 +691,228 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
-/* ===== SKILLS SECTION ===== */
+/* ===== SKILLS SECTION MODERNE ===== */
 .skills {
-  padding: var(--spacing-3xl) var(--spacing-lg);
-  max-width: 1200px;
+  padding: var(--space-24) var(--space-6);
+  max-width: 1400px;
   margin: 0 auto;
-}
-
-.skills h2 {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: var(--spacing-3xl);
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-color) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-3xl);
-}
-
-.skill-category {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  transition: var(--transition);
-}
-
-.skill-category:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-.skill-category h3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
-  font-size: 1.2rem;
-}
-
-.skill-item {
-  margin-bottom: var(--spacing-lg);
-}
-
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-sm);
-}
-
-.skill-name {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.skill-level {
-  color: var(--primary-color);
-  font-weight: 600;
-}
-
-.skill-bar {
-  height: 8px;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
+  background: var(--surface);
+  border-radius: var(--radius-2xl);
+  position: relative;
   overflow: hidden;
-  position: relative;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
 }
 
-.skill-progress {
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: var(--border-radius);
-  transition: width 1s ease-out;
-  position: relative;
-}
-
-.skill-progress::after {
+.skills::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: shimmer 2s infinite;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(0, 102, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-.other-skills {
+.skills h2 {
   text-align: center;
+  margin-bottom: var(--space-16);
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
 }
 
-.other-skills h3 {
-  font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: var(--space-8);
+  margin-bottom: var(--space-16);
+  position: relative;
+  z-index: 1;
+}
+
+.skill-category {
+  background: var(--background-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-slow);
+}
+
+.skill-category:hover::before {
+  transform: scaleX(1);
+}
+
+.skill-category:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-medium);
+}
+
+.skill-category h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.skill-category h3 span {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.category-icon {
+  width: 3rem;
+  height: 3rem;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.skill-category:hover .category-icon {
+  transform: rotate(360deg) scale(1.1);
+  box-shadow: var(--shadow-glow);
+}
+
+.category-icon .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--text-inverse);
+  border-radius: var(--radius-sm);
+}
+
+.skill-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.skill-item {
+  position: relative;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.skill-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.skill-level {
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: var(--space-1) var(--space-3);
+  background-color: var(--surface-elevated);
+  border-radius: var(--radius-full);
+  min-width: 3rem;
+  text-align: center;
+  border: 1px solid var(--border-light);
+}
+
+/* Barres de compétences modernes avec remplissage permanent */
+.skill-bar {
+  height: 0.5rem;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.skill-progress {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+  position: relative;
+  overflow: hidden;
+  /* Largeurs définies pour chaque niveau de compétence */
+}
+
+/* Les largeurs sont déjà définies dans le HTML avec style="width: X%" 
+   Pas besoin de règles CSS supplémentaires pour les largeurs */
+
+.skill-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: skillShimmer 3s infinite;
+}
+
+.skill-progress::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), transparent);
+  border-radius: var(--radius-full);
+}
+
+/* Animation shimmer */
+@keyframes skillShimmer {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 
 /* ===== PROJECTS SECTION ===== */
