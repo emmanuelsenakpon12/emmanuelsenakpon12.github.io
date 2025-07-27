@@ -238,7 +238,7 @@
   border: 1px solid var(--border-light);
 }
 
-/* Barres de compétences modernes */
+/* Barres de compétences modernes avec remplissage permanent */
 .skill-bar {
   height: 0.5rem;
   background: var(--surface-elevated);
@@ -254,8 +254,25 @@
   border-radius: var(--radius-full);
   position: relative;
   overflow: hidden;
-  /* Pas de transition pour garder le remplissage permanent */
+  /* Largeurs définies pour chaque niveau de compétence */
 }
+
+/* Définir les largeurs en fonction du niveau de compétence */
+.skill-progress[data-level="90"], .skill-progress.level-90 { width: 90%; }
+.skill-progress[data-level="85"], .skill-progress.level-85 { width: 85%; }
+.skill-progress[data-level="80"], .skill-progress.level-80 { width: 80%; }
+.skill-progress[data-level="75"], .skill-progress.level-75 { width: 75%; }
+.skill-progress[data-level="70"], .skill-progress.level-70 { width: 70%; }
+.skill-progress[data-level="65"], .skill-progress.level-65 { width: 65%; }
+.skill-progress[data-level="60"], .skill-progress.level-60 { width: 60%; }
+.skill-progress[data-level="55"], .skill-progress.level-55 { width: 55%; }
+.skill-progress[data-level="50"], .skill-progress.level-50 { width: 50%; }
+.skill-progress[data-level="45"], .skill-progress.level-45 { width: 45%; }
+.skill-progress[data-level="40"], .skill-progress.level-40 { width: 40%; }
+.skill-progress[data-level="35"], .skill-progress.level-35 { width: 35%; }
+.skill-progress[data-level="30"], .skill-progress.level-30 { width: 30%; }
+.skill-progress[data-level="25"], .skill-progress.level-25 { width: 25%; }
+.skill-progress[data-level="20"], .skill-progress.level-20 { width: 20%; }
 
 .skill-progress::before {
   content: '';
