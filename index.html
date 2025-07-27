@@ -460,230 +460,224 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projets" class="projects">
-            <h2>Projets</h2>
-            <div class="projects-content">
-                <div class="project-filters" role="tablist">
-                    <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
-                    <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">IA</button>
-                    <button class="filter-btn" data-filter="bi" role="tab" aria-selected="false">BI</button>
-                    <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
-                    <button class="filter-btn" data-filter="erp" role="tab" aria-selected="false">ERP</button>
-                    <button class="filter-btn" data-filter="database" role="tab" aria-selected="false">Base de Données</button>
-                </div>
-                
-                <div class="projects-grid" role="tabpanel">
-                    <article class="project-card featured" data-category="ai bi">
+    <section id="projets" class="projects">
+        <h2>Projets</h2>
+        <div class="projects-content">
+            <div class="project-filters" role="tablist">
+                <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
+                <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">IA</button>
+                <button class="filter-btn" data-filter="bi" role="tab" aria-selected="false">BI</button>
+                <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
+                <button class="filter-btn" data-filter="erp" role="tab" aria-selected="false">ERP</button>
+                <button class="filter-btn" data-filter="database" role="tab" aria-selected="false">Base de Données</button>
+            </div>
+            
+            <div class="projects-grid" role="tabpanel">
+                <!-- Projet 1: SI - Slideshow -->
+                <article class="project-card featured" data-category="erp database">
+                    <div class="project-content">
                         <div class="project-media">
                             <div class="featured-badge">Mis en avant</div>
-                            <!-- Vidéo démo - Option 1: Hébergée sur GitHub -->
-                            <video class="project-video" poster="./assets/videos/thumbnails/predictive-dashboard-thumb.jpg" preload="metadata" muted aria-label="Vidéo de démonstration du tableau de bord prédictif">
-                                <source src="./assets/videos/predictive-dashboard-demo.mp4" type="video/mp4">
-                                <source src="./assets/videos/predictive-dashboard-demo.webm" type="video/webm">
-                                <!-- Fallback si vidéo non disponible -->
-                                <div class="image-placeholder" role="img" aria-label="Aperçu du projet"></div>
-                            </video>
-                            <!-- Contrôles vidéo personnalisés -->
-                            <div class="video-controls">
-                                <button class="video-play-btn" aria-label="Lire la vidéo">
-                                    <span class="play-icon">▶</span>
-                                    <span class="pause-icon" style="display: none;">⏸</span>
-                                </button>
-                                <div class="video-overlay">
-                                    <span class="video-duration">2:30</span>
+                            <div class="slideshow-container">
+                                <img src="./assets/images/si-dashboard.jpg" alt="Interface tableau de bord du système d'information" class="slide active" loading="lazy">
+                                <img src="./assets/images/si-analytics.jpg" alt="Module d'analytics du système d'information" class="slide" loading="lazy">
+                                <img src="./assets/images/si-reports.jpg" alt="Interface de reporting du système d'information" class="slide" loading="lazy">
+                                <div class="slideshow-nav" role="tablist" aria-label="Navigation slideshow SI">
+                                    <button class="slide-dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Voir interface tableau de bord"></button>
+                                    <button class="slide-dot" data-slide="1" role="tab" aria-selected="false" aria-label="Voir module analytics"></button>
+                                    <button class="slide-dot" data-slide="2" role="tab" aria-selected="false" aria-label="Voir interface reporting"></button>
                                 </div>
                             </div>
                         </div>
                         <div class="project-info">
-                            <h3>Tableau de Bord d'Analyse Prédictive</h3>
-                            <div class="project-tags">
-                                <span class="tag">Python</span>
-                                <span class="tag">TensorFlow</span>
-                                <span class="tag">Power BI</span>
-                            </div>
-                            <p>Un tableau de bord d'analyse prédictive qui prédit les métriques business utilisant des algorithmes de machine learning.</p>
-                            <div class="project-actions">
-                                <button class="project-link demo-btn" data-video="predictive-dashboard">
-                                    <span>Voir Démo</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </button>
-                                <a href="https://github.com/MED063/predictive-dashboard" target="_blank" rel="noopener noreferrer" class="project-link">
-                                    <span>Code Source</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article class="project-card" data-category="web">
-                        <div class="project-media">
-                            <!-- Option 2: Vidéo YouTube intégrée -->
-                            <div class="youtube-embed" data-video-id="dQw4w9WgXcQ">
-                                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Thumbnail E-Commerce" class="youtube-thumbnail" loading="lazy">
-                                <button class="youtube-play-btn" aria-label="Lire la vidéo YouTube">
-                                    <span class="play-icon">▶</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Plateforme E-Commerce</h3>
-                            <div class="project-tags">
-                                <span class="tag">Django</span>
-                                <span class="tag">PostgreSQL</span>
-                                <span class="tag">React</span>
-                            </div>
-                            <p>Une plateforme e-commerce full-stack avec gestion d'inventaire et analytics clients.</p>
-                            <div class="project-actions">
-                                <button class="project-link youtube-demo-btn" data-youtube="dQw4w9WgXcQ">
-                                    <span>Voir Démo</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </button>
-                                <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-                                    <span>Demo Live</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article class="project-card" data-category="erp">
-                        <div class="project-media">
-                            <!-- Option 3: GIF animé pour démo courte -->
-                            <div class="gif-demo">
-                                <img src="./assets/images/erp-integration-demo.gif" alt="Démo ERP Integration" class="demo-gif" loading="lazy">
-                                <div class="gif-overlay">
-                                    <span class="gif-label">GIF Démo</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Intégration Système ERP</h3>
+                            <h3 id="si-title">Système d'Information Intégré</h3>
                             <div class="project-tags">
                                 <span class="tag">SAP</span>
-                                <span class="tag">SQL</span>
-                                <span class="tag">ETL</span>
+                                <span class="tag">Oracle</span>
+                                <span class="tag">SQL Server</span>
+                                <span class="tag">Power BI</span>
                             </div>
-                            <p>Intégration de systèmes ERP avec modules personnalisés pour des besoins métiers spécifiques.</p>
+                            <p class="project-description" id="si-description">Développement d'un système d'information complet intégrant les processus métiers, la gestion des données et les tableaux de bord analytiques pour une vision 360° de l'entreprise. Solution scalable avec architecture microservices.</p>
                             <div class="project-actions">
-                                <button class="project-link">
+                                <a href="#si-details" class="project-link" aria-describedby="si-title">
                                     <span>Voir Détails</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </button>
+                                </a>
+                                <a href="./assets/docs/si-documentation.pdf" class="project-link" target="_blank" rel="noopener noreferrer" aria-describedby="si-title">
+                                    <span>Documentation</span>
+                                </a>
                             </div>
                         </div>
-                    </article>
-                    
-                    <article class="project-card" data-category="ai">
+                    </div>
+                </article>
+
+                <!-- Projet 2: Reporting BI - Slideshow -->
+                <article class="project-card" data-category="bi">
+                    <div class="project-content">
                         <div class="project-media">
-                            <!-- Option 4: Image avec modal vidéo -->
-                            <div class="image-with-video" data-modal-video="sentiment-analysis">
-                                <img src="./assets/images/sentiment-analysis-preview.jpg" alt="Analyse de Sentiment" class="project-image" loading="lazy">
-                                <div class="video-play-overlay">
-                                    <button class="modal-play-btn" aria-label="Ouvrir la vidéo en modal">
-                                        <span class="play-icon">▶</span>
-                                    </button>
-                                    <span class="video-label">Voir la démo</span>
+                            <div class="slideshow-container">
+                                <img src="./assets/images/bi-dashboard.jpg" alt="Tableau de bord principal Business Intelligence" class="slide active" loading="lazy">
+                                <img src="./assets/images/bi-kpis.jpg" alt="Interface KPIs et métriques clés" class="slide" loading="lazy">
+                                <img src="./assets/images/bi-charts.jpg" alt="Graphiques et visualisations avancées" class="slide" loading="lazy">
+                                <div class="slideshow-nav" role="tablist" aria-label="Navigation slideshow BI">
+                                    <button class="slide-dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Voir tableau de bord principal"></button>
+                                    <button class="slide-dot" data-slide="1" role="tab" aria-selected="false" aria-label="Voir interface KPIs"></button>
+                                    <button class="slide-dot" data-slide="2" role="tab" aria-selected="false" aria-label="Voir graphiques avancés"></button>
                                 </div>
                             </div>
                         </div>
                         <div class="project-info">
-                            <h3>Outil d'Analyse de Sentiment</h3>
+                            <h3 id="bi-title">Reporting BI Avancé</h3>
                             <div class="project-tags">
+                                <span class="tag">Power BI</span>
+                                <span class="tag">Tableau</span>
                                 <span class="tag">Python</span>
-                                <span class="tag">NLP</span>
-                                <span class="tag">Flask</span>
+                                <span class="tag">SQL</span>
                             </div>
-                            <p>Un outil qui analyse les commentaires clients et mentions sur les réseaux sociaux pour détecter le sentiment.</p>
+                            <p class="project-description" id="bi-description">Solution de reporting business intelligence avec tableaux de bord interactifs, KPIs temps réel et analyses prédictives pour la prise de décision stratégique. Intégration multi-sources et visualisations personnalisées.</p>
                             <div class="project-actions">
-                                <button class="project-link modal-video-btn" data-video="./assets/videos/sentiment-analysis-demo.mp4">
+                                <a href="#bi-demo" class="project-link" aria-describedby="bi-title">
                                     <span>Voir Démo</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </button>
+                                </a>
+                                <a href="./assets/downloads/bi-template.pbix" class="project-link" download aria-describedby="bi-title">
+                                    <span>Télécharger Template</span>
+                                </a>
                             </div>
                         </div>
-                    </article>
-                    
-                    <article class="project-card" data-category="web">
+                    </div>
+                </article>
+
+                <!-- Projet 3: ISOLCA - Vidéo -->
+                <article class="project-card" data-category="ai web">
+                    <div class="project-content">
                         <div class="project-media">
-                            <div class="image-placeholder" role="img" aria-label="Aperçu du système de gestion de projets"></div>
+                            <div class="video-container">
+                                <video class="project-video" controls poster="./assets/images/isolca-poster.jpg" preload="metadata" aria-describedby="isolca-description">
+                                    <source src="./assets/videos/isolca-demo.mp4" type="video/mp4">
+                                    <source src="./assets/videos/isolca-demo.webm" type="video/webm">
+                                    <track kind="captions" src="./assets/captions/isolca-fr.vtt" srclang="fr" label="Français">
+                                    <track kind="descriptions" src="./assets/descriptions/isolca-fr.vtt" srclang="fr" label="Description française">
+                                    Votre navigateur ne supporte pas la lecture de vidéos. <a href="./assets/videos/isolca-demo.mp4">Télécharger la vidéo</a>
+                                </video>
+                            </div>
                         </div>
                         <div class="project-info">
-                            <h3>Système de Gestion de Projets</h3>
+                            <h3 id="isolca-title">ISOLCA - Plateforme IA</h3>
                             <div class="project-tags">
-                                <span class="tag">JavaScript</span>
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">React</span>
                                 <span class="tag">Node.js</span>
                                 <span class="tag">MongoDB</span>
                             </div>
-                            <p>Un système de gestion de projets collaboratif avec mises à jour en temps réel et analytics.</p>
+                            <p class="project-description" id="isolca-description">Plateforme d'intelligence artificielle pour l'analyse et la classification automatique de données complexes avec algorithmes de machine learning avancés. Interface utilisateur intuitive et API RESTful complète.</p>
                             <div class="project-actions">
-                                <button class="project-link">
-                                    <span>Voir le Projet</span>
-                                    <div class="link-icon">
-                                        <div class="icon"></div>
-                                    </div>
-                                </button>
+                                <a href="https://isolca-demo.herokuapp.com" class="project-link" target="_blank" rel="noopener noreferrer" aria-describedby="isolca-title">
+                                    <span>Essayer en Ligne</span>
+                                </a>
+                                <a href="https://github.com/votre-username/isolca" class="project-link" target="_blank" rel="noopener noreferrer" aria-describedby="isolca-title">
+                                    <span>Code Source</span>
+                                </a>
                             </div>
                         </div>
-                    </article>
-                    
-                    <article class="project-card" data-category="ai">
+                    </div>
+                </article>
+
+                <!-- Projet 4: Caries - Slideshow -->
+                <article class="project-card" data-category="ai">
+                    <div class="project-content">
                         <div class="project-media">
-                            <div class="image-placeholder" role="img" aria-label="Aperçu du moteur de recommandations"></div>
+                            <div class="slideshow-container">
+                                <img src="./assets/images/caries-detection.jpg" alt="Interface de détection de caries par IA" class="slide active" loading="lazy">
+                                <img src="./assets/images/caries-analysis.jpg" alt="Analyse automatique par vision artificielle" class="slide" loading="lazy">
+                                <img src="./assets/images/caries-results.jpg" alt="Interface de résultats et diagnostic" class="slide" loading="lazy">
+                                <div class="slideshow-nav" role="tablist" aria-label="Navigation slideshow détection caries">
+                                    <button class="slide-dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Voir interface de détection"></button>
+                                    <button class="slide-dot" data-slide="1" role="tab" aria-selected="false" aria-label="Voir analyse automatique"></button>
+                                    <button class="slide-dot" data-slide="2" role="tab" aria-selected="false" aria-label="Voir résultats diagnostic"></button>
+                                </div>
+                            </div>
                         </div>
                         <div class="project-info">
-                            <h3>Moteur de Recommandations</h3>
+                            <h3 id="caries-title">Détection de Caries par IA</h3>
                             <div class="project-tags">
-                                <span class="tag">Python</span>
-                                <span class="tag">Scikit-learn</span>
+                                <span class="tag">Computer Vision</span>
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">OpenCV</span>
                                 <span class="tag">Flask</span>
                             </div>
-                            <p>Un moteur de recommandations qui suggère des produits basés sur le comportement utilisateur.</p>
+                            <p class="project-description" id="caries-description">Système de détection automatique de caries dentaires utilisant la vision par ordinateur et les réseaux de neurones convolutionnels pour l'aide au diagnostic médical. Précision de 94% validée cliniquement.</p>
                             <div class="project-actions">
-                                <button class="project-link">
-                                    <span>Voir le Projet</span>
-                                    <div class="link-icon">
-                                        <div class="icon">📁</div>
-                                    </div>
-                                </button>
+                                <a href="#caries-results" class="project-link" aria-describedby="caries-title">
+                                    <span>Voir Résultats</span>
+                                </a>
+                                <a href="./assets/docs/caries-research-paper.pdf" class="project-link" target="_blank" rel="noopener noreferrer" aria-describedby="caries-title">
+                                    <span>Publication Scientifique</span>
+                                </a>
                             </div>
                         </div>
-                    </article>
-                </div>
-            </div>
-        </section>
+                    </div>
+                </article>
 
-        <!-- Modal pour vidéos -->
-        <div id="video-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-container">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="modal-title">Démo du Projet</h3>
-                        <button id="modal-close" class="modal-close-btn" aria-label="Fermer la modal">
-                            <span>&times;</span>
-                        </button>
+                <!-- Projet 5: SI Logistique - Vidéo -->
+                <article class="project-card" data-category="erp">
+                    <div class="project-content">
+                        <div class="project-media">
+                            <div class="video-container">
+                                <video class="project-video" controls poster="./assets/images/logistics-poster.jpg" preload="metadata" aria-describedby="logistics-description">
+                                    <source src="./assets/videos/logistics-demo.mp4" type="video/mp4">
+                                    <source src="./assets/videos/logistics-demo.webm" type="video/webm">
+                                    <track kind="captions" src="./assets/captions/logistics-fr.vtt" srclang="fr" label="Français">
+                                    <track kind="descriptions" src="./assets/descriptions/logistics-fr.vtt" srclang="fr" label="Description française">
+                                    Votre navigateur ne supporte pas la lecture de vidéos. <a href="./assets/videos/logistics-demo.mp4">Télécharger la vidéo</a>
+                                </video>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 id="logistics-title">SI Logistique Intégré</h3>
+                            <div class="project-tags">
+                                <span class="tag">SAP WMS</span>
+                                <span class="tag">RFID</span>
+                                <span class="tag">IoT</span>
+                                <span class="tag">Analytics</span>
+                            </div>
+                            <p class="project-description" id="logistics-description">Système d'information logistique complet avec gestion d'entrepôt, traçabilité RFID, optimisation des flux et tableaux de bord de performance en temps réel. Réduction de 30% des coûts opérationnels.</p>
+                            <div class="project-actions">
+                                <a href="#logistics-demo" class="project-link" aria-describedby="logistics-title">
+                                    <span>Voir Démo</span>
+                                </a>
+                                <a href="./assets/docs/logistics-case-study.pdf" class="project-link" target="_blank" rel="noopener noreferrer" aria-describedby="logistics-title">
+                                    <span>Étude de Cas</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <video id="modal-video" controls preload="metadata" aria-describedby="modal-title">
-                            <source id="modal-video-source" src="" type="video/mp4">
-                            <track kind="captions" src="" srclang="fr" label="Français">
-                            Votre navigateur ne supporte pas la lecture de vidéos.
-                        </video>
-                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal pour vidéos -->
+    <div id="video-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-container">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Démo du Projet</h3>
+                    <button id="modal-close" class="modal-close-btn" aria-label="Fermer la modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <video id="modal-video" controls preload="metadata" aria-describedby="modal-title">
+                        <source id="modal-video-source" src="" type="video/mp4">
+                        <track kind="captions" src="" srclang="fr" label="Français">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Overlay pour les cartes étendues -->
+    <div class="projects-overlay"></div>
 
         <!-- Certifications Section -->
         <section id="certifications" class="certifications">
