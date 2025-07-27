@@ -795,7 +795,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
 }
 
-/* ===== PROJECTS SECTION MODERNE ===== */
+/* ===== PROJECTS SECTION MODERNE OPTIMISÉE ===== */
 .projects {
     padding: var(--spacing-3xl) var(--spacing-lg);
     max-width: 1400px;
@@ -830,7 +830,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--border-radius);
     color: var(--text-secondary);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     font-size: 0.95rem;
 }
@@ -855,15 +855,18 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     position: relative;
     height: 380px;
     z-index: 1;
+    /* Optimisations GPU */
+    will-change: transform, box-shadow;
+    transform: translateZ(0);
 }
 
 .project-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-8px) translateZ(0);
     box-shadow: var(--shadow-xl);
     z-index: 10;
 }
@@ -884,12 +887,12 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 2;
 }
 
-/* ===== EXTENSION CARD AU HOVER ===== */
+/* ===== EXTENSION CARD AU HOVER OPTIMISÉE ===== */
 .project-card.expanded {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) scale(1) !important;
+    transform: translate(-50%, -50%) translateZ(0) !important;
     width: 90vw !important;
     max-width: 1200px !important;
     height: 80vh !important;
@@ -897,6 +900,12 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1000 !important;
     box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5) !important;
     border-radius: var(--border-radius-lg) !important;
+    /* Transition ultra rapide et fluide */
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    /* Optimisations GPU */
+    will-change: transform, width, height !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
 }
 
 .projects-overlay {
@@ -906,11 +915,14 @@ h1, h2, h3, h4, h5, h6 {
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition);
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Optimisations GPU */
+    will-change: opacity, visibility;
+    transform: translateZ(0);
 }
 
 .projects-overlay.active {
@@ -921,11 +933,16 @@ h1, h2, h3, h4, h5, h6 {
 .project-card.expanded .project-content {
     display: flex !important;
     height: 100% !important;
+    /* Optimisations GPU */
+    will-change: auto;
+    transform: translateZ(0);
 }
 
 .project-content {
     display: block;
     height: 100%;
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .project-media {
@@ -933,17 +950,23 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     overflow: hidden;
     background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .project-card.expanded .project-media {
     width: 60% !important;
     height: 100% !important;
+    /* Transition fluide */
+    transition: width 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 .project-info {
     padding: var(--spacing-lg);
     height: calc(100% - 200px);
     overflow-y: auto;
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .project-card.expanded .project-info {
@@ -953,6 +976,8 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
+    /* Transition fluide */
+    transition: width 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 .featured-badge {
@@ -973,11 +998,16 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-md);
     color: var(--text-primary);
     font-weight: 600;
+    /* Optimisations texte */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 .project-card.expanded .project-info h3 {
     font-size: 2.2rem !important;
     margin-bottom: var(--spacing-lg) !important;
+    /* Transition texte fluide */
+    transition: font-size 0.15s ease-out !important;
 }
 
 .project-tags {
@@ -994,11 +1024,15 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--border-radius);
     font-size: 0.8rem;
     font-weight: 500;
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .project-card.expanded .tag {
     padding: var(--spacing-sm) var(--spacing-md) !important;
     font-size: 0.9rem !important;
+    /* Transition fluide */
+    transition: padding 0.15s ease-out, font-size 0.15s ease-out !important;
 }
 
 .project-description {
@@ -1006,12 +1040,17 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.6;
     margin-bottom: var(--spacing-lg);
     font-size: 0.95rem;
+    /* Optimisations texte */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 .project-card.expanded .project-description {
     font-size: 1.1rem !important;
     line-height: 1.7 !important;
     margin-bottom: var(--spacing-xl) !important;
+    /* Transition texte fluide */
+    transition: font-size 0.15s ease-out, line-height 0.15s ease-out !important;
 }
 
 .project-actions {
@@ -1027,32 +1066,39 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--bg-glass);
     border: 1px solid var(--border-color);
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
     backdrop-filter: blur(10px);
+    /* Optimisations GPU */
+    will-change: transform, background-color;
+    transform: translateZ(0);
 }
 
 .project-link:hover {
     background: var(--primary-color);
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     box-shadow: var(--shadow-glow);
 }
 
-/* ===== MEDIA TYPES ===== */
+/* ===== MEDIA TYPES OPTIMISÉS ===== */
 .video-container {
     width: 100%;
     height: 100%;
     position: relative;
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .project-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Optimisations vidéo */
+    transform: translateZ(0);
 }
 
 .slideshow-container {
@@ -1060,6 +1106,8 @@ h1, h2, h3, h4, h5, h6 {
     height: 100%;
     position: relative;
     overflow: hidden;
+    /* Optimisations GPU */
+    transform: translateZ(0);
 }
 
 .slide {
@@ -1070,7 +1118,10 @@ h1, h2, h3, h4, h5, h6 {
     top: 0;
     left: 0;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
+    /* Optimisations GPU */
+    will-change: opacity;
+    transform: translateZ(0);
 }
 
 .slide.active {
@@ -1081,7 +1132,7 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateZ(0);
     display: flex;
     gap: 10px;
     z-index: 2;
@@ -1093,19 +1144,23 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    /* Optimisations GPU */
+    will-change: transform, background-color;
+    transform: translateZ(0);
 }
 
 .slide-dot.active {
     background: white;
-    transform: scale(1.2);
+    transform: scale(1.2) translateZ(0);
 }
 
 .close-btn {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     color: white;
     border: none;
     width: 40px;
@@ -1114,19 +1169,24 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     font-size: 1.2rem;
     z-index: 1001;
-    transition: var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Optimisations GPU */
+    will-change: transform, background-color;
+    transform: translateZ(0);
 }
 
 .close-btn:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.95);
+    transform: scale(1.1) translateZ(0);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE OPTIMISÉ ===== */
 @media (max-width: 768px) {
     .project-card.expanded {
         width: 95vw !important;
         height: 90vh !important;
+        /* Transition plus rapide sur mobile */
+        transition: all 0.1s ease-out !important;
     }
 
     .project-card.expanded .project-content {
