@@ -1296,6 +1296,118 @@
                 .catch(() => console.log('Service Worker non supporté'));
         });
     }
+
+        // ===== GESTION DES PROJETS INTERACTIFS =====
+    const projectCards = document.querySelectorAll('.project-card');
+    const projectsOverlay = document.querySelector('.projects-overlay');
+    let expandedCard = null;
+
+    // Gestion des slideshows
+    function initSlideshows() {
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            const slides = container.querySelectorAll('.slide');
+            const dots = container.querySelectorAll('.slide-dot');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            // Navigation par dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => showSlide(index));
+            });
+
+            // Auto-slide
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 4000);
+        });
+    }
+
+    // Expansion des cartes
+    function expandCard(card) {
+        if (expandedCard === card) return;
+
+        // Fermer la carte précédente si elle existe
+        if (expandedCard) {
+            closeProjectCard();
+        }
+
+        expandedCard = card;
+        card.classList.add('expanded');
+        projectsOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Ajouter le bouton de fermeture
+        if (!card.querySelector('.close-btn')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-btn';
+            closeBtn.innerHTML = '×';
+            closeBtn.addEventListener('click', closeProjectCard);
+            card.appendChild(closeBtn);
+        }
+    }
+
+    function closeProjectCard() {
+        if (expandedCard) {
+            expandedCard.classList.remove('expanded');
+            const closeBtn = expandedCard.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.remove();
+            }
+            expandedCard = null;
+        }
+        if (projectsOverlay) {
+            projectsOverlay.classList.remove('active');
+        }
+        document.body.style.overflow = '';
+    }
+
+    // Event listeners pour les projets
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            if (!expandedCard) {
+                expandCard(card);
+            }
+        });
+    });
+
+    if (projectsOverlay) {
+        projectsOverlay.addEventListener('click', closeProjectCard);
+    }
+
+    // Ajouter la fermeture des cartes aux filtres existants
+    const projectFilters = document.querySelectorAll('.projects .filter-btn');
+    projectFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            // Fermer toute carte étendue lors du filtrage
+            closeProjectCard();
+        });
+    });
+
+    // Mise à jour de la gestion Escape existante pour inclure les cartes
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (expandedCard) {
+                closeProjectCard();
+            } else if (videoModal && videoModal.style.display === 'flex') {
+                closeVideoModal();
+            } else if (popup && popup.style.display !== "none") {
+                closePopup();
+            }
+        }
+    });
+
+    // Initialiser les slideshows
+    initSlideshows();
+
     </script>
 
 </body>
