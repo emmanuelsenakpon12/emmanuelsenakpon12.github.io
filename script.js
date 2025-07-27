@@ -173,7 +173,105 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Gestion des filtres avec amélioration
+    // ===== GESTION PROJETS ULTRA-OPTIMISÉE =====
+    const projectCards = document.querySelectorAll('.project-card');
+    const projectsOverlay = document.querySelector('.projects-overlay');
+    let expandedCard = null;
+
+    // Slideshows ultra-légers
+    function initSlideshows() {
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            const slides = container.querySelectorAll('.slide');
+            const dots = container.querySelectorAll('.slide-dot');
+            let currentSlide = 0;
+            let slideInterval;
+
+            function showSlide(index) {
+                if (index === currentSlide) return;
+                
+                slides[currentSlide].classList.remove('active');
+                dots[currentSlide].classList.remove('active');
+                
+                currentSlide = index;
+                slides[currentSlide].classList.add('active');
+                dots[currentSlide].classList.add('active');
+            }
+
+            // Navigation dots directe
+            dots.forEach((dot, index) => {
+                dot.onclick = () => showSlide(index);
+            });
+
+            // Auto-slide simplifié
+            function startSlide() {
+                slideInterval = setInterval(() => {
+                    showSlide((currentSlide + 1) % slides.length);
+                }, 4000);
+            }
+
+            startSlide();
+            
+            // Pause au hover
+            container.onmouseenter = () => clearInterval(slideInterval);
+            container.onmouseleave = startSlide;
+        });
+    }
+
+    // Extension INSTANTANÉE
+    function expandCard(card) {
+        if (expandedCard === card) return;
+
+        // Fermer immédiatement l'ancienne carte
+        if (expandedCard) {
+            expandedCard.classList.remove('expanded');
+            const oldCloseBtn = expandedCard.querySelector('.close-btn');
+            if (oldCloseBtn) oldCloseBtn.remove();
+        }
+
+        // Ouvrir immédiatement la nouvelle carte
+        expandedCard = card;
+        card.classList.add('expanded');
+        projectsOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Bouton fermeture instantané
+        if (!card.querySelector('.close-btn')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-btn';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = closeProjectCard;
+            card.appendChild(closeBtn);
+        }
+    }
+
+    function closeProjectCard() {
+        if (!expandedCard) return;
+
+        expandedCard.classList.remove('expanded');
+        const closeBtn = expandedCard.querySelector('.close-btn');
+        if (closeBtn) closeBtn.remove();
+        
+        expandedCard = null;
+        projectsOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Event listeners ultra-simples
+    projectCards.forEach(card => {
+        card.onmouseenter = () => {
+            if (!expandedCard) expandCard(card);
+        };
+    });
+
+    // Fermeture par overlay
+    if (projectsOverlay) {
+        projectsOverlay.onclick = closeProjectCard;
+    }
+
+    // Initialisation des slideshows
+    initSlideshows();
+
+    // ===== FILTRES UNIFIÉS =====
     function setupFilters(filtersSelector, cardsSelector) {
         const filters = document.querySelectorAll(filtersSelector);
         const cards = document.querySelectorAll(cardsSelector);
@@ -182,7 +280,12 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                // Mise à jour des boutons actifs et ARIA
+                // Fermer toute carte étendue si c'est un filtre de projets
+                if (filtersSelector.includes('projects') && expandedCard) {
+                    closeProjectCard();
+                }
+                
+                // Mise à jour des boutons actifs
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -190,30 +293,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                // Pause toutes les vidéos lors du filtrage
-                videoElements.forEach(video => {
-                    video.pause();
-                    video.currentTime = 0;
-                });
+                // Pause vidéos si nécessaire
+                if (filtersSelector.includes('projects')) {
+                    videoElements.forEach(video => {
+                        video.pause();
+                        video.currentTime = 0;
+                    });
+                    
+                    videoPlayBtns.forEach(btn => {
+                        const playIcon = btn.querySelector('.play-icon');
+                        const pauseIcon = btn.querySelector('.pause-icon');
+                        if (playIcon) playIcon.style.display = 'inline';
+                        if (pauseIcon) pauseIcon.style.display = 'none';
+                    });
+                }
                 
-                videoPlayBtns.forEach(btn => {
-                    const playIcon = btn.querySelector('.play-icon');
-                    const pauseIcon = btn.querySelector('.pause-icon');
-                    if (playIcon) playIcon.style.display = 'inline';
-                    if (pauseIcon) pauseIcon.style.display = 'none';
-                });
-                
-                // Filtrage des cartes avec animation
+                // Filtrage des cartes
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
                         card.style.display = 'block';
-                        card.style.opacity = '0';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                        }, 10);
+                        card.style.opacity = '1';
                     } else {
                         card.style.opacity = '0';
                         setTimeout(() => {
@@ -225,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Setup des filtres pour projets et certifications
+    // Setup des filtres (UNE SEULE FOIS)
     setupFilters('.projects .filter-btn', '.project-card');
     setupFilters('.certifications .filter-btn', '.certification-card');
 
@@ -261,7 +363,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Toggle thème avec persistance
     if (themeToggle) {
-        // Charger le thème sauvegardé
         try {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
@@ -283,18 +384,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // *** SECTION MODIFIÉE : Barres de compétences PERMANENTES ***
-    // Les barres gardent leur remplissage sans animation au scroll
+    // Barres de compétences permanentes
     const skillBars = document.querySelectorAll('.skill-progress');
-    
-    // Forcer le maintien des largeurs définies dans le HTML
     skillBars.forEach(bar => {
         const originalWidth = bar.style.width || bar.getAttribute('data-width');
         if (originalWidth) {
-            // Forcer la largeur en permanence
             bar.style.setProperty('width', originalWidth, 'important');
             
-            // Observer les changements et les corriger si nécessaire
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
@@ -337,7 +433,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
-            // Validation simple
             let isValid = true;
             const fields = ['name', 'email', 'subject', 'message'];
             
@@ -355,7 +450,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
             
-            // Validation email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (data.email && !emailRegex.test(data.email)) {
                 document.getElementById('email-error').textContent = 'Email invalide';
@@ -364,13 +458,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             if (isValid) {
-                // Simulation envoi
                 const statusDiv = document.getElementById('form-status');
                 statusDiv.textContent = 'Message envoyé avec succès !';
                 statusDiv.className = 'form-status success';
                 contactForm.reset();
                 
-                // Ouverture du client email
                 const subject = encodeURIComponent(data.subject);
                 const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
                 window.location.href = `mailto:etudeefr@gmail.com?subject=${subject}&body=${body}`;
@@ -378,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Performance: Lazy loading des images
+    // Lazy loading des images
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -398,242 +490,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ===== GESTION DES PROJETS INTERACTIFS OPTIMISÉE =====
-    const projectCards = document.querySelectorAll('.project-card');
-    const projectsOverlay = document.querySelector('.projects-overlay');
-    let expandedCard = null;
-    let isAnimating = false;
-
-    // Gestion des slideshows optimisée
-    function initSlideshows() {
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            const slides = container.querySelectorAll('.slide');
-            const dots = container.querySelectorAll('.slide-dot');
-            let currentSlide = 0;
-            let slideInterval;
-
-            function showSlide(index) {
-                // Optimisation: éviter les changements inutiles
-                if (index === currentSlide) return;
-
-                slides.forEach(slide => slide.classList.remove('active'));
-                dots.forEach(dot => {
-                    dot.classList.remove('active');
-                    dot.setAttribute('aria-selected', 'false');
-                });
-                
-                slides[index].classList.add('active');
-                dots[index].classList.add('active');
-                dots[index].setAttribute('aria-selected', 'true');
-                currentSlide = index;
-            }
-
-            // Navigation par dots avec débounce
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', debounce(() => showSlide(index), 100));
-            });
-
-            // Auto-slide avec pause au hover
-            function startSlideshow() {
-                slideInterval = setInterval(() => {
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    showSlide(currentSlide);
-                }, 4000);
-            }
-
-            function stopSlideshow() {
-                clearInterval(slideInterval);
-            }
-
-            // Démarrer le slideshow
-            startSlideshow();
-
-            // Pause au hover
-            container.addEventListener('mouseenter', stopSlideshow);
-            container.addEventListener('mouseleave', startSlideshow);
-        });
-    }
-
-    // Expansion des cartes optimisée
-    function expandCard(card) {
-        if (expandedCard === card || isAnimating) return;
-
-        isAnimating = true;
-
-        // Fermer la carte précédente si elle existe
-        if (expandedCard) {
-            closeProjectCard();
-            // Attendre la fermeture avant d'ouvrir la nouvelle
-            setTimeout(() => openCard(card), 150);
-        } else {
-            openCard(card);
-        }
-    }
-
-    function openCard(card) {
-        expandedCard = card;
-        
-        // Optimisation: utiliser requestAnimationFrame pour des animations fluides
-        requestAnimationFrame(() => {
-            card.classList.add('expanded');
-            projectsOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Ajouter le bouton de fermeture
-            if (!card.querySelector('.close-btn')) {
-                const closeBtn = document.createElement('button');
-                closeBtn.className = 'close-btn';
-                closeBtn.innerHTML = '×';
-                closeBtn.setAttribute('aria-label', 'Fermer la vue étendue');
-                closeBtn.addEventListener('click', closeProjectCard);
-                card.appendChild(closeBtn);
-            }
-
-            // Marquer la fin de l'animation
-            setTimeout(() => {
-                isAnimating = false;
-            }, 150);
-        });
-    }
-
-    function closeProjectCard() {
-        if (!expandedCard || isAnimating) return;
-
-        isAnimating = true;
-
-        requestAnimationFrame(() => {
-            expandedCard.classList.remove('expanded');
-            const closeBtn = expandedCard.querySelector('.close-btn');
-            if (closeBtn) {
-                closeBtn.remove();
-            }
-            expandedCard = null;
-            
-            if (projectsOverlay) {
-                projectsOverlay.classList.remove('active');
-            }
-            document.body.style.overflow = '';
-
-            // Marquer la fin de l'animation
-            setTimeout(() => {
-                isAnimating = false;
-            }, 150);
-        });
-    }
-
-    // Event listeners optimisés pour les projets
-    projectCards.forEach(card => {
-        // Débounce le mouseenter pour éviter les appels répétés
-        const debouncedExpand = debounce(() => {
-            if (!expandedCard && !isAnimating) {
-                expandCard(card);
-            }
-        }, 100);
-
-        card.addEventListener('mouseenter', debouncedExpand);
-        
-        // Optimisation: prévenir le comportement par défaut sur les liens internes
-        const links = card.querySelectorAll('a[href^="#"]');
-        links.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        });
-    });
-
-    // Event listeners optimisés
-    if (projectsOverlay) {
-        projectsOverlay.addEventListener('click', debounce(closeProjectCard, 100));
-    }
-
-    // Gestion des filtres avec fermeture des cartes
-    const projectFilters = document.querySelectorAll('.projects .filter-btn');
-    projectFilters.forEach(filter => {
-        filter.addEventListener('click', function() {
-            // Fermer immédiatement toute carte étendue
-            if (expandedCard) {
-                closeProjectCard();
-            }
-        });
-    });
-
-    // Gestion globale des touches Escape
+    // GESTION ESCAPE UNIFIÉE (UNE SEULE FOIS)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
-            if (expandedCard && !isAnimating) {
+            
+            // Priorité : projets étendus
+            if (expandedCard) {
                 closeProjectCard();
-            } else if (videoModal && videoModal.style.display === 'flex') {
+            } 
+            // Puis modal vidéo
+            else if (videoModal && videoModal.style.display === 'flex') {
                 closeVideoModal();
-            } else if (popup && popup.style.display !== "none") {
+            } 
+            // Enfin popup
+            else if (popup && popup.style.display !== "none") {
                 closePopup();
             }
         }
     });
 
-    // Gestion du redimensionnement de fenêtre
-    window.addEventListener('resize', debounce(() => {
-        if (expandedCard) {
-            // Ajuster la position si nécessaire
-            requestAnimationFrame(() => {
-                // La position est gérée par le CSS, pas besoin d'action JS
-            });
-        }
-    }, 250));
-
-    // Optimisation: Intersection Observer pour les performances
-    const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const card = entry.target;
-            if (entry.isIntersecting) {
-                // Activer les interactions quand la carte est visible
-                card.style.pointerEvents = 'auto';
-            } else {
-                // Désactiver les interactions quand la carte n'est pas visible
-                if (card !== expandedCard) {
-                    card.style.pointerEvents = 'none';
-                }
-            }
-        });
-    }, {
-        rootMargin: '50px',
-        threshold: 0.1
-    });
-
-    // Observer toutes les cartes
-    projectCards.forEach(card => {
-        cardObserver.observe(card);
-    });
-
-    // Initialiser les slideshows
-    initSlideshows();
-
-    // Optimisation: Précharger les images au hover (optionnel)
-    function preloadImages(card) {
-        const images = card.querySelectorAll('img[src]');
-        images.forEach(img => {
-            if (!img.complete) {
-                img.loading = 'eager';
-            }
-        });
-    }
-
-    // Ajouter le préchargement au hover
-    projectCards.forEach(card => {
-        card.addEventListener('mouseenter', () => preloadImages(card), { once: true });
-    });
-
-    // Masquer le loading une fois tout chargé
+    // Masquer le loading
     setTimeout(() => {
         if (loading) {
             loading.style.display = 'none';
         }
     }, 500);
 
-    console.log('Portfolio initialisé avec succès - Projets interactifs optimisés');
+    console.log('Portfolio optimisé initialisé sans conflits');
 });
 
-// Service Worker pour mise en cache (optionnel)
+// Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
