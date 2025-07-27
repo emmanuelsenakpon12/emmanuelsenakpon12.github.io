@@ -821,152 +821,114 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 10;
 }
 
-/* Extension instantanée - pas de transition */
+/* Extension  -  */
+
 .project-card.expanded {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 90vw !important;
-    max-width: 1200px !important;
-    height: 80vh !important;
-    max-height: 700px !important;
-    z-index: 1000 !important;
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6) !important;
-    border-radius: var(--border-radius-lg) !important;
-    /* AUCUNE transition = instantané */
-    transition: none !important;
-    /* Force l'accélération GPU */
-    will-change: transform !important;
-    backface-visibility: hidden !important;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Supprime le scale flou */
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+  max-height: 700px;
+  z-index: 1000;
+
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+
+  /* Optimisations GPU contrôlées */
+  will-change: transform, width, height;
+  transform-style: flat;
+  contain: layout style paint;
+  backface-visibility: hidden;
+
+  /* Supprime les effets de flou */
+  filter: none !important;
+  backdrop-filter: none !important;
+
+  /* Pas de transition pour éviter le lag */
+  transition: none !important;
 }
 
-/* Overlay simplifié */
-.projects-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    /* Transition ultra-rapide */
-    transition: opacity 0.1s ease-out, visibility 0.1s ease-out;
-}
-
-.projects-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Layout expansion sans transition */
 .project-card.expanded .project-content {
-    display: flex !important;
-    height: 100% !important;
-    /* Pas de transition */
-    transition: none !important;
-}
-
-.project-media {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  overflow: hidden;
+  transition: none !important;
 }
 
 .project-card.expanded .project-media {
-    width: 60% !important;
-    height: 100% !important;
-    /* Pas de transition */
-    transition: none !important;
-}
-
-.project-info {
-    padding: var(--spacing-lg);
-    height: calc(100% - 200px);
-    overflow-y: auto;
+  width: 60%;
+  height: 100%;
+  background: var(--bg-secondary);
+  object-fit: cover;
+  transition: none !important;
+  border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
 }
 
 .project-card.expanded .project-info {
-    width: 40% !important;
-    height: 100% !important;
-    padding: var(--spacing-xl) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    /* Pas de transition */
-    transition: none !important;
-}
-
-/* Texte optimisé */
-.project-info h3 {
-    font-size: 1.4rem;
-    margin-bottom: var(--spacing-md);
-    color: var(--text-primary);
-    font-weight: 600;
+  width: 40%;
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: none !important;
 }
 
 .project-card.expanded .project-info h3 {
-    font-size: 2.2rem !important;
-    margin-bottom: var(--spacing-lg) !important;
-    /* Pas de transition sur le texte */
-    transition: none !important;
-}
-
-.project-description {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: var(--spacing-lg);
-    font-size: 0.95rem;
+  font-size: 2.2rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .project-card.expanded .project-description {
-    font-size: 1.1rem !important;
-    line-height: 1.7 !important;
-    margin-bottom: var(--spacing-xl) !important;
-    /* Pas de transition sur le texte */
-    transition: none !important;
-}
-
-/* Tags sans transition */
-.tag {
-    background: var(--primary-color);
-    color: white;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius);
-    font-size: 0.8rem;
-    font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-secondary);
 }
 
 .project-card.expanded .tag {
-    padding: var(--spacing-sm) var(--spacing-md) !important;
-    font-size: 0.9rem !important;
-    /* Pas de transition */
-    transition: none !important;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.9rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  display: inline-block;
+  margin-right: var(--spacing-sm);
 }
 
-/* Boutons optimisés */
-.project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-    background: var(--bg-glass);
-    border: 1px solid var(--border-color);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    /* Transition ultra-rapide seulement */
-    transition: background-color 0.1s ease-out, color 0.1s ease-out;
+.project-card.expanded .project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  transition: background-color 0.1s ease-out, color 0.1s ease-out;
+  margin-top: var(--spacing-md);
 }
 
-.project-link:hover {
-    background: var(--primary-color);
-    color: white;
+.project-card.expanded .project-link:hover {
+  background: var(--primary-color);
+  color: white;
 }
+
 
 /* Slideshow ultra-optimisé */
 .slideshow-container {
