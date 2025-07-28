@@ -914,9 +914,14 @@ img, video {
   position: relative;
   height: 380px;
   z-index: 1;
-  transition: none;
-  will-change: auto;
+  
+  /* ✅ AJOUTE CES LIGNES pour optimiser GPU : */
   transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  /* ✅ REMPLACE la transition existante par : */
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .project-card:hover {
@@ -931,13 +936,18 @@ img, video {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  /* ✅ OPTIMISÉ : background statique au lieu de backdrop-filter */
+  background: rgba(0, 0, 0, 0.85);
   z-index: calc(var(--z-modal) - 1);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  /* ✅ OPTIMISÉ : transition plus rapide avec meilleure courbe */
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+              visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
+  /* ✅ AJOUTÉ : Force GPU layer */
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .projects-overlay.active {
@@ -949,25 +959,39 @@ img, video {
 /* === PROJECT CARD EXPANDED === */
 .project-card.expanded {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* ✅ OPTIMISÉ : Position fixe en pixels entiers */
+  top: 10vh;
+  left: 5vw;
+  /* ✅ OPTIMISÉ : Dimensions fixes */
   width: 90vw;
-  max-width: 1200px;
   height: 80vh;
+  max-width: 1200px;
   max-height: 700px;
   z-index: var(--z-modal);
+  
+  /* ✅ OPTIMISÉ : GPU layers critiques */
+  will-change: transform, opacity;
+  transform: translateZ(0) scale(0.7); /* État initial */
+  backface-visibility: hidden;  
+  transform-origin: center center;
+  
+  /* ✅ OPTIMISÉ : Animation scale + opacity uniquement */
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
   background: var(--bg-primary);
   border-radius: var(--border-radius-lg);
-  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  will-change: transform, width, height;
-  transform-style: flat;
-  contain: layout style paint;
-  backface-visibility: hidden;
-  filter: none !important;
-  backdrop-filter: none !important;
-  transition: none !important;
+  
+  /* ✅ AJOUTÉ : État initial animation */
+  opacity: 0;
+}
+
+/* ✅ NOUVEAU : État final de l'animation */
+.project-card.expanded.animate-in {
+  transform: translateZ(0) scale(1);
+  opacity: 1;
 }
 
 .project-card.expanded .project-content {
@@ -976,7 +1000,8 @@ img, video {
   height: 100%;
   flex-direction: row;
   overflow: hidden;
-  transition: none !important;
+  /* ✅ AJOUTE cette ligne : */
+  transform: translateZ(0);
 }
 
 .project-card.expanded .project-media {
@@ -984,8 +1009,9 @@ img, video {
   height: 100%;
   background: var(--bg-secondary);
   object-fit: cover;
-  transition: none !important;
   border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+  /* ✅ AJOUTE cette ligne : */
+  transform: translateZ(0);
 }
 
 .project-card.expanded .project-info {
@@ -997,8 +1023,9 @@ img, video {
   color: var(--text-primary);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  transition: none !important;
+  justify-content: flex-start; /* ✅ CHANGE de center à flex-start */
+  /* ✅ AJOUTE cette ligne : */
+  transform: translateZ(0);
 }
 
 .project-card.expanded .project-info h3 {
@@ -1180,21 +1207,27 @@ img, video {
   background: rgba(0, 0, 0, 0.8);
   color: white;
   border: none;
-  width: 35px;
-  height: 35px;
+  width: 40px; /* ✅ MODIFIE de 35px à 40px */
+  height: 40px; /* ✅ MODIFIE de 35px à 40px */
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem; /* ✅ MODIFIE de 1.1rem à 1.2rem */
   z-index: calc(var(--z-modal) + 1);
-  transition: var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  /* ✅ AJOUTE ces optimisations : */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .close-btn:hover {
   background: rgba(0, 0, 0, 0.95);
-  transform: scale(1.1);
+  /* ✅ MODIFIE cette ligne : */
+  transform: translateZ(0) scale(1.1);
 }
 
 /* === VIDÉOS ET MÉDIAS === */
@@ -1915,27 +1948,46 @@ body.light-mode {
     padding: var(--spacing-lg);
   }
   
-  /* === PROJECT CARD EXPANDED MOBILE === */
+  /* === PROJECT CARD EXPANDED MOBILE - VERSION CORRIGÉE === */
   .project-card.expanded {
-    width: 98vw !important;
+    /* ✅ Dimensions mobiles optimisées */
+    top: 2.5vh !important;
+    left: 2.5vw !important;
+    width: 95vw !important;
     height: 95vh !important;
-    transition: none !important;
+    
+    /* ✅ Animation state initial - GARDE les optimisations GPU */
+    transform: translateZ(0) scale(0.7) !important;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* ✅ État final animation mobile */
+  .project-card.expanded.animate-in {
+    transform: translateZ(0) scale(1) !important;
+    opacity: 1;
+  }
+
+  /* ✅ Layout mobile en colonne */
   .project-card.expanded .project-content {
     flex-direction: column !important;
+    transform: translateZ(0);
   }
 
   .project-card.expanded .project-media {
     width: 100% !important;
     height: 55% !important;
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-  }
+    transform: translateZ(0);
+  } 
 
   .project-card.expanded .project-info {
     width: 100% !important;
     height: 45% !important;
     padding: var(--spacing-md) !important;
+    transform: translateZ(0);
   }
   
   /* === ACTIONS DE PROJET === */
@@ -1968,6 +2020,7 @@ body.light-mode {
     font-size: 1.2rem;
   }
 }
+
 
 @media (max-width: 480px) {
   /* === TYPOGRAPHIE MOBILE === */
@@ -2600,6 +2653,30 @@ button, input, textarea, select {
 .min-full-height {
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* === OPTIMISATION REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  .project-card.expanded {
+    transition: opacity 0.1s ease-out !important;
+    transform: translateZ(0) scale(1) !important;
+  }
+  
+  .projects-overlay {
+    transition: opacity 0.1s ease-out !important;
+  }
+  
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* === CLASSES UTILITAIRES PERFORMANCE === */
+.gpu-optimized {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 /* === END OF STYLESHEET === */
