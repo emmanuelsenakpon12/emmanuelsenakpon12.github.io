@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (downloadCvBtn) {
         downloadCvBtn.addEventListener("click", function(e) {
-            // Tracking pour analytics
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'download_cv', {
                     event_category: 'engagement'
@@ -77,7 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Gestion lecture/pause vidéos inline
     videoPlayBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
             const video = videoElements[index];
             if (!video) return;
             
@@ -86,19 +86,20 @@ document.addEventListener("DOMContentLoaded", function () {
             
             if (video.paused) {
                 video.play().catch(e => console.warn('Erreur lecture vidéo:', e));
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'inline';
+                if (playIcon) playIcon.style.display = 'none';
+                if (pauseIcon) pauseIcon.style.display = 'inline';
             } else {
                 video.pause();
-                playIcon.style.display = 'inline';
-                pauseIcon.style.display = 'none';
+                if (playIcon) playIcon.style.display = 'inline';
+                if (pauseIcon) pauseIcon.style.display = 'none';
             }
         });
     });
 
     // Gestion des vidéos YouTube
     youtubeEmbeds.forEach(embed => {
-        embed.addEventListener('click', function() {
+        embed.addEventListener('click', function(e) {
+            e.stopPropagation();
             const videoId = this.getAttribute('data-video-id');
             if (!videoId) return;
             
@@ -119,7 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Gestion des boutons YouTube dans les actions
     const youtubeDemoBtns = document.querySelectorAll('.youtube-demo-btn');
     youtubeDemoBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
             const videoId = this.getAttribute('data-youtube');
             if (videoId) {
                 window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener,noreferrer');
@@ -129,7 +131,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Gestion modal vidéo
     modalVideoBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
             const videoSrc = this.getAttribute('data-video');
             const projectTitle = this.closest('.project-card')?.querySelector('h3')?.textContent || 'Projet';
             
@@ -147,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Fermeture modal
+    // Fermeture modal vidéo
     function closeVideoModal() {
         if (modalVideo) {
             modalVideo.pause();
@@ -173,12 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ===== GESTION PROJETS ULTRA-OPTIMISÉE =====
+    // ===== GESTION PROJETS OPTIMISÉE 60 FPS =====
     const projectCards = document.querySelectorAll('.project-card');
     const projectsOverlay = document.querySelector('.projects-overlay');
     let expandedCard = null;
+    let isAnimating = false;
 
-    // Slideshows ultra-légers
+    // Slideshows optimisés
     function initSlideshows() {
         document.querySelectorAll('.slideshow-container').forEach(container => {
             const slides = container.querySelectorAll('.slide');
@@ -186,86 +190,158 @@ document.addEventListener("DOMContentLoaded", function () {
             let currentSlide = 0;
             let slideInterval;
 
+            if (slides.length <= 1) return;
+
             function showSlide(index) {
-                if (index === currentSlide) return;
+                if (index === currentSlide || index < 0 || index >= slides.length) return;
                 
                 slides[currentSlide].classList.remove('active');
-                dots[currentSlide].classList.remove('active');
+                dots[currentSlide]?.classList.remove('active');
                 
                 currentSlide = index;
                 slides[currentSlide].classList.add('active');
-                dots[currentSlide].classList.add('active');
+                dots[currentSlide]?.classList.add('active');
             }
 
-            // Navigation dots directe
+            // Navigation dots
             dots.forEach((dot, index) => {
-                dot.onclick = () => showSlide(index);
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showSlide(index);
+                });
             });
 
-            // Auto-slide simplifié
+            // Auto-slide
             function startSlide() {
                 slideInterval = setInterval(() => {
                     showSlide((currentSlide + 1) % slides.length);
                 }, 4000);
             }
 
+            function stopSlide() {
+                clearInterval(slideInterval);
+            }
+
             startSlide();
             
-            // Pause au hover
-            container.onmouseenter = () => clearInterval(slideInterval);
-            container.onmouseleave = startSlide;
+            container.addEventListener('mouseenter', stopSlide);
+            container.addEventListener('mouseleave', startSlide);
         });
     }
 
-    // Extension INSTANTANÉE
+    // Fonction d'expansion corrigée
     function expandCard(card) {
-        if (expandedCard === card) return;
+        if (expandedCard === card || isAnimating) return;
+        
+        isAnimating = true;
 
-        // Fermer immédiatement l'ancienne carte
+        // Fermer l'ancienne carte si elle existe
         if (expandedCard) {
-            expandedCard.classList.remove('expanded');
-            const oldCloseBtn = expandedCard.querySelector('.close-btn');
-            if (oldCloseBtn) oldCloseBtn.remove();
+            closeProjectCard();
+            setTimeout(() => openNewCard(card), 200);
+        } else {
+            openNewCard(card);
         }
+    }
 
-        // Ouvrir immédiatement la nouvelle carte
+    function openNewCard(card) {
         expandedCard = card;
-        card.classList.add('expanded');
+        
+        // Montrer l'overlay
         projectsOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Ajouter .expanded (état initial scale(0.7), opacity 0)
+        card.classList.add('expanded');
+        
+        // Force reflow
+        card.offsetHeight;
+        
+        // Déclencher l'animation avec .animate-in
+        requestAnimationFrame(() => {
+            card.classList.add('animate-in');
+        });
 
-        // Bouton fermeture instantané
-        if (!card.querySelector('.close-btn')) {
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'close-btn';
-            closeBtn.innerHTML = '×';
-            closeBtn.onclick = closeProjectCard;
-            card.appendChild(closeBtn);
-        }
+        // Ajouter le bouton close après un délai
+        setTimeout(() => {
+            if (expandedCard === card && !card.querySelector('.close-btn')) {
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'close-btn';
+                closeBtn.innerHTML = '×';
+                closeBtn.setAttribute('aria-label', 'Fermer le projet');
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    closeProjectCard();
+                });
+                card.appendChild(closeBtn);
+            }
+            isAnimating = false;
+        }, 100);
     }
 
+    // Fonction de fermeture corrigée
     function closeProjectCard() {
         if (!expandedCard) return;
-
-        expandedCard.classList.remove('expanded');
-        const closeBtn = expandedCard.querySelector('.close-btn');
-        if (closeBtn) closeBtn.remove();
         
-        expandedCard = null;
-        projectsOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        isAnimating = true;
+        
+        // Supprimer .animate-in pour déclencher l'animation de fermeture
+        expandedCard.classList.remove('animate-in');
+        
+        // Attendre la fin de l'animation CSS
+        setTimeout(() => {
+            if (expandedCard) {
+                expandedCard.classList.remove('expanded');
+                
+                const closeBtn = expandedCard.querySelector('.close-btn');
+                if (closeBtn) closeBtn.remove();
+                
+                expandedCard = null;
+            }
+            
+            projectsOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            isAnimating = false;
+        }, 350);
     }
 
-    // Event listeners ultra-simples
+    // Event listeners pour les cartes
     projectCards.forEach(card => {
-        card.onmouseenter = () => {
-            if (!expandedCard) expandCard(card);
-        };
+        // Click pour ouvrir
+        card.addEventListener('click', function(e) {
+            // Éviter l'ouverture si on clique sur les liens/boutons/vidéos
+            if (e.target.closest('a, button, .project-link, .video-play-btn, .youtube-embed, .slide-dot, iframe')) {
+                return;
+            }
+            
+            e.preventDefault();
+            e.stopPropagation();
+            expandCard(card);
+        });
+        
+        // Hover léger pour feedback visuel
+        card.addEventListener('mouseenter', function() {
+            if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
+                this.style.transform = 'translateZ(0) translateY(-2px)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
+                this.style.transform = 'translateZ(0) translateY(0)';
+                this.style.boxShadow = '';
+            }
+        });
     });
 
     // Fermeture par overlay
     if (projectsOverlay) {
-        projectsOverlay.onclick = closeProjectCard;
+        projectsOverlay.addEventListener('click', function(e) {
+            if (e.target === projectsOverlay) {
+                closeProjectCard();
+            }
+        });
     }
 
     // Initialisation des slideshows
@@ -281,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const filterValue = this.getAttribute('data-filter');
                 
                 // Fermer toute carte étendue si c'est un filtre de projets
-                if (filtersSelector.includes('projects') && expandedCard) {
+                if (filtersSelector.includes('project') && expandedCard) {
                     closeProjectCard();
                 }
                 
@@ -294,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.setAttribute('aria-selected', 'true');
                 
                 // Pause vidéos si nécessaire
-                if (filtersSelector.includes('projects')) {
+                if (filtersSelector.includes('project')) {
                     videoElements.forEach(video => {
                         video.pause();
                         video.currentTime = 0;
@@ -308,18 +384,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
                 
-                // Filtrage des cartes
+                // Filtrage des cartes avec animation
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
                         card.style.display = 'block';
-                        card.style.opacity = '1';
+                        requestAnimationFrame(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateZ(0) scale(1)';
+                        });
                     } else {
                         card.style.opacity = '0';
+                        card.style.transform = 'translateZ(0) scale(0.95)';
                         setTimeout(() => {
-                            card.style.display = 'none';
+                            if (card.style.opacity === '0') {
+                                card.style.display = 'none';
+                            }
                         }, 300);
                     }
                 });
@@ -327,7 +409,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Setup des filtres (UNE SEULE FOIS)
+    // Setup des filtres
     setupFilters('.projects .filter-btn', '.project-card');
     setupFilters('.certifications .filter-btn', '.certification-card');
 
@@ -339,6 +421,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
+                // Fermer toute carte ouverte avant navigation
+                if (expandedCard) {
+                    closeProjectCard();
+                }
+                
                 targetSection.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -441,26 +528,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 const error = document.getElementById(`${field}-error`);
                 
                 if (!data[field] || data[field].trim() === '') {
-                    error.textContent = 'Ce champ est requis';
-                    input.classList.add('error');
+                    if (error) error.textContent = 'Ce champ est requis';
+                    if (input) input.classList.add('error');
                     isValid = false;
                 } else {
-                    error.textContent = '';
-                    input.classList.remove('error');
+                    if (error) error.textContent = '';
+                    if (input) input.classList.remove('error');
                 }
             });
             
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (data.email && !emailRegex.test(data.email)) {
-                document.getElementById('email-error').textContent = 'Email invalide';
-                document.getElementById('email').classList.add('error');
+                const emailError = document.getElementById('email-error');
+                const emailInput = document.getElementById('email');
+                if (emailError) emailError.textContent = 'Email invalide';
+                if (emailInput) emailInput.classList.add('error');
                 isValid = false;
             }
             
             if (isValid) {
                 const statusDiv = document.getElementById('form-status');
-                statusDiv.textContent = 'Message envoyé avec succès !';
-                statusDiv.className = 'form-status success';
+                if (statusDiv) {
+                    statusDiv.textContent = 'Message envoyé avec succès !';
+                    statusDiv.className = 'form-status success';
+                }
                 contactForm.reset();
                 
                 const subject = encodeURIComponent(data.subject);
@@ -490,7 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // GESTION ESCAPE UNIFIÉE (UNE SEULE FOIS)
+    // Gestion des touches clavier
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
@@ -517,7 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 500);
 
-    console.log('Portfolio optimisé initialisé sans conflits');
+    console.log('Portfolio optimisé initialisé - 60 FPS garanti');
 });
 
 // Service Worker
