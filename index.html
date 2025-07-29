@@ -459,21 +459,21 @@
                 </div>
             </section>
 
-            <!-- Projects Section -->
+                    <!-- Projects Section -->
             <section id="projets" class="section projects">
                 <h2>Projets</h2>
                 <div class="projects-content">
                     <div class="project-filters" role="tablist">
                         <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
-                        <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">IA</button>
-                        <button class="filter-btn" data-filter="bi" role="tab" aria-selected="false">BI</button>
+                        <button class="filter-btn" data-filter="ia" role="tab" aria-selected="false">IA</button>
+                        <button class="filter-btn" data-filter="data-bi" role="tab" aria-selected="false">Data & BI</button>
                         <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
-                        <button class="filter-btn" data-filter="erp" role="tab" aria-selected="false">ERP</button>
+                        <button class="filter-btn" data-filter="systemes" role="tab" aria-selected="false">Programmation Systèmes</button>
                     </div>
                     
                     <div class="projects-grid" role="tabpanel">
-                        <!-- Projet 1: Reporting BI Avancé - Slideshow seulement -->
-                        <article class="project-card" data-category="bi">
+                        <!-- Projet 1: Reporting BI Avancé - Data & BI -->
+                        <article class="project-card" data-category="data-bi">
                             <div class="project-media">
                                 <div class="slideshow-container">
                                     <img src="./assets/images/bi-dashboard.jpg" 
@@ -510,7 +510,45 @@
                             </div>
                         </article>
 
-                        <!-- Projet 2: MACSI - Application de gestion des soutenances - Slideshow seulement -->
+                        <!-- Projet 2: SI Logistique Dockerisé - Data & BI + Web -->
+                        <article class="project-card" data-category="data-bi web">
+                            <div class="project-media">
+                                <div class="slideshow-container">
+                                    <img src="./assets/images/logistique-merise.jpg" 
+                                        alt="Modélisation MERISE du système logistique" 
+                                        class="slide active" loading="lazy">
+                                    <img src="./assets/images/logistique-schema.jpg" 
+                                        alt="Schéma relationnel de la base de données" 
+                                        class="slide" loading="lazy">
+                                    <img src="./assets/images/logistique-sql.jpg" 
+                                        alt="Requêtes SQL avancées et optimisations" 
+                                        class="slide" loading="lazy">
+                                    <img src="./assets/images/logistique-docker.jpg" 
+                                        alt="Architecture dockerisée et déploiement" 
+                                        class="slide" loading="lazy">
+                                    
+                                    <div class="slide-dots">
+                                        <button class="slide-dot active" aria-label="Image 1"></button>
+                                        <button class="slide-dot" aria-label="Image 2"></button>
+                                        <button class="slide-dot" aria-label="Image 3"></button>
+                                        <button class="slide-dot" aria-label="Image 4"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-info">
+                                <h3>SI Logistique Dockerisé</h3>
+                                <div class="project-tags">
+                                    <span class="tag">MERISE</span>
+                                    <span class="tag">PostgreSQL</span>
+                                    <span class="tag">Docker</span>
+                                    <span class="tag">SQL Avancé</span>
+                                </div>
+                                <p class="project-description">Système d'information logistique complet avec modélisation MERISE et réalisation du schéma relationnel (entrepôts, livraisons, stocks). Requêtes SQL avancées : jointures complexes, agrégations, sous-requêtes, vues matérialisées. Déploiement dockerisé de la base et automatisation du chargement de données via des scripts SQL dynamiques.</p>
+                            </div>
+                        </article>
+
+                        <!-- Projet 3: MACSI - Application de gestion des soutenances - Web -->
                         <article class="project-card" data-category="web">
                             <div class="project-media">
                                 <div class="slideshow-container">
@@ -548,8 +586,8 @@
                             </div>
                         </article>
 
-                        <!-- Projet 3: ISOLCA - Plateforme IA - Vidéo YouTube avec un bouton -->
-                        <article class="project-card" data-category="ai web">
+                        <!-- Projet 4: ISOLCA - Plateforme IA - IA -->
+                        <article class="project-card" data-category="ia">
                             <div class="project-media">
                                 <div class="youtube-embed" data-video-id="VOTRE_YOUTUBE_ID_ISOLCA">
                                     <img src="https://img.youtube.com/vi/VOTRE_YOUTUBE_ID_ISOLCA/maxresdefault.jpg" 
@@ -583,8 +621,8 @@
                             </div>
                         </article>
 
-                        <!-- Projet 4: Détection de caries par IA - Slideshow seulement -->
-                        <article class="project-card" data-category="ai">
+                        <!-- Projet 5: Détection de caries par IA - IA -->
+                        <article class="project-card" data-category="ia">
                             <div class="project-media">
                                 <div class="slideshow-container">
                                     <img src="./assets/images/caries-detection.jpg" 
@@ -621,59 +659,70 @@
                             </div>
                         </article>
 
-                        <!-- Projet 5: SI Logistique Intégré - Vidéo YouTube seulement -->
-                        <article class="project-card" data-category="erp">
+                        <!-- Projet 6: Protocole TFTP Multithreadé - Programmation Systèmes -->
+                        <article class="project-card" data-category="systemes">
                             <div class="project-media">
-                                <div class="youtube-embed" data-video-id="VOTRE_YOUTUBE_ID_LOGISTIQUE">
-                                    <img src="https://img.youtube.com/vi/VOTRE_YOUTUBE_ID_LOGISTIQUE/maxresdefault.jpg" 
-                                        alt="Présentation SI Logistique sur YouTube" 
-                                        class="youtube-thumbnail">
-                                    <button class="youtube-play-btn" aria-label="Lire la présentation YouTube">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </button>
+                                <div class="slideshow-container">
+                                    <img src="./assets/images/tftp-architecture.jpg" 
+                                        alt="Architecture client-serveur TFTP" 
+                                        class="slide active" loading="lazy">
+                                    <img src="./assets/images/tftp-structures.jpg" 
+                                        alt="Définition des structures de données" 
+                                        class="slide" loading="lazy">
+                                    <img src="./assets/images/tftp-threads.jpg" 
+                                        alt="Gestion multithreadée des connexions" 
+                                        class="slide" loading="lazy">
+                                    <img src="./assets/images/tftp-protocol.jpg" 
+                                        alt="Implémentation du protocole RFC 7440" 
+                                        class="slide" loading="lazy">
+                                    
+                                    <div class="slide-dots">
+                                        <button class="slide-dot active" aria-label="Image 1"></button>
+                                        <button class="slide-dot" aria-label="Image 2"></button>
+                                        <button class="slide-dot" aria-label="Image 3"></button>
+                                        <button class="slide-dot" aria-label="Image 4"></button>
+                                    </div>
                                 </div>
                             </div>
                             
                             <div class="project-info">
-                                <h3>SI Logistique Intégré</h3>
+                                <h3>Protocole TFTP Multithreadé</h3>
                                 <div class="project-tags">
-                                    <span class="tag">SAP WMS</span>
-                                    <span class="tag">RFID</span>
-                                    <span class="tag">IoT</span>
-                                    <span class="tag">Analytics</span>
+                                    <span class="tag">C</span>
+                                    <span class="tag">Bash</span>
+                                    <span class="tag">RFC 7440</span>
+                                    <span class="tag">Multithreading</span>
                                 </div>
-                                <p class="project-description">Système d'information logistique complet avec gestion d'entrepôt, traçabilité RFID, optimisation des flux et tableaux de bord de performance en temps réel. Réduction de 30% des coûts opérationnels et amélioration de 25% de la productivité.</p>
+                                <p class="project-description">Développement d'un protocole de communication multithreadé client-serveur TFTP suivant le RFC 7440 en C et Bash. Implémentation complète avec définition des structures de données, gestion des threads, synchronisation et gestion d'erreurs pour transferts de fichiers fiables et performants.</p>
                             </div>
                         </article>
                     </div>
                 </div>
             </section>
 
-            <!-- Éléments modaux créés par JavaScript -->
-            <!-- Le backdrop et container seront créés automatiquement par le JS -->
+        <!-- Éléments modaux créés par JavaScript -->
+        <!-- Le backdrop et container seront créés automatiquement par le JS -->
 
-            <!-- Modal séparée pour les vidéos (système existant) -->
-            <div id="video-modal" class="video-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-                <div class="video-modal-container">
-                    <div class="video-modal-content">
-                        <div class="video-modal-header">
-                            <h3 id="modal-title">Démo du Projet</h3>
-                            <button id="modal-close" class="video-modal-close-btn" aria-label="Fermer la modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="video-modal-body">
-                            <video id="modal-video" controls preload="metadata">
-                                <source id="modal-video-source" src="" type="video/mp4">
-                                <track kind="captions" src="" srclang="fr" label="Français">
-                                Votre navigateur ne supporte pas la lecture de vidéos.
-                            </video>
-                        </div>
+        <!-- Modal séparée pour les vidéos (système existant) -->
+        <div id="video-modal" class="video-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="video-modal-container">
+                <div class="video-modal-content">
+                    <div class="video-modal-header">
+                        <h3 id="modal-title">Démo du Projet</h3>
+                        <button id="modal-close" class="video-modal-close-btn" aria-label="Fermer la modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="video-modal-body">
+                        <video id="modal-video" controls preload="metadata">
+                            <source id="modal-video-source" src="" type="video/mp4">
+                            <track kind="captions" src="" srclang="fr" label="Français">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
                     </div>
                 </div>
             </div>
+        </div>
          
         <!-- Overlay pour les cartes étendues -->
         <div class="projects-overlay"></div>
