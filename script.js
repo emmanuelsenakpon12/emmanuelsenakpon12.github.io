@@ -176,16 +176,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ===== 🚀 GESTION PROJETS SYNCHRONISÉE AVEC LE CSS =====
+    // ===== 🚀 GESTION PROJETS ULTRA SIMPLIFIÉE - 100% COMPATIBLE CSS =====
     const projectCards = document.querySelectorAll('.project-card');
     const projectsOverlay = document.querySelector('.projects-overlay');
     let expandedCard = null;
-    let isAnimating = false;
 
-    // ✅ TIMING SYNCHRONISÉ AVEC LE CSS (0.25s)
-    const ANIMATION_DURATION = 250; // Correspond au CSS transition: 0.25s
-
-    // Slideshows optimisés (inchangé)
+    // Slideshows optimisés
     function initSlideshows() {
         document.querySelectorAll('.slideshow-container').forEach(container => {
             const slides = container.querySelectorAll('.slide');
@@ -206,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 dots[currentSlide]?.classList.add('active');
             }
 
+            // Navigation dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -213,6 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
+            // Auto-slide
             function startSlide() {
                 slideInterval = setInterval(() => {
                     showSlide((currentSlide + 1) % slides.length);
@@ -229,124 +227,96 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ✅ FONCTION D'EXPANSION CORRIGÉE - SYNCHRONISÉE CSS
-    function expandCard(card) {
-        if (expandedCard === card || isAnimating) return;
+    // ✅ FONCTION D'OUVERTURE SIMPLE - COMPATIBLE CSS
+    function openProjectCard(card) {
+        if (expandedCard) return; // Une seule carte à la fois
         
-        isAnimating = true;
-
-        // Fermer l'ancienne carte si elle existe
-        if (expandedCard) {
-            closeProjectCard();
-            // ✅ DÉLAI RÉDUIT pour correspondre au CSS
-            setTimeout(() => openNewCard(card), ANIMATION_DURATION + 50);
-        } else {
-            openNewCard(card);
-        }
-    }
-
-    function openNewCard(card) {
         expandedCard = card;
         
-        // 1. Montrer l'overlay IMMÉDIATEMENT
+        // 1. Montrer l'overlay (correspond au CSS .projects-overlay.active)
         projectsOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        // 2. Ajouter .expanded (état initial scale(0.8) selon le CSS)
+        // 2. Étendre la carte IMMÉDIATEMENT (correspond au CSS .project-card.expanded)
         card.classList.add('expanded');
         
-        // 3. ✅ SUPPRIME LES STYLES INLINE CONFLICTUELS
-        card.style.transform = '';
-        card.style.opacity = '';
-        card.style.boxShadow = '';
+        // 3. Créer le bouton fermeture (correspond au CSS .close-btn)
+        const closeButton = document.createElement('button');
+        closeButton.className = 'close-btn';
+        closeButton.innerHTML = '×';
+        closeButton.setAttribute('aria-label', 'Fermer le projet');
+        closeButton.onclick = (e) => {
+            e.stopPropagation();
+            closeProjectCard();
+        };
+        card.appendChild(closeButton);
         
-        // 4. Force reflow pour que le CSS s'applique
-        card.offsetHeight;
-        
-        // 5. ✅ DÉCLENCHER L'ANIMATION IMMÉDIATEMENT
-        card.classList.add('animate-in');
-
-        // 6. ✅ BOUTON CLOSE APRÈS L'ANIMATION CSS
-        setTimeout(() => {
-            if (expandedCard === card && !card.querySelector('.close-btn')) {
-                const closeBtn = document.createElement('button');
-                closeBtn.className = 'close-btn';
-                closeBtn.innerHTML = '×';
-                closeBtn.setAttribute('aria-label', 'Fermer le projet');
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    closeProjectCard();
-                });
-                card.appendChild(closeBtn);
-            }
-            isAnimating = false;
-        }, ANIMATION_DURATION);
+        console.log('Projet ouvert:', card.querySelector('h3')?.textContent || 'Sans titre');
     }
 
-    // ✅ FONCTION DE FERMETURE SYNCHRONISÉE CSS
+    // ✅ FONCTION DE FERMETURE SIMPLE - COMPATIBLE CSS
     function closeProjectCard() {
         if (!expandedCard) return;
         
-        isAnimating = true;
+        console.log('Fermeture projet:', expandedCard.querySelector('h3')?.textContent || 'Sans titre');
         
-        // 1. Supprimer .animate-in pour déclencher scale(0.8)
-        expandedCard.classList.remove('animate-in');
+        // 1. Retirer la classe expanded (CSS retourne automatiquement à l'état normal)
+        expandedCard.classList.remove('expanded');
         
-        // 2. ✅ ATTENDRE LA DURÉE CSS EXACTE
-        setTimeout(() => {
-            if (expandedCard) {
-                // 3. Nettoyer toutes les classes et styles
-                expandedCard.classList.remove('expanded');
-                
-                // 4. ✅ SUPPRIMER TOUS LES STYLES INLINE
-                expandedCard.style.transform = '';
-                expandedCard.style.opacity = '';
-                expandedCard.style.boxShadow = '';
-                
-                const closeBtn = expandedCard.querySelector('.close-btn');
-                if (closeBtn) closeBtn.remove();
-                
-                expandedCard = null;
-            }
-            
-            projectsOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-            isAnimating = false;
-        }, ANIMATION_DURATION);
+        // 2. Supprimer le bouton close
+        const closeButton = expandedCard.querySelector('.close-btn');
+        if (closeButton) closeButton.remove();
+        
+        // 3. Cacher l'overlay (CSS .projects-overlay retire .active)
+        projectsOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // 4. Reset variable
+        expandedCard = null;
     }
 
-    // ✅ EVENT LISTENERS CORRIGÉS
+    // ✅ EVENT LISTENERS OPTIMISÉS
     projectCards.forEach(card => {
-        // Click pour ouvrir
+        // Click pour ouvrir/fermer
         card.addEventListener('click', function(e) {
-            if (e.target.closest('a, button, .project-link, .video-play-btn, .youtube-embed, .slide-dot, iframe')) {
+            // Éviter les clics sur les éléments internes (liens, boutons, vidéos)
+            if (e.target.closest('a, button:not(.close-btn), .project-link, .video-play-btn, .youtube-embed, .slide-dot, iframe, .youtube-demo-btn, .modal-video-btn')) {
                 return;
             }
             
             e.preventDefault();
             e.stopPropagation();
-            expandCard(card);
+            
+            // Si cette carte est déjà ouverte, la fermer
+            if (this.classList.contains('expanded')) {
+                closeProjectCard();
+            } else {
+                // Sinon l'ouvrir (ferme automatiquement l'autre s'il y en a une)
+                if (expandedCard && expandedCard !== this) {
+                    closeProjectCard();
+                }
+                openProjectCard(this);
+            }
         });
         
-        // ✅ HOVER OPTIMISÉ - N'INTERFÈRE PLUS AVEC LE CSS
+        // ✅ Hover effect léger (seulement si pas expanded)
         card.addEventListener('mouseenter', function() {
-            // Seulement si la carte n'est pas étendue et pas en animation
-            if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
-                // ✅ UTILISE LES CLASSES CSS AU LIEU DE STYLES INLINE
-                this.classList.add('hover-lift');
+            if (!this.classList.contains('expanded')) {
+                // Le CSS gère déjà le hover avec .project-card:not(.expanded):hover
             }
         });
         
         card.addEventListener('mouseleave', function() {
-            if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
-                this.classList.remove('hover-lift');
+            if (!this.classList.contains('expanded')) {
+                // Le CSS gère automatiquement la sortie du hover
             }
         });
     });
 
-    // Fermeture par overlay (inchangé)
+    // ✅ Fermeture par overlay (clic sur le fond noir)
     if (projectsOverlay) {
         projectsOverlay.addEventListener('click', function(e) {
+            // Seulement si on clique directement sur l'overlay, pas sur la carte
             if (e.target === projectsOverlay) {
                 closeProjectCard();
             }
@@ -356,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialisation des slideshows
     initSlideshows();
 
-    // ===== FILTRES UNIFIÉS (inchangé) =====
+    // ===== FILTRES UNIFIÉS =====
     function setupFilters(filtersSelector, cardsSelector) {
         const filters = document.querySelectorAll(filtersSelector);
         const cards = document.querySelectorAll(cardsSelector);
@@ -365,10 +335,12 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
+                // Fermer toute carte étendue si c'est un filtre de projets
                 if (filtersSelector.includes('project') && expandedCard) {
                     closeProjectCard();
                 }
                 
+                // Mise à jour des boutons actifs
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -376,6 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
+                // Pause vidéos si nécessaire
                 if (filtersSelector.includes('project')) {
                     videoElements.forEach(video => {
                         video.pause();
@@ -390,6 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
                 
+                // Filtrage des cartes avec animation douce
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
@@ -398,8 +372,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         card.style.display = 'block';
                         requestAnimationFrame(() => {
                             card.style.opacity = '1';
-                            // ✅ SUPPRIME transform qui peut confliter
-                            card.style.transform = '';
                         });
                     } else {
                         card.style.opacity = '0';
@@ -414,6 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Setup des filtres
     setupFilters('.projects .filter-btn', '.project-card');
     setupFilters('.certifications .filter-btn', '.certification-card');
 
@@ -425,6 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
+                // Fermer toute carte ouverte avant navigation
                 if (expandedCard) {
                     closeProjectCard();
                 }
@@ -434,6 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     block: 'start'
                 });
                 
+                // Fermer le menu mobile si ouvert
                 if (nav?.classList.contains('mobile-open')) {
                     nav.classList.remove('mobile-open');
                     menuToggle?.classList.remove('active');
@@ -583,20 +558,51 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ✅ GESTION ESCAPE SYNCHRONISÉE
+    // ✅ GESTION TOUCHES CLAVIER OPTIMISÉE
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
             
+            // Priorité 1 : projets étendus
             if (expandedCard) {
                 closeProjectCard();
             } 
+            // Priorité 2 : modal vidéo
             else if (videoModal && videoModal.style.display === 'flex') {
                 closeVideoModal();
             } 
+            // Priorité 3 : popup construction
             else if (popup && popup.style.display !== "none") {
                 closePopup();
             }
+        }
+        
+        // ✅ Navigation clavier pour accessibilité
+        if (expandedCard && (e.key === 'Tab' || e.key === 'Enter')) {
+            // Laisser la navigation clavier normale fonctionner
+        }
+    });
+
+    // ✅ GESTION RESIZE WINDOW (pour responsive)
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Si une carte est ouverte, vérifier qu'elle reste bien positionnée
+            if (expandedCard) {
+                // Le CSS gère automatiquement le responsive
+                console.log('Resize détecté avec carte ouverte');
+            }
+        }, 250);
+    });
+
+    // ✅ GESTION ERREURS JAVASCRIPT
+    window.addEventListener('error', function(e) {
+        console.warn('Erreur JS détectée:', e.message);
+        // En cas d'erreur, s'assurer que l'état est propre
+        if (expandedCard) {
+            document.body.style.overflow = '';
+            projectsOverlay?.classList.remove('active');
         }
     });
 
@@ -607,14 +613,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 500);
 
-    console.log('Portfolio optimisé initialisé - JS/CSS synchronisés');
+    // ✅ LOG FINAL DE CONFIRMATION
+    console.log('🚀 Portfolio simplifié initialisé avec succès');
+    console.log('✅ Project cards:', projectCards.length, 'détectées');
+    console.log('✅ Overlay:', projectsOverlay ? 'OK' : 'MANQUANT');
+    console.log('✅ Mode simplifié activé - Aucun blur, performance maximale');
 });
 
 // Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('Service Worker enregistré'))
-            .catch(() => console.log('Service Worker non supporté'));
+            .then(() => console.log('✅ Service Worker enregistré'))
+            .catch(() => console.log('⚠️ Service Worker non supporté'));
     });
 }
+
+// ✅ FONCTION DE DEBUG (à supprimer en production)
+window.debugProjectCards = function() {
+    console.log('=== DEBUG PROJECT CARDS ===');
+    console.log('Cartes détectées:', document.querySelectorAll('.project-card').length);
+    console.log('Overlay:', document.querySelector('.projects-overlay') ? 'OK' : 'MANQUANT');
+    console.log('Carte étendue actuelle:', 
+        document.querySelector('.project-card.expanded')?.querySelector('h3')?.textContent || 'Aucune'
+    );
+    console.log('Body overflow:', document.body.style.overflow || 'auto');
+    console.log('============================');
+};
