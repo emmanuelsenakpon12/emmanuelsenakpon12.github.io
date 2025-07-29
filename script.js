@@ -176,13 +176,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ===== GESTION PROJETS OPTIMISÉE 60 FPS =====
+    // ===== 🚀 GESTION PROJETS SYNCHRONISÉE AVEC LE CSS =====
     const projectCards = document.querySelectorAll('.project-card');
     const projectsOverlay = document.querySelector('.projects-overlay');
     let expandedCard = null;
     let isAnimating = false;
 
-    // Slideshows optimisés
+    // ✅ TIMING SYNCHRONISÉ AVEC LE CSS (0.25s)
+    const ANIMATION_DURATION = 250; // Correspond au CSS transition: 0.25s
+
+    // Slideshows optimisés (inchangé)
     function initSlideshows() {
         document.querySelectorAll('.slideshow-container').forEach(container => {
             const slides = container.querySelectorAll('.slide');
@@ -203,7 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 dots[currentSlide]?.classList.add('active');
             }
 
-            // Navigation dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -211,7 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // Auto-slide
             function startSlide() {
                 slideInterval = setInterval(() => {
                     showSlide((currentSlide + 1) % slides.length);
@@ -223,13 +224,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             startSlide();
-            
             container.addEventListener('mouseenter', stopSlide);
             container.addEventListener('mouseleave', startSlide);
         });
     }
 
-    // Fonction d'expansion corrigée
+    // ✅ FONCTION D'EXPANSION CORRIGÉE - SYNCHRONISÉE CSS
     function expandCard(card) {
         if (expandedCard === card || isAnimating) return;
         
@@ -238,7 +238,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Fermer l'ancienne carte si elle existe
         if (expandedCard) {
             closeProjectCard();
-            setTimeout(() => openNewCard(card), 200);
+            // ✅ DÉLAI RÉDUIT pour correspondre au CSS
+            setTimeout(() => openNewCard(card), ANIMATION_DURATION + 50);
         } else {
             openNewCard(card);
         }
@@ -247,22 +248,25 @@ document.addEventListener("DOMContentLoaded", function () {
     function openNewCard(card) {
         expandedCard = card;
         
-        // Montrer l'overlay
+        // 1. Montrer l'overlay IMMÉDIATEMENT
         projectsOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        // Ajouter .expanded (état initial scale(0.7), opacity 0)
+        // 2. Ajouter .expanded (état initial scale(0.8) selon le CSS)
         card.classList.add('expanded');
         
-        // Force reflow
+        // 3. ✅ SUPPRIME LES STYLES INLINE CONFLICTUELS
+        card.style.transform = '';
+        card.style.opacity = '';
+        card.style.boxShadow = '';
+        
+        // 4. Force reflow pour que le CSS s'applique
         card.offsetHeight;
         
-        // Déclencher l'animation avec .animate-in
-        requestAnimationFrame(() => {
-            card.classList.add('animate-in');
-        });
+        // 5. ✅ DÉCLENCHER L'ANIMATION IMMÉDIATEMENT
+        card.classList.add('animate-in');
 
-        // Ajouter le bouton close après un délai
+        // 6. ✅ BOUTON CLOSE APRÈS L'ANIMATION CSS
         setTimeout(() => {
             if (expandedCard === card && !card.querySelector('.close-btn')) {
                 const closeBtn = document.createElement('button');
@@ -276,22 +280,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 card.appendChild(closeBtn);
             }
             isAnimating = false;
-        }, 100);
+        }, ANIMATION_DURATION);
     }
 
-    // Fonction de fermeture corrigée
+    // ✅ FONCTION DE FERMETURE SYNCHRONISÉE CSS
     function closeProjectCard() {
         if (!expandedCard) return;
         
         isAnimating = true;
         
-        // Supprimer .animate-in pour déclencher l'animation de fermeture
+        // 1. Supprimer .animate-in pour déclencher scale(0.8)
         expandedCard.classList.remove('animate-in');
         
-        // Attendre la fin de l'animation CSS
+        // 2. ✅ ATTENDRE LA DURÉE CSS EXACTE
         setTimeout(() => {
             if (expandedCard) {
+                // 3. Nettoyer toutes les classes et styles
                 expandedCard.classList.remove('expanded');
+                
+                // 4. ✅ SUPPRIMER TOUS LES STYLES INLINE
+                expandedCard.style.transform = '';
+                expandedCard.style.opacity = '';
+                expandedCard.style.boxShadow = '';
                 
                 const closeBtn = expandedCard.querySelector('.close-btn');
                 if (closeBtn) closeBtn.remove();
@@ -302,14 +312,13 @@ document.addEventListener("DOMContentLoaded", function () {
             projectsOverlay.classList.remove('active');
             document.body.style.overflow = '';
             isAnimating = false;
-        }, 350);
+        }, ANIMATION_DURATION);
     }
 
-    // Event listeners pour les cartes
+    // ✅ EVENT LISTENERS CORRIGÉS
     projectCards.forEach(card => {
         // Click pour ouvrir
         card.addEventListener('click', function(e) {
-            // Éviter l'ouverture si on clique sur les liens/boutons/vidéos
             if (e.target.closest('a, button, .project-link, .video-play-btn, .youtube-embed, .slide-dot, iframe')) {
                 return;
             }
@@ -319,23 +328,23 @@ document.addEventListener("DOMContentLoaded", function () {
             expandCard(card);
         });
         
-        // Hover léger pour feedback visuel
+        // ✅ HOVER OPTIMISÉ - N'INTERFÈRE PLUS AVEC LE CSS
         card.addEventListener('mouseenter', function() {
+            // Seulement si la carte n'est pas étendue et pas en animation
             if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
-                this.style.transform = 'translateZ(0) translateY(-2px)';
-                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                // ✅ UTILISE LES CLASSES CSS AU LIEU DE STYLES INLINE
+                this.classList.add('hover-lift');
             }
         });
         
         card.addEventListener('mouseleave', function() {
             if (!expandedCard && !isAnimating && !this.classList.contains('expanded')) {
-                this.style.transform = 'translateZ(0) translateY(0)';
-                this.style.boxShadow = '';
+                this.classList.remove('hover-lift');
             }
         });
     });
 
-    // Fermeture par overlay
+    // Fermeture par overlay (inchangé)
     if (projectsOverlay) {
         projectsOverlay.addEventListener('click', function(e) {
             if (e.target === projectsOverlay) {
@@ -347,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialisation des slideshows
     initSlideshows();
 
-    // ===== FILTRES UNIFIÉS =====
+    // ===== FILTRES UNIFIÉS (inchangé) =====
     function setupFilters(filtersSelector, cardsSelector) {
         const filters = document.querySelectorAll(filtersSelector);
         const cards = document.querySelectorAll(cardsSelector);
@@ -356,12 +365,10 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                // Fermer toute carte étendue si c'est un filtre de projets
                 if (filtersSelector.includes('project') && expandedCard) {
                     closeProjectCard();
                 }
                 
-                // Mise à jour des boutons actifs
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -369,7 +376,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                // Pause vidéos si nécessaire
                 if (filtersSelector.includes('project')) {
                     videoElements.forEach(video => {
                         video.pause();
@@ -384,7 +390,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
                 
-                // Filtrage des cartes avec animation
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
@@ -393,11 +398,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         card.style.display = 'block';
                         requestAnimationFrame(() => {
                             card.style.opacity = '1';
-                            card.style.transform = 'translateZ(0) scale(1)';
+                            // ✅ SUPPRIME transform qui peut confliter
+                            card.style.transform = '';
                         });
                     } else {
                         card.style.opacity = '0';
-                        card.style.transform = 'translateZ(0) scale(0.95)';
                         setTimeout(() => {
                             if (card.style.opacity === '0') {
                                 card.style.display = 'none';
@@ -409,7 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Setup des filtres
     setupFilters('.projects .filter-btn', '.project-card');
     setupFilters('.certifications .filter-btn', '.certification-card');
 
@@ -421,7 +425,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
-                // Fermer toute carte ouverte avant navigation
                 if (expandedCard) {
                     closeProjectCard();
                 }
@@ -431,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     block: 'start'
                 });
                 
-                // Fermer le menu mobile si ouvert
                 if (nav?.classList.contains('mobile-open')) {
                     nav.classList.remove('mobile-open');
                     menuToggle?.classList.remove('active');
@@ -581,20 +583,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Gestion des touches clavier
+    // ✅ GESTION ESCAPE SYNCHRONISÉE
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
             
-            // Priorité : projets étendus
             if (expandedCard) {
                 closeProjectCard();
             } 
-            // Puis modal vidéo
             else if (videoModal && videoModal.style.display === 'flex') {
                 closeVideoModal();
             } 
-            // Enfin popup
             else if (popup && popup.style.display !== "none") {
                 closePopup();
             }
@@ -608,7 +607,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 500);
 
-    console.log('Portfolio optimisé initialisé - 60 FPS garanti');
+    console.log('Portfolio optimisé initialisé - JS/CSS synchronisés');
 });
 
 // Service Worker
