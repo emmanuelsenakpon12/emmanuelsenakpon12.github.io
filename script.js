@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Gestion modal vidéo
+    // Gestion modal vidéo (séparée - utilise .video-modal-overlay du CSS)
     modalVideoBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -176,10 +176,33 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ===== 🚀 GESTION PROJETS ULTRA SIMPLIFIÉE - 100% COMPATIBLE CSS =====
-    const projectCards = document.querySelectorAll('.project-card');
-    const projectsOverlay = document.querySelector('.projects-overlay');
-    let expandedCard = null;
+    // ===== 🚀 NOUVEAU SYSTÈME MODAL RÉVOLUTIONNAIRE - 100% SANS FLOU =====
+    
+    // Variables globales pour le système modal
+    let modalBackdrop = null;
+    let modalContainer = null;
+    let currentModalCard = null;
+    let isModalOpen = false;
+
+    // Fonction pour créer les éléments modaux (correspondant au CSS)
+    function createModalElements() {
+        // Créer le backdrop (fond noir)
+        modalBackdrop = document.createElement('div');
+        modalBackdrop.className = 'modal-backdrop';
+        
+        // Créer le conteneur modal
+        modalContainer = document.createElement('div');
+        modalContainer.className = 'modal-container';
+        
+        // Ajouter au DOM mais cachés initialement
+        document.body.appendChild(modalBackdrop);
+        document.body.appendChild(modalContainer);
+        
+        console.log('✅ Éléments modaux créés');
+    }
+
+    // Initialiser les éléments modaux
+    createModalElements();
 
     // Slideshows optimisés
     function initSlideshows() {
@@ -210,11 +233,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // Auto-slide
+            // Auto-slide (arrêté en modal)
             function startSlide() {
-                slideInterval = setInterval(() => {
-                    showSlide((currentSlide + 1) % slides.length);
-                }, 4000);
+                if (!isModalOpen) { // Seulement si pas en modal
+                    slideInterval = setInterval(() => {
+                        if (!isModalOpen) { // Vérifier encore au moment de l'exécution
+                            showSlide((currentSlide + 1) % slides.length);
+                        }
+                    }, 4000);
+                }
             }
 
             function stopSlide() {
@@ -224,106 +251,182 @@ document.addEventListener("DOMContentLoaded", function () {
             startSlide();
             container.addEventListener('mouseenter', stopSlide);
             container.addEventListener('mouseleave', startSlide);
+            
+            // Stocker les fonctions pour les utiliser lors des modals
+            container._startSlide = startSlide;
+            container._stopSlide = stopSlide;
         });
     }
 
-    // ✅ FONCTION D'OUVERTURE SIMPLE - COMPATIBLE CSS
-    function openProjectCard(card) {
-        if (expandedCard) return; // Une seule carte à la fois
+    // ✅ FONCTION D'OUVERTURE MODAL - NOUVELLE APPROCHE
+    function openProjectModal(projectCard) {
+        if (isModalOpen) return; // Une seule modal à la fois
         
-        expandedCard = card;
+        console.log('🚀 Ouverture modal:', projectCard.querySelector('h3')?.textContent || 'Sans titre');
         
-        // 1. Montrer l'overlay (correspond au CSS .projects-overlay.active)
-        projectsOverlay.classList.add('active');
+        // Marquer comme ouverte
+        isModalOpen = true;
+        
+        // Bloquer le scroll du body
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('no-scroll');
         
-        // 2. Étendre la carte IMMÉDIATEMENT (correspond au CSS .project-card.expanded)
-        card.classList.add('expanded');
+        // Arrêter tous les slideshows
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            if (container._stopSlide) container._stopSlide();
+        });
         
-        // 3. Créer le bouton fermeture (correspond au CSS .close-btn)
-        const closeButton = document.createElement('button');
-        closeButton.className = 'close-btn';
-        closeButton.innerHTML = '×';
-        closeButton.setAttribute('aria-label', 'Fermer le projet');
-        closeButton.onclick = (e) => {
+        // Cloner la carte pour la modal
+        const modalCard = projectCard.cloneNode(true);
+        modalCard.className = 'modal-card'; // Remplacer par la classe modal
+        modalCard.removeAttribute('data-category'); // Nettoyer
+        
+        // Restructurer le contenu pour la modal (CSS layout flex row)
+        const originalContent = modalCard.innerHTML;
+        const projectMedia = modalCard.querySelector('.project-media');
+        const projectInfo = modalCard.querySelector('.project-info');
+        
+        if (projectMedia && projectInfo) {
+            // Créer la nouvelle structure modal
+            modalCard.innerHTML = `
+                <div class="modal-media">
+                    ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
+                </div>
+                <div class="modal-info">
+                    ${projectInfo.innerHTML
+                        .replace(/project-description/g, 'modal-description')
+                        .replace(/project-tags/g, 'modal-tags')
+                        .replace(/tag(?![s-])/g, 'modal-tag')
+                        .replace(/project-actions/g, 'modal-actions')
+                        .replace(/project-link/g, 'modal-link')
+                    }
+                </div>
+            `;
+        }
+        
+        // Créer le bouton de fermeture
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'modal-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.setAttribute('aria-label', 'Fermer le projet');
+        closeBtn.onclick = (e) => {
             e.stopPropagation();
-            closeProjectCard();
+            closeProjectModal();
         };
-        card.appendChild(closeButton);
         
-        console.log('Projet ouvert:', card.querySelector('h3')?.textContent || 'Sans titre');
+        // Ajouter le bouton à la modal card
+        modalCard.appendChild(closeBtn);
+        
+        // Stocker la référence
+        currentModalCard = modalCard;
+        
+        // Ajouter au conteneur modal
+        modalContainer.innerHTML = '';
+        modalContainer.appendChild(modalCard);
+        
+        // Activer les éléments modaux avec les classes CSS
+        modalBackdrop.classList.add('active');
+        modalContainer.classList.add('active');
+        
+        // Réinitialiser les slideshows dans la modal
+        setTimeout(() => {
+            initSlideshows();
+        }, 350); // Après l'animation d'ouverture
+        
+        console.log('✅ Modal ouverte avec succès');
     }
 
-    // ✅ FONCTION DE FERMETURE SIMPLE - COMPATIBLE CSS
-    function closeProjectCard() {
-        if (!expandedCard) return;
+    // ✅ FONCTION DE FERMETURE MODAL - NOUVELLE APPROCHE
+    function closeProjectModal() {
+        if (!isModalOpen) return;
         
-        console.log('Fermeture projet:', expandedCard.querySelector('h3')?.textContent || 'Sans titre');
+        console.log('🔽 Fermeture modal');
         
-        // 1. Retirer la classe expanded (CSS retourne automatiquement à l'état normal)
-        expandedCard.classList.remove('expanded');
+        // Marquer comme fermée
+        isModalOpen = false;
         
-        // 2. Supprimer le bouton close
-        const closeButton = expandedCard.querySelector('.close-btn');
-        if (closeButton) closeButton.remove();
+        // Désactiver les éléments modaux
+        modalBackdrop.classList.remove('active');
+        modalContainer.classList.remove('active');
         
-        // 3. Cacher l'overlay (CSS .projects-overlay retire .active)
-        projectsOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        // Nettoyer après l'animation
+        setTimeout(() => {
+            if (modalContainer) {
+                modalContainer.innerHTML = '';
+            }
+            currentModalCard = null;
+            
+            // Restaurer le scroll
+            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
+            
+            // Redémarrer les slideshows sur la page
+            document.querySelectorAll('.slideshow-container').forEach(container => {
+                if (container._startSlide) container._startSlide();
+            });
+            
+        }, 250); // Durée de l'animation CSS
         
-        // 4. Reset variable
-        expandedCard = null;
+        console.log('✅ Modal fermée');
     }
 
-    // ✅ EVENT LISTENERS OPTIMISÉS
+    // ✅ EVENT LISTENERS POUR LES CARTES PROJET
+    const projectCards = document.querySelectorAll('.project-card');
+    
     projectCards.forEach(card => {
-        // Click pour ouvrir/fermer
+        // Click pour ouvrir la modal
         card.addEventListener('click', function(e) {
-            // Éviter les clics sur les éléments internes (liens, boutons, vidéos)
-            if (e.target.closest('a, button:not(.close-btn), .project-link, .video-play-btn, .youtube-embed, .slide-dot, iframe, .youtube-demo-btn, .modal-video-btn')) {
-                return;
+            // Éviter les clics sur les éléments internes
+            if (e.target.closest(`
+                a, 
+                button:not(.modal-close), 
+                .project-link, 
+                .modal-link,
+                .video-play-btn, 
+                .youtube-embed, 
+                .slide-dot, 
+                iframe, 
+                .youtube-demo-btn, 
+                .modal-video-btn,
+                .youtube-play-btn,
+                .modal-play-btn
+            `)) {
+                return; // Laisser les liens/boutons fonctionner normalement
             }
             
             e.preventDefault();
             e.stopPropagation();
             
-            // Si cette carte est déjà ouverte, la fermer
-            if (this.classList.contains('expanded')) {
-                closeProjectCard();
-            } else {
-                // Sinon l'ouvrir (ferme automatiquement l'autre s'il y en a une)
-                if (expandedCard && expandedCard !== this) {
-                    closeProjectCard();
-                }
-                openProjectCard(this);
-            }
+            // Ouvrir la modal
+            openProjectModal(this);
         });
         
-        // ✅ Hover effect léger (seulement si pas expanded)
+        // Hover effect léger (géré par CSS)
         card.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('expanded')) {
-                // Le CSS gère déjà le hover avec .project-card:not(.expanded):hover
-            }
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('expanded')) {
-                // Le CSS gère automatiquement la sortie du hover
+            if (!isModalOpen) {
+                // Le CSS .project-card:hover:not(.modal-active) gère l'effet
             }
         });
     });
 
-    // ✅ Fermeture par overlay (clic sur le fond noir)
-    if (projectsOverlay) {
-        projectsOverlay.addEventListener('click', function(e) {
-            // Seulement si on clique directement sur l'overlay, pas sur la carte
-            if (e.target === projectsOverlay) {
-                closeProjectCard();
+    // ✅ Event listeners pour fermeture modal
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', function(e) {
+            if (e.target === modalBackdrop) {
+                closeProjectModal();
             }
         });
     }
 
-    // Initialisation des slideshows
+    if (modalContainer) {
+        modalContainer.addEventListener('click', function(e) {
+            if (e.target === modalContainer) {
+                closeProjectModal();
+            }
+        });
+    }
+
+    // Initialisation des slideshows pour les cartes normales
     initSlideshows();
 
     // ===== FILTRES UNIFIÉS =====
@@ -335,9 +438,9 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                // Fermer toute carte étendue si c'est un filtre de projets
-                if (filtersSelector.includes('project') && expandedCard) {
-                    closeProjectCard();
+                // Fermer toute modal ouverte si c'est un filtre de projets
+                if (filtersSelector.includes('project') && isModalOpen) {
+                    closeProjectModal();
                 }
                 
                 // Mise à jour des boutons actifs
@@ -398,9 +501,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
-                // Fermer toute carte ouverte avant navigation
-                if (expandedCard) {
-                    closeProjectCard();
+                // Fermer toute modal ouverte avant navigation
+                if (isModalOpen) {
+                    closeProjectModal();
                 }
                 
                 targetSection.scrollIntoView({
@@ -563,9 +666,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.key === 'Escape') {
             e.preventDefault();
             
-            // Priorité 1 : projets étendus
-            if (expandedCard) {
-                closeProjectCard();
+            // Priorité 1 : modal projet
+            if (isModalOpen) {
+                closeProjectModal();
             } 
             // Priorité 2 : modal vidéo
             else if (videoModal && videoModal.style.display === 'flex') {
@@ -577,21 +680,20 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
         
-        // ✅ Navigation clavier pour accessibilité
-        if (expandedCard && (e.key === 'Tab' || e.key === 'Enter')) {
-            // Laisser la navigation clavier normale fonctionner
+        // Navigation Tab dans les modals
+        if (isModalOpen && e.key === 'Tab') {
+            // Laisser la navigation naturelle, les éléments focusables sont dans la modal
         }
     });
 
-    // ✅ GESTION RESIZE WINDOW (pour responsive)
+    // ✅ GESTION RESIZE WINDOW (responsive)
     let resizeTimeout;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            // Si une carte est ouverte, vérifier qu'elle reste bien positionnée
-            if (expandedCard) {
-                // Le CSS gère automatiquement le responsive
-                console.log('Resize détecté avec carte ouverte');
+            if (isModalOpen) {
+                console.log('Resize détecté avec modal ouverte - CSS gère automatiquement');
+                // Le CSS responsive gère automatiquement le redimensionnement
             }
         }, 250);
     });
@@ -599,12 +701,58 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ GESTION ERREURS JAVASCRIPT
     window.addEventListener('error', function(e) {
         console.warn('Erreur JS détectée:', e.message);
-        // En cas d'erreur, s'assurer que l'état est propre
-        if (expandedCard) {
+        // En cas d'erreur, nettoyer l'état
+        if (isModalOpen) {
+            isModalOpen = false;
             document.body.style.overflow = '';
-            projectsOverlay?.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+            if (modalBackdrop) modalBackdrop.classList.remove('active');
+            if (modalContainer) modalContainer.classList.remove('active');
         }
     });
+
+    // ✅ GESTION HISTORIQUE NAVIGATEUR (optionnel)
+    let modalHistoryState = false;
+    
+    function pushModalState(projectTitle) {
+        if (history.pushState && !modalHistoryState) {
+            history.pushState({ modal: true, title: projectTitle }, '', '#projet-' + projectTitle.toLowerCase().replace(/\s+/g, '-'));
+            modalHistoryState = true;
+        }
+    }
+    
+    function popModalState() {
+        if (modalHistoryState) {
+            history.back();
+            modalHistoryState = false;
+        }
+    }
+    
+    window.addEventListener('popstate', function(e) {
+        if (isModalOpen && e.state?.modal !== true) {
+            closeProjectModal();
+            modalHistoryState = false;
+        }
+    });
+
+    // Modifier la fonction d'ouverture pour inclure l'état de l'historique
+    const originalOpenProjectModal = openProjectModal;
+    openProjectModal = function(projectCard) {
+        const title = projectCard.querySelector('h3')?.textContent || 'Projet';
+        originalOpenProjectModal(projectCard);
+        if (isModalOpen) {
+            pushModalState(title);
+        }
+    };
+
+    // Modifier la fonction de fermeture pour l'historique
+    const originalCloseProjectModal = closeProjectModal;
+    closeProjectModal = function() {
+        originalCloseProjectModal();
+        if (modalHistoryState && !isModalOpen) {
+            modalHistoryState = false;
+        }
+    };
 
     // Masquer le loading
     setTimeout(() => {
@@ -614,10 +762,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 500);
 
     // ✅ LOG FINAL DE CONFIRMATION
-    console.log('🚀 Portfolio simplifié initialisé avec succès');
+    console.log('🚀 Portfolio modal révolutionnaire initialisé avec succès');
     console.log('✅ Project cards:', projectCards.length, 'détectées');
-    console.log('✅ Overlay:', projectsOverlay ? 'OK' : 'MANQUANT');
-    console.log('✅ Mode simplifié activé - Aucun blur, performance maximale');
+    console.log('✅ Modal backdrop:', modalBackdrop ? 'Créé' : 'ERREUR');
+    console.log('✅ Modal container:', modalContainer ? 'Créé' : 'ERREUR');
+    console.log('✅ Mode révolutionnaire activé - AUCUN FLOU GARANTI');
+    console.log('✅ Animations CPU uniquement - Performance maximale');
 });
 
 // Service Worker
@@ -629,14 +779,29 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ✅ FONCTION DE DEBUG (à supprimer en production)
-window.debugProjectCards = function() {
-    console.log('=== DEBUG PROJECT CARDS ===');
-    console.log('Cartes détectées:', document.querySelectorAll('.project-card').length);
-    console.log('Overlay:', document.querySelector('.projects-overlay') ? 'OK' : 'MANQUANT');
-    console.log('Carte étendue actuelle:', 
-        document.querySelector('.project-card.expanded')?.querySelector('h3')?.textContent || 'Aucune'
-    );
+// ✅ FONCTIONS DE DEBUG AMÉLIORÉES
+window.debugModal = function() {
+    console.log('=== DEBUG SYSTÈME MODAL ===');
+    console.log('État modal:', isModalOpen ? 'OUVERTE' : 'FERMÉE');
+    console.log('Backdrop:', modalBackdrop?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
+    console.log('Container:', modalContainer?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
     console.log('Body overflow:', document.body.style.overflow || 'auto');
+    console.log('Modal actuelle:', currentModalCard?.querySelector('h3')?.textContent || 'Aucune');
+    console.log('Cartes détectées:', document.querySelectorAll('.project-card').length);
     console.log('============================');
+};
+
+window.testModal = function() {
+    const firstCard = document.querySelector('.project-card');
+    if (firstCard) {
+        console.log('🧪 Test modal avec première carte...');
+        openProjectModal(firstCard);
+    } else {
+        console.log('❌ Aucune carte trouvée pour le test');
+    }
+};
+
+window.forceCloseModal = function() {
+    console.log('🔧 Fermeture forcée de la modal...');
+    closeProjectModal();
 };
