@@ -736,54 +736,138 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin: 0;
 }
 
-/* === TOOLS SECTION === */
+/* === TOOLS SECTION MISE À JOUR === */
 .tools-section {
   margin-top: var(--spacing-3xl);
 }
 
 .tools-section h3 {
   font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
   color: var(--primary-color);
   text-align: center;
 }
 
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: var(--spacing-lg);
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .tool-item {
   background-color: var(--bg-glass);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-lg);
   padding: var(--spacing-lg);
   text-align: center;
   transition: var(--transition);
   cursor: pointer;
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .tool-item:hover {
   background-color: var(--bg-glass-hover);
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
 
 .tool-icon {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto var(--spacing-md);
-  background: var(--gradient-primary);
-  border-radius: var(--border-radius);
+  width: 60px;
+  height: 60px;
+  margin-bottom: var(--spacing-md);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.tool-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: var(--transition);
+}
+
+.tool-item:hover .tool-logo {
+  transform: scale(1.1);
 }
 
 .tool-name {
   font-weight: 600;
   color: var(--text-primary);
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: absolute;
+  bottom: var(--spacing-sm);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  white-space: nowrap;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tool-item:hover .tool-name {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* === RESPONSIVE POUR TOOLS === */
+@media (max-width: 768px) {
+  .tools-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--spacing-md);
+  }
+  
+  .tool-item {
+    padding: var(--spacing-md);
+    min-height: 100px;
+  }
+  
+  .tool-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .tools-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: var(--spacing-sm);
+  }
+  
+  .tool-item {
+    padding: var(--spacing-sm);
+    min-height: 80px;
+  }
+  
+  .tool-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .tool-name {
+    font-size: 0.7rem;
+    padding: 2px var(--spacing-xs);
+  }
 }
 
 /* === SKILLS SECTION === */
