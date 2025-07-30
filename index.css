@@ -109,9 +109,8 @@ body.light-mode {
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 1024px) {
   :root {
-    --container-padding: var(--container-padding-mobile);
+    --container-padding: 1.5rem;
     --section-spacing: var(--section-spacing-mobile);
-    --section-content-spacing: var(--section-content-spacing-mobile);
     --content-padding: var(--content-padding-mobile);
     --card-padding: var(--card-padding-mobile);
   }
@@ -166,8 +165,7 @@ body.light-mode {
 
 @media (max-width: 768px) {
   :root {
-    --container-padding: 0.75rem;
-    --section-content-spacing: 1rem;
+    --container-padding: 1rem;
     --content-padding: 1rem;
     --card-padding: 1rem;
   }
@@ -329,8 +327,7 @@ body.light-mode {
 
 @media (max-width: 480px) {
   :root {
-    --container-padding: 0.5rem;
-    --section-content-spacing: 0.75rem;
+    --container-padding: 0.75rem;
     --content-padding: 0.75rem;
     --card-padding: 0.75rem;
     --section-spacing: 2rem;
@@ -1570,13 +1567,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: var(--section-spacing) 0;
+  padding: var(--section-spacing) var(--container-padding);
   position: relative;
-}
-
-.hero .section-content {
-  display: flex;
-  align-items: center;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
   gap: var(--spacing-3xl);
 }
 
@@ -1728,7 +1722,9 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 /* === SECTIONS COMMUNES === */
 .section {
-  padding: var(--section-spacing) 0;
+  padding: var(--section-spacing) var(--container-padding);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
   position: relative;
   opacity: 0;
   transform: translateY(30px);
@@ -1756,6 +1752,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-3xl);
   margin-bottom: var(--spacing-3xl);
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .about-text h3,
@@ -1857,6 +1857,10 @@ img, video { max-width: 100%; height: auto; display: block; }
 .tools-section {
   margin-top: var(--spacing-3xl);
   position: relative;
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .tools-container {
@@ -1960,6 +1964,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-xl);
   margin-bottom: var(--spacing-3xl);
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .skill-category {
@@ -2052,6 +2060,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: var(--spacing-xl);
   margin-bottom: var(--spacing-3xl);
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .project-card {
@@ -2676,6 +2688,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-3xl);
   flex-wrap: wrap;
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filter-btn {
@@ -2700,6 +2716,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: var(--spacing-xl);
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .certification-card {
@@ -2786,6 +2806,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-3xl);
+  padding: 0 var(--container-padding);
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .contact-info h3 {
