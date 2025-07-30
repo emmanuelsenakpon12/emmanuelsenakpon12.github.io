@@ -404,12 +404,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
-            // Retirer les anciens listeners pour éviter les doublons
-            const newCard = card.cloneNode(true);
-            card.parentNode.replaceChild(newCard, card);
+            // Vérifier si le listener n'est pas déjà attaché
+            if (card.hasAttribute('data-listener-attached')) {
+                return;
+            }
             
-            // Attacher le nouveau listener
-            newCard.addEventListener('click', function(e) {
+            // Marquer comme ayant un listener
+            card.setAttribute('data-listener-attached', 'true');
+            
+            // Attacher le listener
+            card.addEventListener('click', function(e) {
                 if (e.target.closest(`
                     a, 
                     button:not(.modal-close), 
@@ -463,6 +467,8 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
+                console.log('Filtre sélectionné:', filterValue);
+                
                 // CORRECTION: Fermer la modal ET nettoyer l'URL avant filtrage
                 if (filtersSelector.includes('project') && isModalOpen) {
                     closeProjectModal();
@@ -489,15 +495,45 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
                 
+                // CORRECTION: Filtrage amélioré avec logs
+                let visibleCount = 0;
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
+                    console.log(`Carte: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
+                    
                     if (shouldShow) {
                         card.style.display = 'block';
-                        requestAnimationFrame(() => {
-                            card.style.opacity = '1';
-                        });
+                        card.style.opacity = '1';
+                        visibleCount++;
+                        
+                        // Assurer que le listener est attaché
+                        if (!card.hasAttribute('data-listener-attached')) {
+                            card.setAttribute('data-listener-attached', 'true');
+                            card.addEventListener('click', function(e) {
+                                if (e.target.closest(`
+                                    a, 
+                                    button:not(.modal-close), 
+                                    .project-link, 
+                                    .modal-link,
+                                    .video-play-btn, 
+                                    .youtube-embed, 
+                                    .slide-dot, 
+                                    iframe, 
+                                    .youtube-demo-btn, 
+                                    .modal-video-btn,
+                                    .youtube-play-btn,
+                                    .modal-play-btn
+                                `)) {
+                                    return;
+                                }
+                                
+                                e.preventDefault();
+                                e.stopPropagation();
+                                openProjectModal(this);
+                            });
+                        }
                     } else {
                         card.style.opacity = '0';
                         setTimeout(() => {
@@ -508,12 +544,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                // CORRECTION: Réattacher les listeners après filtrage
-                if (filtersSelector.includes('project')) {
-                    setTimeout(() => {
-                        attachProjectCardListeners();
-                    }, 350); // Après l'animation de filtrage
-                }
+                console.log(`Filtrage terminé. ${visibleCount} cartes visibles.`);
             });
         });
     }
@@ -837,4 +868,27 @@ window.testModal = function() {
 window.forceCloseModal = function() {
     console.log('Fermeture forcée de la modal...');
     closeProjectModal();
+};
+
+// Fonction de debug pour les filtres
+window.debugFilters = function() {
+    console.log('=== DEBUG SYSTÈME FILTRES ===');
+    const projectCards = document.querySelectorAll('.project-card');
+    const filters = document.querySelectorAll('.projects .filter-btn');
+    const activeFilter = document.querySelector('.projects .filter-btn.active');
+    
+    console.log('Filtres détectés:', filters.length);
+    console.log('Filtre actif:', activeFilter?.getAttribute('data-filter') || 'Aucun');
+    console.log('Cartes projet:', projectCards.length);
+    
+    projectCards.forEach((card, index) => {
+        const title = card.querySelector('h3')?.textContent || `Carte ${index + 1}`;
+        const category = card.getAttribute('data-category') || 'sans catégorie';
+        const visible = card.style.display !== 'none';
+        const hasListener = card.hasAttribute('data-listener-attached');
+        
+        console.log(`- ${title}: catégorie="${category}", visible=${visible}, listener=${hasListener}`);
+    });
+    
+    console.log('============================');
 };
