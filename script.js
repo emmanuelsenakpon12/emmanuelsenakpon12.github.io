@@ -458,8 +458,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // CORRECTION 7: Système de filtres amélioré
-    function setupFilters(filtersSelector, cardsSelector) {
+    // CORRECTION 7: Système de filtres amélioré AVEC SÉPARATION
+    function setupProjectFilters(filtersSelector, cardsSelector) {
         const filters = document.querySelectorAll(filtersSelector);
         const cards = document.querySelectorAll(cardsSelector);
 
@@ -467,10 +467,10 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                console.log('Filtre sélectionné:', filterValue);
+                console.log('Filtre projet sélectionné:', filterValue);
                 
-                // CORRECTION: Fermer la modal ET nettoyer l'URL avant filtrage
-                if (filtersSelector.includes('project') && isModalOpen) {
+                // Fermer la modal ET nettoyer l'URL avant filtrage
+                if (isModalOpen) {
                     closeProjectModal();
                 }
                 
@@ -481,34 +481,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                if (filtersSelector.includes('project')) {
-                    videoElements.forEach(video => {
-                        video.pause();
-                        video.currentTime = 0;
-                    });
-                    
-                    videoPlayBtns.forEach(btn => {
-                        const playIcon = btn.querySelector('.play-icon');
-                        const pauseIcon = btn.querySelector('.pause-icon');
-                        if (playIcon) playIcon.style.display = 'inline';
-                        if (pauseIcon) pauseIcon.style.display = 'none';
-                    });
-                }
+                videoElements.forEach(video => {
+                    video.pause();
+                    video.currentTime = 0;
+                });
                 
-                // CORRECTION: Filtrage amélioré avec logs
+                videoPlayBtns.forEach(btn => {
+                    const playIcon = btn.querySelector('.play-icon');
+                    const pauseIcon = btn.querySelector('.pause-icon');
+                    if (playIcon) playIcon.style.display = 'inline';
+                    if (pauseIcon) pauseIcon.style.display = 'none';
+                });
+                
+                // Filtrage avec gestion des listeners modaux
                 let visibleCount = 0;
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
-                    console.log(`Carte: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
+                    console.log(`Projet: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
                     
                     if (shouldShow) {
                         card.style.display = 'block';
                         card.style.opacity = '1';
                         visibleCount++;
                         
-                        // Assurer que le listener est attaché
+                        // Assurer que le listener MODAL est attaché (SEULEMENT pour les projets)
                         if (!card.hasAttribute('data-listener-attached')) {
                             card.setAttribute('data-listener-attached', 'true');
                             card.addEventListener('click', function(e) {
@@ -544,14 +542,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                console.log(`Filtrage terminé. ${visibleCount} cartes visibles.`);
+                console.log(`Filtrage projets terminé. ${visibleCount} cartes visibles.`);
             });
         });
     }
 
-    // Setup des filtres
-    setupFilters('.projects .filter-btn', '.project-card');
-    setupFilters('.certifications .filter-btn', '.certification-card');
+    // NOUVELLE FONCTION: Filtres pour certifications (SANS MODAL)
+    function setupCertificationFilters(filtersSelector, cardsSelector) {
+        const filters = document.querySelectorAll(filtersSelector);
+        const cards = document.querySelectorAll(cardsSelector);
+
+        filters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                const filterValue = this.getAttribute('data-filter');
+                
+                console.log('Filtre certification sélectionné:', filterValue);
+                
+                filters.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                
+                // Filtrage SIMPLE pour certifications (pas de modal)
+                let visibleCount = 0;
+                cards.forEach(card => {
+                    const category = card.getAttribute('data-category') || '';
+                    const shouldShow = filterValue === 'all' || category.includes(filterValue);
+                    
+                    console.log(`Certification: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
+                    
+                    if (shouldShow) {
+                        card.style.display = 'flex'; // Les certifications utilisent display: flex
+                        card.style.opacity = '1';
+                        visibleCount++;
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            if (card.style.opacity === '0') {
+                                card.style.display = 'none';
+                            }
+                        }, 300);
+                    }
+                });
+                
+                console.log(`Filtrage certifications terminé. ${visibleCount} cartes visibles.`);
+            });
+        });
+    }
+
+    // Setup des filtres SÉPARÉS
+    setupProjectFilters('.projects .filter-btn', '.project-card');
+    setupCertificationFilters('.certifications .filter-btn', '.certification-card');
 
     // Navigation fluide
     const navLinks = document.querySelectorAll('.nav-list a');
@@ -874,12 +917,16 @@ window.forceCloseModal = function() {
 window.debugFilters = function() {
     console.log('=== DEBUG SYSTÈME FILTRES ===');
     const projectCards = document.querySelectorAll('.project-card');
-    const filters = document.querySelectorAll('.projects .filter-btn');
-    const activeFilter = document.querySelector('.projects .filter-btn.active');
+    const certificationCards = document.querySelectorAll('.certification-card');
+    const projectFilters = document.querySelectorAll('.projects .filter-btn');
+    const certificationFilters = document.querySelectorAll('.certifications .filter-btn');
+    const activeProjectFilter = document.querySelector('.projects .filter-btn.active');
+    const activeCertificationFilter = document.querySelector('.certifications .filter-btn.active');
     
-    console.log('Filtres détectés:', filters.length);
-    console.log('Filtre actif:', activeFilter?.getAttribute('data-filter') || 'Aucun');
-    console.log('Cartes projet:', projectCards.length);
+    console.log('PROJETS:');
+    console.log('- Filtres détectés:', projectFilters.length);
+    console.log('- Filtre actif:', activeProjectFilter?.getAttribute('data-filter') || 'Aucun');
+    console.log('- Cartes projet:', projectCards.length);
     
     projectCards.forEach((card, index) => {
         const title = card.querySelector('h3')?.textContent || `Carte ${index + 1}`;
@@ -887,7 +934,21 @@ window.debugFilters = function() {
         const visible = card.style.display !== 'none';
         const hasListener = card.hasAttribute('data-listener-attached');
         
-        console.log(`- ${title}: catégorie="${category}", visible=${visible}, listener=${hasListener}`);
+        console.log(`  - ${title}: catégorie="${category}", visible=${visible}, modal-listener=${hasListener}`);
+    });
+    
+    console.log('\nCERTIFICATIONS:');
+    console.log('- Filtres détectés:', certificationFilters.length);
+    console.log('- Filtre actif:', activeCertificationFilter?.getAttribute('data-filter') || 'Aucun');
+    console.log('- Cartes certification:', certificationCards.length);
+    
+    certificationCards.forEach((card, index) => {
+        const title = card.querySelector('h3')?.textContent || `Carte ${index + 1}`;
+        const category = card.getAttribute('data-category') || 'sans catégorie';
+        const visible = card.style.display !== 'none';
+        const hasListener = card.hasAttribute('data-listener-attached');
+        
+        console.log(`  - ${title}: catégorie="${category}", visible=${visible}, modal-listener=${hasListener}`);
     });
     
     console.log('============================');
