@@ -176,33 +176,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ===== 🚀 NOUVEAU SYSTÈME MODAL RÉVOLUTIONNAIRE - 100% SANS FLOU =====
-    
-    // Variables globales pour le système modal
+    // SYSTÈME MODAL CORRIGÉ - Variables globales
     let modalBackdrop = null;
     let modalContainer = null;
     let currentModalCard = null;
+    let currentProjectData = null; // NOUVEAU: Stocker les données du projet
     let isModalOpen = false;
-    let currentProjectData = null; // 🔧 NOUVEAU: Stocker les données du projet
 
-    // Fonction pour créer les éléments modaux (correspondant au CSS)
+    // Fonction pour créer les éléments modaux
     function createModalElements() {
-        // Créer le backdrop (fond noir)
         modalBackdrop = document.createElement('div');
         modalBackdrop.className = 'modal-backdrop';
         
-        // Créer le conteneur modal
         modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
         
-        // Ajouter au DOM mais cachés initialement
         document.body.appendChild(modalBackdrop);
         document.body.appendChild(modalContainer);
         
-        console.log('✅ Éléments modaux créés');
+        console.log('Éléments modaux créés');
     }
 
-    // Initialiser les éléments modaux
     createModalElements();
 
     // Slideshows optimisés
@@ -226,7 +220,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 dots[currentSlide]?.classList.add('active');
             }
 
-            // Navigation dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -234,11 +227,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // Auto-slide (arrêté en modal)
             function startSlide() {
-                if (!isModalOpen) { // Seulement si pas en modal
+                if (!isModalOpen) {
                     slideInterval = setInterval(() => {
-                        if (!isModalOpen) { // Vérifier encore au moment de l'exécution
+                        if (!isModalOpen) {
                             showSlide((currentSlide + 1) % slides.length);
                         }
                     }, 4000);
@@ -253,180 +245,89 @@ document.addEventListener("DOMContentLoaded", function () {
             container.addEventListener('mouseenter', stopSlide);
             container.addEventListener('mouseleave', startSlide);
             
-            // Stocker les fonctions pour les utiliser lors des modals
             container._startSlide = startSlide;
             container._stopSlide = stopSlide;
         });
     }
 
-    // 🔧 FONCTION POUR SAUVEGARDER LES DONNÉES D'UN PROJET
-    function saveProjectData(projectCard) {
-        const title = projectCard.querySelector('h3')?.textContent || 'Projet sans titre';
-        const tags = Array.from(projectCard.querySelectorAll('.tag')).map(tag => tag.textContent);
-        const description = projectCard.querySelector('.project-description')?.textContent || '';
+    // CORRECTION 1: Extraire les données du projet pour éviter la perte de contenu
+    function extractProjectData(projectCard) {
+        const title = projectCard.querySelector('h3')?.textContent || '';
         const category = projectCard.getAttribute('data-category') || '';
         
-        // Sauvegarder les médias (images du slideshow)
-        const mediaElements = [];
-        const slides = projectCard.querySelectorAll('.slide');
-        slides.forEach((slide, index) => {
-            mediaElements.push({
-                src: slide.src,
-                alt: slide.alt,
-                active: slide.classList.contains('active')
-            });
-        });
-        
-        // Sauvegarder les actions/liens
-        const actions = [];
-        const actionLinks = projectCard.querySelectorAll('.project-link');
-        actionLinks.forEach(link => {
-            actions.push({
-                href: link.href,
-                text: link.textContent.trim(),
-                innerHTML: link.innerHTML
-            });
-        });
-
         return {
-            title,
-            tags,
-            description,
-            category,
-            mediaElements,
-            actions
+            title: title,
+            category: category,
+            originalCard: projectCard,
+            // Stocker le HTML complet pour recréer la modal si nécessaire
+            originalHTML: projectCard.outerHTML
         };
     }
 
-    // ✅ FONCTION D'OUVERTURE MODAL - CORRIGÉE
+    // CORRECTION 2: Fonction d'ouverture modal robuste
     function openProjectModal(projectCard) {
-        if (isModalOpen) return; // Une seule modal à la fois
+        if (isModalOpen) return;
         
-        // 🔧 SAUVEGARDER LES DONNÉES AVANT OUVERTURE
-        currentProjectData = saveProjectData(projectCard);
+        console.log('Ouverture modal:', projectCard.querySelector('h3')?.textContent || 'Sans titre');
         
-        console.log('🚀 Ouverture modal:', currentProjectData.title);
+        // Extraire et stocker les données du projet
+        currentProjectData = extractProjectData(projectCard);
         
-        // Marquer comme ouverte
         isModalOpen = true;
-        
-        // Bloquer le scroll du body
         document.body.style.overflow = 'hidden';
         document.body.classList.add('no-scroll');
         
-        // Arrêter tous les slideshows
         document.querySelectorAll('.slideshow-container').forEach(container => {
             if (container._stopSlide) container._stopSlide();
         });
         
-        // Créer la modal à partir des données sauvegardées
+        // Créer la modal en utilisant les données stockées
         createModalFromData(currentProjectData);
         
-        // Activer les éléments modaux avec les classes CSS
         modalBackdrop.classList.add('active');
         modalContainer.classList.add('active');
         
-        // Réinitialiser les slideshows dans la modal
+        // CORRECTION 3: Mettre à jour l'URL de manière synchronisée
+        updateURLForModal(currentProjectData.title);
+        
         setTimeout(() => {
             initSlideshows();
-        }, 350); // Après l'animation d'ouverture
+        }, 350);
         
-        // 🔧 GESTION URL AMÉLIORÉE
-        updateModalURL(currentProjectData.title);
-        
-        console.log('✅ Modal ouverte avec succès');
+        console.log('Modal ouverte avec succès');
     }
 
-    // 🔧 NOUVELLE FONCTION POUR CRÉER LA MODAL À PARTIR DES DONNÉES
+    // NOUVELLE FONCTION: Créer la modal à partir des données stockées
     function createModalFromData(projectData) {
-        // Cloner la structure sans dépendre de l'élément DOM original
-        const modalCard = document.createElement('div');
+        // Recréer l'élément depuis le HTML original pour éviter les problèmes de référence
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = projectData.originalHTML;
+        const freshCard = tempDiv.firstElementChild;
+        
+        const modalCard = freshCard.cloneNode(true);
         modalCard.className = 'modal-card';
+        modalCard.removeAttribute('data-category');
         
-        // 1. Créer la section média
-        const modalMedia = document.createElement('div');
-        modalMedia.className = 'modal-media';
+        const projectMedia = modalCard.querySelector('.project-media');
+        const projectInfo = modalCard.querySelector('.project-info');
         
-        if (projectData.mediaElements.length > 1) {
-            // Slideshow
-            const slideshowContainer = document.createElement('div');
-            slideshowContainer.className = 'slideshow-container';
-            
-            projectData.mediaElements.forEach((media, index) => {
-                const img = document.createElement('img');
-                img.src = media.src;
-                img.alt = media.alt;
-                img.className = media.active ? 'slide active' : 'slide';
-                img.loading = 'lazy';
-                slideshowContainer.appendChild(img);
-            });
-            
-            // Dots de navigation
-            const slideDots = document.createElement('div');
-            slideDots.className = 'slide-dots';
-            projectData.mediaElements.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = index === 0 ? 'slide-dot active' : 'slide-dot';
-                dot.setAttribute('aria-label', `Image ${index + 1}`);
-                slideDots.appendChild(dot);
-            });
-            
-            slideshowContainer.appendChild(slideDots);
-            modalMedia.appendChild(slideshowContainer);
-        } else if (projectData.mediaElements.length === 1) {
-            // Image unique
-            const img = document.createElement('img');
-            img.src = projectData.mediaElements[0].src;
-            img.alt = projectData.mediaElements[0].alt;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            modalMedia.appendChild(img);
+        if (projectMedia && projectInfo) {
+            modalCard.innerHTML = `
+                <div class="modal-media">
+                    ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
+                </div>
+                <div class="modal-info">
+                    ${projectInfo.innerHTML
+                        .replace(/project-description/g, 'modal-description')
+                        .replace(/project-tags/g, 'modal-tags')
+                        .replace(/tag(?![s-])/g, 'modal-tag')
+                        .replace(/project-actions/g, 'modal-actions')
+                        .replace(/project-link/g, 'modal-link')
+                    }
+                </div>
+            `;
         }
         
-        // 2. Créer la section info
-        const modalInfo = document.createElement('div');
-        modalInfo.className = 'modal-info';
-        
-        // Titre
-        const title = document.createElement('h3');
-        title.textContent = projectData.title;
-        modalInfo.appendChild(title);
-        
-        // Description
-        const description = document.createElement('p');
-        description.className = 'modal-description';
-        description.textContent = projectData.description;
-        modalInfo.appendChild(description);
-        
-        // Tags
-        const tagsContainer = document.createElement('div');
-        tagsContainer.className = 'modal-tags';
-        projectData.tags.forEach(tagText => {
-            const tag = document.createElement('span');
-            tag.className = 'modal-tag';
-            tag.textContent = tagText;
-            tagsContainer.appendChild(tag);
-        });
-        modalInfo.appendChild(tagsContainer);
-        
-        // Actions
-        if (projectData.actions.length > 0) {
-            const actionsContainer = document.createElement('div');
-            actionsContainer.className = 'modal-actions';
-            projectData.actions.forEach(action => {
-                const link = document.createElement('a');
-                link.href = action.href;
-                link.className = 'modal-link';
-                link.innerHTML = action.innerHTML.replace('project-link', 'modal-link');
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                actionsContainer.appendChild(link);
-            });
-            modalInfo.appendChild(actionsContainer);
-        }
-        
-        // 3. Créer le bouton de fermeture
         const closeBtn = document.createElement('button');
         closeBtn.className = 'modal-close';
         closeBtn.innerHTML = '×';
@@ -436,101 +337,79 @@ document.addEventListener("DOMContentLoaded", function () {
             closeProjectModal();
         };
         
-        // Assembler la modal
-        modalCard.appendChild(modalMedia);
-        modalCard.appendChild(modalInfo);
         modalCard.appendChild(closeBtn);
-        
-        // Stocker la référence
         currentModalCard = modalCard;
         
-        // Ajouter au conteneur modal
         modalContainer.innerHTML = '';
         modalContainer.appendChild(modalCard);
     }
 
-    // 🔧 GESTION URL AMÉLIORÉE
-    function updateModalURL(projectTitle) {
-        if (history.pushState) {
-            const urlSlug = projectTitle.toLowerCase()
-                .replace(/[àáâãäå]/g, 'a')
-                .replace(/[èéêë]/g, 'e')
-                .replace(/[ìíîï]/g, 'i')
-                .replace(/[òóôõö]/g, 'o')
-                .replace(/[ùúûü]/g, 'u')
-                .replace(/[ç]/g, 'c')
-                .replace(/[ñ]/g, 'n')
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim('-');
-            
-            history.pushState(
-                { modal: true, project: projectTitle }, 
-                `${projectTitle} - Mohamed Amine Sobhi`, 
-                `#projet-${urlSlug}`
-            );
-        }
-    }
-
-    function removeModalURL() {
-        if (history.replaceState) {
-            history.replaceState(null, 'Mohamed Amine Sobhi - Portfolio', window.location.pathname);
-        }
-    }
-
-    // ✅ FONCTION DE FERMETURE MODAL - CORRIGÉE
+    // CORRECTION 4: Fonction de fermeture modal avec nettoyage URL
     function closeProjectModal() {
         if (!isModalOpen) return;
         
-        console.log('🔽 Fermeture modal');
+        console.log('Fermeture modal');
         
-        // Marquer comme fermée
         isModalOpen = false;
-        currentProjectData = null; // 🔧 Nettoyer les données
         
-        // Désactiver les éléments modaux
         modalBackdrop.classList.remove('active');
         modalContainer.classList.remove('active');
         
-        // 🔧 NETTOYER L'URL
-        removeModalURL();
+        // CORRECTION: Nettoyer l'URL
+        clearModalURL();
         
-        // Nettoyer après l'animation
         setTimeout(() => {
             if (modalContainer) {
                 modalContainer.innerHTML = '';
             }
             currentModalCard = null;
+            currentProjectData = null; // Nettoyer les données stockées
             
-            // Restaurer le scroll
             document.body.style.overflow = '';
             document.body.classList.remove('no-scroll');
             
-            // Redémarrer les slideshows sur la page
             document.querySelectorAll('.slideshow-container').forEach(container => {
                 if (container._startSlide) container._startSlide();
             });
             
-        }, 250); // Durée de l'animation CSS
+        }, 250);
         
-        console.log('✅ Modal fermée');
+        console.log('Modal fermée');
     }
 
-    // ✅ EVENT LISTENERS POUR LES CARTES PROJET - CORRIGÉS
+    // CORRECTION 5: Gestion URL synchronisée
+    function updateURLForModal(projectTitle) {
+        if (history.pushState) {
+            const urlSlug = projectTitle.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            history.pushState(
+                { modal: true, project: urlSlug }, 
+                '', 
+                '#projet-' + urlSlug
+            );
+        }
+    }
+
+    function clearModalURL() {
+        if (history.pushState) {
+            history.pushState(null, '', window.location.pathname + window.location.search);
+        }
+    }
+
+    // CORRECTION 6: Event listeners robustes pour les cartes projet
     function attachProjectCardListeners() {
         const projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
-            // Supprimer les anciens listeners pour éviter les doublons
-            card.replaceWith(card.cloneNode(true));
-        });
-        
-        // Rattacher les listeners sur les nouveaux éléments
-        document.querySelectorAll('.project-card').forEach(card => {
-            // Click pour ouvrir la modal
-            card.addEventListener('click', function(e) {
-                // Éviter les clics sur les éléments internes
+            // Retirer les anciens listeners pour éviter les doublons
+            const newCard = card.cloneNode(true);
+            card.parentNode.replaceChild(newCard, card);
+            
+            // Attacher le nouveau listener
+            newCard.addEventListener('click', function(e) {
                 if (e.target.closest(`
                     a, 
                     button:not(.modal-close), 
@@ -545,19 +424,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     .youtube-play-btn,
                     .modal-play-btn
                 `)) {
-                    return; // Laisser les liens/boutons fonctionner normalement
+                    return;
                 }
                 
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Ouvrir la modal
                 openProjectModal(this);
             });
         });
+        
+        console.log('Event listeners attachés à', projectCards.length, 'cartes');
     }
 
-    // ✅ Event listeners pour fermeture modal
+    // Event listeners pour fermeture modal
     if (modalBackdrop) {
         modalBackdrop.addEventListener('click', function(e) {
             if (e.target === modalBackdrop) {
@@ -574,17 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 🔧 GESTION HISTORIQUE NAVIGATEUR CORRIGÉE
-    window.addEventListener('popstate', function(e) {
-        if (isModalOpen && (!e.state || !e.state.modal)) {
-            closeProjectModal();
-        }
-    });
-
-    // Initialisation des slideshows pour les cartes normales
-    initSlideshows();
-
-    // ===== FILTRES UNIFIÉS - CORRIGÉS =====
+    // CORRECTION 7: Système de filtres amélioré
     function setupFilters(filtersSelector, cardsSelector) {
         const filters = document.querySelectorAll(filtersSelector);
         const cards = document.querySelectorAll(cardsSelector);
@@ -593,12 +463,11 @@ document.addEventListener("DOMContentLoaded", function () {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                // 🔧 FERMER TOUTE MODAL OUVERTE AVANT FILTRAGE
-                if (isModalOpen) {
+                // CORRECTION: Fermer la modal ET nettoyer l'URL avant filtrage
+                if (filtersSelector.includes('project') && isModalOpen) {
                     closeProjectModal();
                 }
                 
-                // Mise à jour des boutons actifs
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -606,7 +475,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                // Pause vidéos si nécessaire
                 if (filtersSelector.includes('project')) {
                     videoElements.forEach(video => {
                         video.pause();
@@ -621,14 +489,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
                 
-                // Filtrage des cartes avec animation douce
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
                         card.style.display = 'block';
-                        card.style.opacity = '1';
+                        requestAnimationFrame(() => {
+                            card.style.opacity = '1';
+                        });
                     } else {
                         card.style.opacity = '0';
                         setTimeout(() => {
@@ -639,13 +508,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                // 🔧 RATTACHER LES LISTENERS APRÈS FILTRAGE
-                setTimeout(() => {
-                    if (filtersSelector.includes('project')) {
+                // CORRECTION: Réattacher les listeners après filtrage
+                if (filtersSelector.includes('project')) {
+                    setTimeout(() => {
                         attachProjectCardListeners();
-                        initSlideshows(); // Réinitialiser les slideshows
-                    }
-                }, 350);
+                    }, 350); // Après l'animation de filtrage
+                }
             });
         });
     }
@@ -653,9 +521,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Setup des filtres
     setupFilters('.projects .filter-btn', '.project-card');
     setupFilters('.certifications .filter-btn', '.certification-card');
-
-    // Initialiser les listeners pour les cartes au chargement
-    attachProjectCardListeners();
 
     // Navigation fluide
     const navLinks = document.querySelectorAll('.nav-list a');
@@ -665,7 +530,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
-                // Fermer toute modal ouverte avant navigation
                 if (isModalOpen) {
                     closeProjectModal();
                 }
@@ -675,7 +539,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     block: 'start'
                 });
                 
-                // Fermer le menu mobile si ouvert
                 if (nav?.classList.contains('mobile-open')) {
                     nav.classList.remove('mobile-open');
                     menuToggle?.classList.remove('active');
@@ -825,177 +688,153 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ✅ GESTION TOUCHES CLAVIER OPTIMISÉE
+    // CORRECTION 8: Gestion touches clavier et historique améliorée
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
             
-            // Priorité 1 : modal projet
             if (isModalOpen) {
                 closeProjectModal();
             } 
-    // ✅ GESTION TOUCHES CLAVIER OPTIMISÉE
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            
-            // Priorité 1 : modal projet
-            if (isModalOpen) {
-                closeProjectModal();
-            } 
-            // Priorité 2 : modal vidéo
             else if (videoModal && videoModal.style.display === 'flex') {
                 closeVideoModal();
             } 
-            // Priorité 3 : popup construction
             else if (popup && popup.style.display !== "none") {
                 closePopup();
             }
         }
-        
-        // Navigation Tab dans les modals
-        if (isModalOpen && e.key === 'Tab') {
-            // Laisser la navigation naturelle, les éléments focusables sont dans la modal
+    });
+
+    // CORRECTION 9: Gestion historique navigateur corrigée
+    window.addEventListener('popstate', function(e) {
+        if (isModalOpen) {
+            // Fermer la modal sans ajouter d'entrée dans l'historique
+            isModalOpen = false;
+            modalBackdrop.classList.remove('active');
+            modalContainer.classList.remove('active');
+            
+            setTimeout(() => {
+                if (modalContainer) {
+                    modalContainer.innerHTML = '';
+                }
+                currentModalCard = null;
+                currentProjectData = null;
+                
+                document.body.style.overflow = '';
+                document.body.classList.remove('no-scroll');
+                
+                document.querySelectorAll('.slideshow-container').forEach(container => {
+                    if (container._startSlide) container._startSlide();
+                });
+            }, 250);
         }
     });
 
-    // ✅ GESTION RESIZE WINDOW (responsive)
     let resizeTimeout;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             if (isModalOpen) {
                 console.log('Resize détecté avec modal ouverte - CSS gère automatiquement');
-                // Le CSS responsive gère automatiquement le redimensionnement
             }
         }, 250);
     });
 
-    // ✅ GESTION ERREURS JAVASCRIPT - AMÉLIORÉE
+    // Gestion erreurs JavaScript avec nettoyage
     window.addEventListener('error', function(e) {
         console.warn('Erreur JS détectée:', e.message);
-        // En cas d'erreur, nettoyer l'état modal
         if (isModalOpen) {
-            console.log('🔧 Nettoyage forcé de l\'état modal suite à une erreur');
             isModalOpen = false;
-            currentProjectData = null;
             document.body.style.overflow = '';
             document.body.classList.remove('no-scroll');
             if (modalBackdrop) modalBackdrop.classList.remove('active');
-            if (modalContainer) {
-                modalContainer.classList.remove('active');
-                modalContainer.innerHTML = '';
-            }
-            removeModalURL();
+            if (modalContainer) modalContainer.classList.remove('active');
+            clearModalURL();
         }
     });
 
-    // 🔧 FONCTION DE RÉCUPÉRATION D'ÉTAT (au cas où l'URL contient un projet)
-    function checkURLForProject() {
+    // CORRECTION 10: Initialisation complète au chargement
+    function initializePortfolio() {
+        initSlideshows();
+        attachProjectCardListeners();
+        
+        // Gestion URL au chargement (si l'utilisateur arrive avec une URL de projet)
         const hash = window.location.hash;
         if (hash.startsWith('#projet-')) {
-            // Tentative de retrouver le projet correspondant
             const projectSlug = hash.replace('#projet-', '');
-            const projectCards = document.querySelectorAll('.project-card');
-            
-            projectCards.forEach(card => {
+            const matchingCard = Array.from(document.querySelectorAll('.project-card')).find(card => {
                 const title = card.querySelector('h3')?.textContent || '';
-                const cardSlug = title.toLowerCase()
-                    .replace(/[àáâãäå]/g, 'a')
-                    .replace(/[èéêë]/g, 'e')
-                    .replace(/[ìíîï]/g, 'i')
-                    .replace(/[òóôõö]/g, 'o')
-                    .replace(/[ùúûü]/g, 'u')
-                    .replace(/[ç]/g, 'c')
-                    .replace(/[ñ]/g, 'n')
+                const slug = title.toLowerCase()
                     .replace(/[^a-z0-9\s-]/g, '')
                     .replace(/\s+/g, '-')
                     .replace(/-+/g, '-')
-                    .trim('-');
-                
-                if (cardSlug === decodeURIComponent(projectSlug)) {
-                    // Projet trouvé, ouvrir la modal après un délai
-                    setTimeout(() => {
-                        if (card.style.display !== 'none') { // Vérifier que la carte est visible
-                            openProjectModal(card);
-                        } else {
-                            // La carte est filtrée, nettoyer l'URL
-                            removeModalURL();
-                        }
-                    }, 500);
-                }
+                    .trim();
+                return slug === projectSlug;
             });
+            
+            if (matchingCard) {
+                setTimeout(() => {
+                    openProjectModal(matchingCard);
+                }, 500);
+            } else {
+                // Nettoyer l'URL si le projet n'existe pas
+                clearModalURL();
+            }
         }
     }
-
-    // Vérifier l'URL au chargement
-    setTimeout(checkURLForProject, 1000);
 
     // Masquer le loading
     setTimeout(() => {
         if (loading) {
             loading.style.display = 'none';
         }
+        // Initialiser après le masquage du loading
+        initializePortfolio();
     }, 500);
 
-    // ✅ LOG FINAL DE CONFIRMATION
-    console.log('🚀 Portfolio modal révolutionnaire initialisé avec succès');
-    console.log('✅ Corrections appliquées:');
-    console.log('  • Sauvegarde des données projet avant filtrage');
-    console.log('  • Gestion URL améliorée avec nettoyage automatique');
-    console.log('  • Listeners reattachés après filtrage');
-    console.log('  • Gestion d\'erreurs renforcée');
-    console.log('  • Récupération depuis URL au chargement');
-    console.log('✅ Project cards détectées:', document.querySelectorAll('.project-card').length);
-    console.log('✅ Modal backdrop:', modalBackdrop ? 'Créé' : 'ERREUR');
-    console.log('✅ Modal container:', modalContainer ? 'Créé' : 'ERREUR');
-    console.log('✅ Mode révolutionnaire activé - AUCUN FLOU GARANTI');
-    console.log('✅ Système de filtrage corrigé - Contenu préservé');
+    console.log('Portfolio modal système corrigé initialisé avec succès');
+    console.log('Corrections appliquées:');
+    console.log('- Stockage des données de projet pour éviter la perte de contenu');
+    console.log('- Synchronisation URL avec état modal');
+    console.log('- Réattachement des listeners après filtrage');
+    console.log('- Gestion historique navigateur améliorée');
+    console.log('- Nettoyage automatique en cas d\'erreur');
 });
 
 // Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('✅ Service Worker enregistré'))
-            .catch(() => console.log('⚠️ Service Worker non supporté'));
+            .then(() => console.log('Service Worker enregistré'))
+            .catch(() => console.log('Service Worker non supporté'));
     });
 }
 
-// ✅ FONCTIONS DE DEBUG AMÉLIORÉES
+// Fonctions de debug améliorées
 window.debugModal = function() {
     console.log('=== DEBUG SYSTÈME MODAL ===');
     console.log('État modal:', isModalOpen ? 'OUVERTE' : 'FERMÉE');
-    console.log('Données projet:', currentProjectData ? currentProjectData.title : 'Aucune');
     console.log('Backdrop:', modalBackdrop?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
     console.log('Container:', modalContainer?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
     console.log('Body overflow:', document.body.style.overflow || 'auto');
+    console.log('Modal actuelle:', currentModalCard?.querySelector('h3')?.textContent || 'Aucune');
+    console.log('Données stockées:', currentProjectData?.title || 'Aucune');
+    console.log('Cartes détectées:', document.querySelectorAll('.project-card').length);
     console.log('URL actuelle:', window.location.href);
-    console.log('Cartes visibles:', Array.from(document.querySelectorAll('.project-card')).filter(card => card.style.display !== 'none').length);
     console.log('============================');
 };
 
 window.testModal = function() {
-    const visibleCards = Array.from(document.querySelectorAll('.project-card')).filter(card => card.style.display !== 'none');
-    if (visibleCards.length > 0) {
-        console.log('🧪 Test modal avec première carte visible...');
-        openProjectModal(visibleCards[0]);
+    const firstCard = document.querySelector('.project-card');
+    if (firstCard) {
+        console.log('Test modal avec première carte...');
+        openProjectModal(firstCard);
     } else {
-        console.log('❌ Aucune carte visible pour le test');
+        console.log('Aucune carte trouvée pour le test');
     }
 };
 
 window.forceCloseModal = function() {
-    console.log('🔧 Fermeture forcée de la modal...');
+    console.log('Fermeture forcée de la modal...');
     closeProjectModal();
-};
-
-window.debugFilters = function() {
-    console.log('=== DEBUG FILTRES ===');
-    const allCards = document.querySelectorAll('.project-card');
-    const visibleCards = Array.from(allCards).filter(card => card.style.display !== 'none');
-    console.log('Cartes totales:', allCards.length);
-    console.log('Cartes visibles:', visibleCards.length);
-    console.log('Filtre actif:', document.querySelector('.project-filters .filter-btn.active')?.textContent);
-    console.log('===================');
 };
