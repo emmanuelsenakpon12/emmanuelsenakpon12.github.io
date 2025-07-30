@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Variables globales
-    const popup = document.getElementById("construction-popup");
-    const closeBtn = document.getElementById("close-popup");
-    const okBtn = document.getElementById("popup-ok-btn");
-    const themeToggle = document.getElementById("theme-toggle");
-    const menuToggle = document.getElementById("menu-toggle");
-    const nav = document.getElementById("main-nav");
-    const loading = document.getElementById("loading");
+    console.log("Initialisation du portfolio...");
+
+    // Variables globales simplifiées
+    let modalBackdrop = null;
+    let modalContainer = null;
+    let isModalOpen = false;
+    let originalProjectsHTML = new Map();
 
     // Fonction utilitaire pour débounce
     function debounce(func, wait) {
@@ -21,23 +20,30 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    // Gestion de la popup de construction
+    // === GESTION POPUP CONSTRUCTION ===
+    const popup = document.getElementById("construction-popup");
+    const closeBtn = document.getElementById("close-popup");
+    const okBtn = document.getElementById("popup-ok-btn");
+
     function closePopup() {
-        popup.classList.add('popup-closing');
-        setTimeout(() => {
-            popup.style.display = "none";
-            popup.classList.remove('popup-closing');
-        }, 300);
+        if (popup) {
+            popup.classList.add('popup-closing');
+            setTimeout(() => {
+                popup.style.display = "none";
+                popup.classList.remove('popup-closing');
+            }, 300);
+        }
     }
 
     if (closeBtn) closeBtn.addEventListener("click", closePopup);
     if (okBtn) okBtn.addEventListener("click", closePopup);
+    if (popup) {
+        popup.addEventListener("click", function(e) {
+            if (e.target === popup) closePopup();
+        });
+    }
 
-    popup?.addEventListener("click", function(e) {
-        if (e.target === popup) closePopup();
-    });
-
-    // Gestion des boutons hero
+    // === GESTION BOUTONS HERO ===
     const downloadCvBtn = document.getElementById("download-cv-btn");
     const viewProjectsBtn = document.getElementById("view-projects-btn");
 
@@ -63,143 +69,188 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Gestion des vidéos de projets
-    const videoElements = document.querySelectorAll('.project-video');
-    const videoPlayBtns = document.querySelectorAll('.video-play-btn');
-    const youtubeEmbeds = document.querySelectorAll('.youtube-embed');
-    const modalVideoBtns = document.querySelectorAll('.modal-video-btn');
-    const videoModal = document.getElementById('video-modal');
-    const modalVideo = document.getElementById('modal-video');
-    const modalVideoSource = document.getElementById('modal-video-source');
-    const modalTitle = document.getElementById('modal-title');
-    const modalClose = document.getElementById('modal-close');
-
-    // Gestion lecture/pause vidéos inline
-    videoPlayBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const video = videoElements[index];
-            if (!video) return;
-            
-            const playIcon = btn.querySelector('.play-icon');
-            const pauseIcon = btn.querySelector('.pause-icon');
-            
-            if (video.paused) {
-                video.play().catch(e => console.warn('Erreur lecture vidéo:', e));
-                if (playIcon) playIcon.style.display = 'none';
-                if (pauseIcon) pauseIcon.style.display = 'inline';
-            } else {
-                video.pause();
-                if (playIcon) playIcon.style.display = 'inline';
-                if (pauseIcon) pauseIcon.style.display = 'none';
-            }
-        });
-    });
-
-    // Gestion des vidéos YouTube
-    youtubeEmbeds.forEach(embed => {
-        embed.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const videoId = this.getAttribute('data-video-id');
-            if (!videoId) return;
-            
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-            iframe.width = '100%';
-            iframe.height = '100%';
-            iframe.frameBorder = '0';
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            iframe.allowFullscreen = true;
-            iframe.title = `Vidéo YouTube: ${videoId}`;
-            
-            this.innerHTML = '';
-            this.appendChild(iframe);
-        });
-    });
-
-    // Gestion des boutons YouTube dans les actions
-    const youtubeDemoBtns = document.querySelectorAll('.youtube-demo-btn');
-    youtubeDemoBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const videoId = this.getAttribute('data-youtube');
-            if (videoId) {
-                window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener,noreferrer');
-            }
-        });
-    });
-
-    // Gestion modal vidéo (séparée - utilise .video-modal-overlay du CSS)
-    modalVideoBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const videoSrc = this.getAttribute('data-video');
-            const projectTitle = this.closest('.project-card')?.querySelector('h3')?.textContent || 'Projet';
-            
-            if (modalVideoSource && modalTitle && videoModal) {
-                modalVideoSource.src = videoSrc;
-                modalTitle.textContent = `Démo - ${projectTitle}`;
-                modalVideo.load();
-                videoModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                
-                setTimeout(() => {
-                    videoModal.classList.add('modal-open');
-                }, 10);
-            }
-        });
-    });
-
-    // Fermeture modal vidéo
-    function closeVideoModal() {
-        if (modalVideo) {
-            modalVideo.pause();
-            modalVideo.currentTime = 0;
-        }
-        if (videoModal) {
-            videoModal.classList.remove('modal-open');
-            setTimeout(() => {
-                videoModal.style.display = 'none';
-                if (modalVideoSource) modalVideoSource.src = '';
-                document.body.style.overflow = '';
-            }, 300);
-        }
-    }
-
-    if (modalClose) {
-        modalClose.addEventListener('click', closeVideoModal);
-    }
-
-    videoModal?.addEventListener('click', function(e) {
-        if (e.target === videoModal) {
-            closeVideoModal();
-        }
-    });
-
-    // SYSTÈME MODAL CORRIGÉ - Variables globales
-    let modalBackdrop = null;
-    let modalContainer = null;
-    let currentModalCard = null;
-    let currentProjectData = null; // NOUVEAU: Stocker les données du projet
-    let isModalOpen = false;
-
-    // Fonction pour créer les éléments modaux
+    // === CRÉATION ÉLÉMENTS MODAUX ===
     function createModalElements() {
+        // Créer le backdrop
         modalBackdrop = document.createElement('div');
         modalBackdrop.className = 'modal-backdrop';
+        document.body.appendChild(modalBackdrop);
         
+        // Créer le conteneur
         modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
-        
-        document.body.appendChild(modalBackdrop);
         document.body.appendChild(modalContainer);
         
-        console.log('Éléments modaux créés');
+        // Event listeners pour fermeture
+        modalBackdrop.addEventListener('click', function(e) {
+            if (e.target === modalBackdrop) {
+                closeProjectModal();
+            }
+        });
+        
+        modalContainer.addEventListener('click', function(e) {
+            if (e.target === modalContainer) {
+                closeProjectModal();
+            }
+        });
+        
+        console.log("Éléments modaux créés");
     }
 
-    createModalElements();
+    // === SAUVEGARDE HTML INITIAL ===
+    function saveOriginalHTML() {
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach((card, index) => {
+            const title = card.querySelector('h3')?.textContent || `projet-${index}`;
+            originalProjectsHTML.set(title, card.outerHTML);
+        });
+        console.log("HTML original sauvegardé pour", originalProjectsHTML.size, "projets");
+    }
 
-    // Slideshows optimisés
+    // === OUVERTURE MODAL ===
+    function openProjectModal(projectCard) {
+        if (isModalOpen || !modalBackdrop || !modalContainer) return;
+        
+        console.log("Ouverture modal pour:", projectCard.querySelector('h3')?.textContent);
+        
+        isModalOpen = true;
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('no-scroll');
+        
+        // Arrêter les slideshows
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            if (container._stopSlide) container._stopSlide();
+        });
+        
+        // Créer la modal
+        createModalFromCard(projectCard);
+        
+        // Afficher la modal
+        modalBackdrop.classList.add('active');
+        modalContainer.classList.add('active');
+        
+        // Gérer l'URL
+        const title = projectCard.querySelector('h3')?.textContent || '';
+        updateURL(title);
+        
+        // Réinitialiser les slideshows après animation
+        setTimeout(() => {
+            initSlideshows();
+        }, 350);
+    }
+
+    // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
+    function createModalFromCard(projectCard) {
+        const title = projectCard.querySelector('h3')?.textContent || '';
+        const originalHTML = originalProjectsHTML.get(title);
+        
+        // Utiliser le HTML original si disponible, sinon le HTML actuel
+        const htmlToUse = originalHTML || projectCard.outerHTML;
+        
+        // Créer un élément temporaire pour parser le HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlToUse;
+        const cardElement = tempDiv.firstElementChild;
+        
+        // Cloner et nettoyer
+        const modalCard = cardElement.cloneNode(true);
+        modalCard.className = 'modal-card';
+        modalCard.removeAttribute('data-category');
+        modalCard.style.display = '';
+        modalCard.style.opacity = '';
+        
+        // Extraire les éléments
+        const projectMedia = modalCard.querySelector('.project-media');
+        const projectInfo = modalCard.querySelector('.project-info');
+        
+        if (projectMedia && projectInfo) {
+            // Restructurer pour la modal
+            modalCard.innerHTML = `
+                <div class="modal-media">
+                    ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
+                </div>
+                <div class="modal-info">
+                    ${projectInfo.innerHTML
+                        .replace(/project-description/g, 'modal-description')
+                        .replace(/project-tags/g, 'modal-tags')
+                        .replace(/tag(?![s-])/g, 'modal-tag')
+                        .replace(/project-actions/g, 'modal-actions')
+                        .replace(/project-link/g, 'modal-link')
+                    }
+                </div>
+            `;
+        }
+        
+        // Ajouter bouton de fermeture
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'modal-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.setAttribute('aria-label', 'Fermer le projet');
+        closeBtn.addEventListener('click', closeProjectModal);
+        modalCard.appendChild(closeBtn);
+        
+        // Ajouter à la modal
+        modalContainer.innerHTML = '';
+        modalContainer.appendChild(modalCard);
+        
+        console.log("Modal créée avec succès");
+    }
+
+    // === FERMETURE MODAL ===
+    function closeProjectModal() {
+        if (!isModalOpen) return;
+        
+        console.log("Fermeture modal");
+        
+        isModalOpen = false;
+        
+        modalBackdrop.classList.remove('active');
+        modalContainer.classList.remove('active');
+        
+        clearURL();
+        
+        setTimeout(() => {
+            modalContainer.innerHTML = '';
+            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
+            
+            // Redémarrer les slideshows
+            document.querySelectorAll('.slideshow-container').forEach(container => {
+                if (container._startSlide) container._startSlide();
+            });
+        }, 250);
+    }
+
+    // === GESTION URL ===
+    function updateURL(projectTitle) {
+        if (history.pushState && projectTitle) {
+            const urlSlug = projectTitle.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            history.pushState(
+                { modal: true, project: urlSlug }, 
+                '', 
+                '#projet-' + urlSlug
+            );
+        }
+    }
+
+    function clearURL() {
+        if (history.pushState) {
+            history.pushState(null, '', window.location.pathname + window.location.search);
+        }
+    }
+
+    // === GESTION HISTORIQUE NAVIGATEUR ===
+    window.addEventListener('popstate', function(e) {
+        if (isModalOpen) {
+            closeProjectModal();
+        }
+    });
+
+    // === SLIDESHOWS ===
     function initSlideshows() {
         document.querySelectorAll('.slideshow-container').forEach(container => {
             const slides = container.querySelectorAll('.slide');
@@ -220,6 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 dots[currentSlide]?.classList.add('active');
             }
 
+            // Navigation dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -227,6 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
+            // Auto-slide
             function startSlide() {
                 if (!isModalOpen) {
                     slideInterval = setInterval(() => {
@@ -250,187 +303,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // CORRECTION 1: Extraire les données du projet pour éviter la perte de contenu
-    function extractProjectData(projectCard) {
-        const title = projectCard.querySelector('h3')?.textContent || '';
-        const category = projectCard.getAttribute('data-category') || '';
-        
-        // CORRECTION: Créer une copie propre AVANT toute modification de style
-        const cleanCard = projectCard.cloneNode(true);
-        // Nettoyer les styles inline ajoutés par les filtres
-        cleanCard.style.display = '';
-        cleanCard.style.opacity = '';
-        
-        return {
-            title: title,
-            category: category,
-            originalCard: projectCard,
-            // Stocker le HTML propre (sans styles de filtrage)
-            originalHTML: cleanCard.outerHTML
-        };
-    }
-
-    // CORRECTION 2: Fonction d'ouverture modal robuste
-    function openProjectModal(projectCard) {
-        if (isModalOpen) return;
-        
-        console.log('Ouverture modal:', projectCard.querySelector('h3')?.textContent || 'Sans titre');
-        
-        // Extraire et stocker les données du projet
-        currentProjectData = extractProjectData(projectCard);
-        
-        isModalOpen = true;
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('no-scroll');
-        
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            if (container._stopSlide) container._stopSlide();
-        });
-        
-        // Créer la modal en utilisant les données stockées
-        createModalFromData(currentProjectData);
-        
-        modalBackdrop.classList.add('active');
-        modalContainer.classList.add('active');
-        
-        // CORRECTION 3: Mettre à jour l'URL de manière synchronisée
-        updateURLForModal(currentProjectData.title);
-        
-        setTimeout(() => {
-            initSlideshows();
-        }, 350);
-        
-        console.log('Modal ouverte avec succès');
-    }
-
-    // NOUVELLE FONCTION: Créer la modal à partir des données stockées (AMÉLIORÉE)
-    function createModalFromData(projectData) {
-        // CORRECTION: Utiliser le HTML initial sauvegardé si disponible
-        const projectTitle = projectData.title;
-        const cleanHTML = initialProjectsHTML.get(projectTitle) || projectData.originalHTML;
-        
-        console.log('Création modal pour:', projectTitle, 'HTML initial disponible:', initialProjectsHTML.has(projectTitle));
-        
-        // Recréer l'élément depuis le HTML initial (propre)
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = cleanHTML;
-        const freshCard = tempDiv.firstElementChild;
-        
-        const modalCard = freshCard.cloneNode(true);
-        modalCard.className = 'modal-card';
-        modalCard.removeAttribute('data-category');
-        // Nettoyer les styles qui pourraient rester
-        modalCard.style.display = '';
-        modalCard.style.opacity = '';
-        
-        const projectMedia = modalCard.querySelector('.project-media');
-        const projectInfo = modalCard.querySelector('.project-info');
-        
-        if (projectMedia && projectInfo) {
-            modalCard.innerHTML = `
-                <div class="modal-media">
-                    ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
-                </div>
-                <div class="modal-info">
-                    ${projectInfo.innerHTML
-                        .replace(/project-description/g, 'modal-description')
-                        .replace(/project-tags/g, 'modal-tags')
-                        .replace(/tag(?![s-])/g, 'modal-tag')
-                        .replace(/project-actions/g, 'modal-actions')
-                        .replace(/project-link/g, 'modal-link')
-                    }
-                </div>
-            `;
-        }
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'modal-close';
-        closeBtn.innerHTML = '×';
-        closeBtn.setAttribute('aria-label', 'Fermer le projet');
-        closeBtn.onclick = (e) => {
-            e.stopPropagation();
-            closeProjectModal();
-        };
-        
-        modalCard.appendChild(closeBtn);
-        currentModalCard = modalCard;
-        
-        modalContainer.innerHTML = '';
-        modalContainer.appendChild(modalCard);
-        
-        console.log('Modal créée avec succès, contenu préservé');
-    }
-
-    // CORRECTION 4: Fonction de fermeture modal avec nettoyage URL
-    function closeProjectModal() {
-        if (!isModalOpen) return;
-        
-        console.log('Fermeture modal');
-        
-        isModalOpen = false;
-        
-        modalBackdrop.classList.remove('active');
-        modalContainer.classList.remove('active');
-        
-        // CORRECTION: Nettoyer l'URL
-        clearModalURL();
-        
-        setTimeout(() => {
-            if (modalContainer) {
-                modalContainer.innerHTML = '';
-            }
-            currentModalCard = null;
-            currentProjectData = null; // Nettoyer les données stockées
-            
-            document.body.style.overflow = '';
-            document.body.classList.remove('no-scroll');
-            
-            document.querySelectorAll('.slideshow-container').forEach(container => {
-                if (container._startSlide) container._startSlide();
-            });
-            
-        }, 250);
-        
-        console.log('Modal fermée');
-    }
-
-    // CORRECTION 5: Gestion URL synchronisée
-    function updateURLForModal(projectTitle) {
-        if (history.pushState) {
-            const urlSlug = projectTitle.toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim();
-            history.pushState(
-                { modal: true, project: urlSlug }, 
-                '', 
-                '#projet-' + urlSlug
-            );
-        }
-    }
-
-    function clearModalURL() {
-        if (history.pushState) {
-            history.pushState(null, '', window.location.pathname + window.location.search);
-        }
-    }
-
-    // CORRECTION 6: Event listeners robustes pour les cartes projet
-    function attachProjectCardListeners() {
+    // === LISTENERS CARTES PROJETS ===
+    function attachProjectListeners() {
         const projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
-            // Vérifier si le listener n'est pas déjà attaché
-            if (card.hasAttribute('data-listener-attached')) {
-                return;
-            }
+            // Éviter les doublons
+            if (card.hasAttribute('data-modal-listener')) return;
+            card.setAttribute('data-modal-listener', 'true');
             
-            // Marquer comme ayant un listener
-            card.setAttribute('data-listener-attached', 'true');
-            
-            // Attacher le listener
             card.addEventListener('click', function(e) {
+                // Éviter les clics sur les boutons internes
                 if (e.target.closest(`
                     a, 
                     button:not(.modal-close), 
@@ -442,55 +325,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     iframe, 
                     .youtube-demo-btn, 
                     .modal-video-btn,
-                    .youtube-play-btn,
-                    .modal-play-btn
+                    .youtube-play-btn
                 `)) {
                     return;
                 }
                 
                 e.preventDefault();
                 e.stopPropagation();
-                
                 openProjectModal(this);
             });
         });
         
-        console.log('Event listeners attachés à', projectCards.length, 'cartes');
+        console.log("Listeners attachés à", projectCards.length, "cartes projets");
     }
 
-    // Event listeners pour fermeture modal
-    if (modalBackdrop) {
-        modalBackdrop.addEventListener('click', function(e) {
-            if (e.target === modalBackdrop) {
-                closeProjectModal();
-            }
-        });
-    }
-
-    if (modalContainer) {
-        modalContainer.addEventListener('click', function(e) {
-            if (e.target === modalContainer) {
-                closeProjectModal();
-            }
-        });
-    }
-
-    // CORRECTION 7: Système de filtres amélioré AVEC SÉPARATION
-    function setupProjectFilters(filtersSelector, cardsSelector) {
-        const filters = document.querySelectorAll(filtersSelector);
-        const cards = document.querySelectorAll(cardsSelector);
+    // === FILTRES PROJETS ===
+    function setupProjectFilters() {
+        const filters = document.querySelectorAll('.projects .filter-btn');
+        const cards = document.querySelectorAll('.project-card');
 
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                console.log('Filtre projet sélectionné:', filterValue);
+                console.log("Filtre sélectionné:", filterValue);
                 
-                // Fermer la modal ET nettoyer l'URL avant filtrage
+                // Fermer la modal si ouverte
                 if (isModalOpen) {
                     closeProjectModal();
                 }
                 
+                // Mettre à jour les boutons
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -498,57 +363,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                videoElements.forEach(video => {
-                    video.pause();
-                    video.currentTime = 0;
-                });
-                
-                videoPlayBtns.forEach(btn => {
-                    const playIcon = btn.querySelector('.play-icon');
-                    const pauseIcon = btn.querySelector('.pause-icon');
-                    if (playIcon) playIcon.style.display = 'inline';
-                    if (pauseIcon) pauseIcon.style.display = 'none';
-                });
-                
-                // Filtrage avec gestion des listeners modaux
+                // Filtrer les cartes
                 let visibleCount = 0;
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
-                    
-                    console.log(`Projet: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
                     
                     if (shouldShow) {
                         card.style.display = 'block';
                         card.style.opacity = '1';
                         visibleCount++;
-                        
-                        // Assurer que le listener MODAL est attaché (SEULEMENT pour les projets)
-                        if (!card.hasAttribute('data-listener-attached')) {
-                            card.setAttribute('data-listener-attached', 'true');
-                            card.addEventListener('click', function(e) {
-                                if (e.target.closest(`
-                                    a, 
-                                    button:not(.modal-close), 
-                                    .project-link, 
-                                    .modal-link,
-                                    .video-play-btn, 
-                                    .youtube-embed, 
-                                    .slide-dot, 
-                                    iframe, 
-                                    .youtube-demo-btn, 
-                                    .modal-video-btn,
-                                    .youtube-play-btn,
-                                    .modal-play-btn
-                                `)) {
-                                    return;
-                                }
-                                
-                                e.preventDefault();
-                                e.stopPropagation();
-                                openProjectModal(this);
-                            });
-                        }
                     } else {
                         card.style.opacity = '0';
                         setTimeout(() => {
@@ -559,22 +383,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                console.log(`Filtrage projets terminé. ${visibleCount} cartes visibles.`);
+                console.log(`${visibleCount} projets visibles après filtrage`);
+                
+                // Réattacher les listeners après un court délai
+                setTimeout(() => {
+                    attachProjectListeners();
+                }, 350);
             });
         });
     }
 
-    // NOUVELLE FONCTION: Filtres pour certifications (SANS MODAL)
-    function setupCertificationFilters(filtersSelector, cardsSelector) {
-        const filters = document.querySelectorAll(filtersSelector);
-        const cards = document.querySelectorAll(cardsSelector);
+    // === FILTRES CERTIFICATIONS ===
+    function setupCertificationFilters() {
+        const filters = document.querySelectorAll('.certifications .filter-btn');
+        const cards = document.querySelectorAll('.certification-card');
 
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                console.log('Filtre certification sélectionné:', filterValue);
-                
+                // Mettre à jour les boutons
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -582,18 +410,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                // Filtrage SIMPLE pour certifications (pas de modal)
-                let visibleCount = 0;
+                // Filtrer les cartes
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
-                    console.log(`Certification: ${card.querySelector('h3')?.textContent}, Catégorie: "${category}", Filtre: "${filterValue}", Afficher: ${shouldShow}`);
-                    
                     if (shouldShow) {
-                        card.style.display = 'flex'; // Les certifications utilisent display: flex
+                        card.style.display = 'flex';
                         card.style.opacity = '1';
-                        visibleCount++;
                     } else {
                         card.style.opacity = '0';
                         setTimeout(() => {
@@ -603,51 +427,149 @@ document.addEventListener("DOMContentLoaded", function () {
                         }, 300);
                     }
                 });
-                
-                console.log(`Filtrage certifications terminé. ${visibleCount} cartes visibles.`);
             });
         });
     }
 
-    // Setup des filtres SÉPARÉS
-    setupProjectFilters('.projects .filter-btn', '.project-card');
-    setupCertificationFilters('.certifications .filter-btn', '.certification-card');
-
-    // Navigation fluide
-    const navLinks = document.querySelectorAll('.nav-list a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                if (isModalOpen) {
-                    closeProjectModal();
+    // === GESTION YOUTUBE ===
+    function setupYouTubeHandlers() {
+        // YouTube embeds (dans les project-media)
+        document.querySelectorAll('.youtube-embed').forEach(embed => {
+            embed.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const videoId = this.getAttribute('data-video-id');
+                if (videoId) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                    iframe.width = '100%';
+                    iframe.height = '100%';
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    iframe.allowFullscreen = true;
+                    
+                    this.innerHTML = '';
+                    this.appendChild(iframe);
                 }
-                
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                
-                if (nav?.classList.contains('mobile-open')) {
-                    nav.classList.remove('mobile-open');
-                    menuToggle?.classList.remove('active');
+            });
+        });
+
+        // Boutons YouTube demo (dans les project-actions)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.youtube-demo-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const btn = e.target.closest('.youtube-demo-btn');
+                const videoId = btn.getAttribute('data-youtube');
+                if (videoId) {
+                    window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener,noreferrer');
                 }
             }
         });
-    });
+    }
 
-    // Menu mobile toggle
-    if (menuToggle && nav) {
-        menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('mobile-open');
-            menuToggle.classList.toggle('active');
+    // === GESTION MODAL VIDÉO ===
+    function setupVideoModal() {
+        const videoModal = document.getElementById('video-modal');
+        const modalVideo = document.getElementById('modal-video');
+        const modalVideoSource = document.getElementById('modal-video-source');
+        const modalTitle = document.getElementById('modal-title');
+        const modalClose = document.getElementById('modal-close');
+
+        if (!videoModal) return;
+
+        // Boutons modal vidéo
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.modal-video-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const btn = e.target.closest('.modal-video-btn');
+                const videoSrc = btn.getAttribute('data-video');
+                const projectTitle = btn.closest('.project-card, .modal-card')?.querySelector('h3')?.textContent || 'Projet';
+                
+                if (modalVideoSource && modalTitle) {
+                    modalVideoSource.src = videoSrc;
+                    modalTitle.textContent = `Démo - ${projectTitle}`;
+                    modalVideo.load();
+                    videoModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    
+                    setTimeout(() => {
+                        videoModal.classList.add('modal-open');
+                    }, 10);
+                }
+            }
+        });
+
+        // Fermeture modal vidéo
+        function closeVideoModal() {
+            if (modalVideo) {
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+            }
+            if (videoModal) {
+                videoModal.classList.remove('modal-open');
+                setTimeout(() => {
+                    videoModal.style.display = 'none';
+                    if (modalVideoSource) modalVideoSource.src = '';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        if (modalClose) {
+            modalClose.addEventListener('click', closeVideoModal);
+        }
+
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
         });
     }
 
-    // Toggle thème avec persistance
-    if (themeToggle) {
+    // === NAVIGATION ===
+    function setupNavigation() {
+        const navLinks = document.querySelectorAll('.nav-list a');
+        const menuToggle = document.getElementById('menu-toggle');
+        const nav = document.getElementById('main-nav');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    if (isModalOpen) {
+                        closeProjectModal();
+                    }
+                    
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    if (nav?.classList.contains('mobile-open')) {
+                        nav.classList.remove('mobile-open');
+                        menuToggle?.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Menu mobile
+        if (menuToggle && nav) {
+            menuToggle.addEventListener('click', function() {
+                nav.classList.toggle('mobile-open');
+                menuToggle.classList.toggle('active');
+            });
+        }
+    }
+
+    // === GESTION THÈME ===
+    function setupTheme() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (!themeToggle) return;
+
         try {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
@@ -669,49 +591,48 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Barres de compétences permanentes
-    const skillBars = document.querySelectorAll('.skill-progress');
-    skillBars.forEach(bar => {
-        const originalWidth = bar.style.width || bar.getAttribute('data-width');
-        if (originalWidth) {
-            bar.style.setProperty('width', originalWidth, 'important');
-            
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                        if (bar.style.width !== originalWidth) {
-                            bar.style.setProperty('width', originalWidth, 'important');
-                        }
-                    }
-                });
-            });
-            
-            observer.observe(bar, { attributes: true });
-        }
-    });
-
-    // Animation d'apparition des sections
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+    // === GESTION CLAVIER ===
+    function setupKeyboardHandlers() {
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                
+                if (isModalOpen) {
+                    closeProjectModal();
+                } else if (document.getElementById('video-modal')?.style.display === 'flex') {
+                    document.getElementById('modal-close')?.click();
+                } else if (popup && popup.style.display !== "none") {
+                    closePopup();
+                }
             }
         });
-    }, observerOptions);
+    }
 
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        sectionObserver.observe(section);
-    });
+    // === ANIMATIONS SECTIONS ===
+    function setupSectionAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    // Validation du formulaire de contact
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
+        const sectionObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+    }
+
+    // === FORMULAIRE CONTACT ===
+    function setupContactForm() {
+        const contactForm = document.getElementById('contact-form');
+        if (!contactForm) return;
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -759,97 +680,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Lazy loading des images
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        imageObserver.unobserve(img);
-                    }
-                }
-            });
-        });
-
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
-
-    // CORRECTION 8: Gestion touches clavier et historique améliorée
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            
-            if (isModalOpen) {
-                closeProjectModal();
-            } 
-            else if (videoModal && videoModal.style.display === 'flex') {
-                closeVideoModal();
-            } 
-            else if (popup && popup.style.display !== "none") {
-                closePopup();
-            }
-        }
-    });
-
-    // CORRECTION 9: Gestion historique navigateur corrigée
-    window.addEventListener('popstate', function(e) {
-        if (isModalOpen) {
-            // Fermer la modal sans ajouter d'entrée dans l'historique
-            isModalOpen = false;
-            modalBackdrop.classList.remove('active');
-            modalContainer.classList.remove('active');
-            
-            setTimeout(() => {
-                if (modalContainer) {
-                    modalContainer.innerHTML = '';
-                }
-                currentModalCard = null;
-                currentProjectData = null;
-                
-                document.body.style.overflow = '';
-                document.body.classList.remove('no-scroll');
-                
-                document.querySelectorAll('.slideshow-container').forEach(container => {
-                    if (container._startSlide) container._startSlide();
-                });
-            }, 250);
-        }
-    });
-
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (isModalOpen) {
-                console.log('Resize détecté avec modal ouverte - CSS gère automatiquement');
-            }
-        }, 250);
-    });
-
-    // Gestion erreurs JavaScript avec nettoyage
-    window.addEventListener('error', function(e) {
-        console.warn('Erreur JS détectée:', e.message);
-        if (isModalOpen) {
-            isModalOpen = false;
-            document.body.style.overflow = '';
-            document.body.classList.remove('no-scroll');
-            if (modalBackdrop) modalBackdrop.classList.remove('active');
-            if (modalContainer) modalContainer.classList.remove('active');
-            clearModalURL();
-        }
-    });
-
-    // CORRECTION 10: Initialisation complète au chargement
-    function initializePortfolio() {
-        initSlideshows();
-        attachProjectCardListeners();
-        
-        // Gestion URL au chargement (si l'utilisateur arrive avec une URL de projet)
+    // === GESTION CHARGEMENT URL ===
+    function handleInitialURL() {
         const hash = window.location.hash;
         if (hash.startsWith('#projet-')) {
             const projectSlug = hash.replace('#projet-', '');
@@ -868,28 +700,74 @@ document.addEventListener("DOMContentLoaded", function () {
                     openProjectModal(matchingCard);
                 }, 500);
             } else {
-                // Nettoyer l'URL si le projet n'existe pas
-                clearModalURL();
+                clearURL();
             }
         }
     }
 
-    // Masquer le loading
+    // === INITIALISATION COMPLÈTE ===
+    function initialize() {
+        console.log("Début de l'initialisation...");
+        
+        // Sauvegarder le HTML original AVANT tout
+        saveOriginalHTML();
+        
+        // Créer les éléments modaux
+        createModalElements();
+        
+        // Initialiser tous les composants
+        initSlideshows();
+        attachProjectListeners();
+        setupProjectFilters();
+        setupCertificationFilters();
+        setupYouTubeHandlers();
+        setupVideoModal();
+        setupNavigation();
+        setupTheme();
+        setupKeyboardHandlers();
+        setupSectionAnimations();
+        setupContactForm();
+        
+        // Gérer l'URL initiale
+        handleInitialURL();
+        
+        console.log("Initialisation terminée avec succès !");
+    }
+
+    // Masquer le loading et initialiser
     setTimeout(() => {
+        const loading = document.getElementById('loading');
         if (loading) {
             loading.style.display = 'none';
         }
-        // Initialiser après le masquage du loading
-        initializePortfolio();
+        initialize();
     }, 500);
 
-    console.log('Portfolio modal système corrigé initialisé avec succès');
-    console.log('Corrections appliquées:');
-    console.log('- Stockage des données de projet pour éviter la perte de contenu');
-    console.log('- Synchronisation URL avec état modal');
-    console.log('- Réattachement des listeners après filtrage');
-    console.log('- Gestion historique navigateur améliorée');
-    console.log('- Nettoyage automatique en cas d\'erreur');
+    // === FONCTIONS DE DEBUG ===
+    window.debugPortfolio = function() {
+        console.log("=== DEBUG PORTFOLIO ===");
+        console.log("Modal ouverte:", isModalOpen);
+        console.log("Backdrop présent:", !!modalBackdrop);
+        console.log("Container présent:", !!modalContainer);
+        console.log("Projets HTML sauvegardés:", originalProjectsHTML.size);
+        console.log("Cartes projets:", document.querySelectorAll('.project-card').length);
+        console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-modal-listener]').length);
+        console.log("========================");
+    };
+
+    window.testModal = function() {
+        const firstCard = document.querySelector('.project-card');
+        if (firstCard) {
+            console.log("Test de la modal...");
+            openProjectModal(firstCard);
+        } else {
+            console.log("Aucune carte trouvée");
+        }
+    };
+
+    window.forceClose = function() {
+        closeProjectModal();
+    };
 });
 
 // Service Worker
@@ -900,109 +778,3 @@ if ('serviceWorker' in navigator) {
             .catch(() => console.log('Service Worker non supporté'));
     });
 }
-
-// Fonctions de debug améliorées
-window.debugModal = function() {
-    console.log('=== DEBUG SYSTÈME MODAL ===');
-    console.log('État modal:', isModalOpen ? 'OUVERTE' : 'FERMÉE');
-    console.log('Backdrop:', modalBackdrop?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
-    console.log('Container:', modalContainer?.classList.contains('active') ? 'ACTIF' : 'INACTIF');
-    console.log('Body overflow:', document.body.style.overflow || 'auto');
-    console.log('Modal actuelle:', currentModalCard?.querySelector('h3')?.textContent || 'Aucune');
-    console.log('Données stockées:', currentProjectData?.title || 'Aucune');
-    console.log('Cartes détectées:', document.querySelectorAll('.project-card').length);
-    console.log('URL actuelle:', window.location.href);
-    console.log('============================');
-};
-
-window.testModal = function() {
-    const firstCard = document.querySelector('.project-card');
-    if (firstCard) {
-        console.log('Test modal avec première carte...');
-        openProjectModal(firstCard);
-    } else {
-        console.log('Aucune carte trouvée pour le test');
-    }
-};
-
-window.forceCloseModal = function() {
-    console.log('Fermeture forcée de la modal...');
-    closeProjectModal();
-};
-
-// Fonction de debug pour les filtres
-window.debugFilters = function() {
-    console.log('=== DEBUG SYSTÈME FILTRES ===');
-    const projectCards = document.querySelectorAll('.project-card');
-    const certificationCards = document.querySelectorAll('.certification-card');
-    const projectFilters = document.querySelectorAll('.projects .filter-btn');
-    const certificationFilters = document.querySelectorAll('.certifications .filter-btn');
-    const activeProjectFilter = document.querySelector('.projects .filter-btn.active');
-    const activeCertificationFilter = document.querySelector('.certifications .filter-btn.active');
-    
-    console.log('PROJETS:');
-    console.log('- Filtres détectés:', projectFilters.length);
-    console.log('- Filtre actif:', activeProjectFilter?.getAttribute('data-filter') || 'Aucun');
-    console.log('- Cartes projet:', projectCards.length);
-    
-    projectCards.forEach((card, index) => {
-        const title = card.querySelector('h3')?.textContent || `Carte ${index + 1}`;
-        const category = card.getAttribute('data-category') || 'sans catégorie';
-        const visible = card.style.display !== 'none';
-        const hasListener = card.hasAttribute('data-listener-attached');
-        
-        console.log(`  - ${title}: catégorie="${category}", visible=${visible}, modal-listener=${hasListener}`);
-    });
-    
-    console.log('\nCERTIFICATIONS:');
-    console.log('- Filtres détectés:', certificationFilters.length);
-    console.log('- Filtre actif:', activeCertificationFilter?.getAttribute('data-filter') || 'Aucun');
-    console.log('- Cartes certification:', certificationCards.length);
-    
-    certificationCards.forEach((card, index) => {
-        const title = card.querySelector('h3')?.textContent || `Carte ${index + 1}`;
-        const category = card.getAttribute('data-category') || 'sans catégorie';
-        const visible = card.style.display !== 'none';
-        const hasListener = card.hasAttribute('data-listener-attached');
-        
-        console.log(`  - ${title}: catégorie="${category}", visible=${visible}, modal-listener=${hasListener}`);
-    });
-    
-    console.log('============================');
-};
-
-// Fonction de debug pour les modals avec vérification du contenu
-window.debugModalContent = function() {
-    console.log('=== DEBUG CONTENU MODAL ===');
-    console.log('État modal:', isModalOpen ? 'OUVERTE' : 'FERMÉE');
-    console.log('HTML initial sauvegardé:', initialProjectsHTML.size, 'projets');
-    
-    if (currentModalCard) {
-        const modalMedia = currentModalCard.querySelector('.modal-media, .modal-media-content');
-        const modalInfo = currentModalCard.querySelector('.modal-info');
-        const modalDescription = currentModalCard.querySelector('.modal-description, .project-description');
-        const modalActions = currentModalCard.querySelector('.modal-actions, .project-actions');
-        
-        console.log('Contenu modal:');
-        console.log('- Média présent:', !!modalMedia);
-        console.log('- Info présente:', !!modalInfo);
-        console.log('- Description présente:', !!modalDescription);
-        console.log('- Actions présentes:', !!modalActions);
-        
-        if (modalDescription) {
-            console.log('- Texte description:', modalDescription.textContent.substring(0, 100) + '...');
-        }
-        
-        if (modalActions) {
-            const buttons = modalActions.querySelectorAll('button, a');
-            console.log('- Nombre de boutons/liens:', buttons.length);
-        }
-    }
-    
-    if (currentProjectData) {
-        console.log('Données projet:', currentProjectData.title);
-        console.log('HTML initial disponible:', initialProjectsHTML.has(currentProjectData.title));
-    }
-    
-    console.log('============================');
-};
