@@ -255,12 +255,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = projectCard.querySelector('h3')?.textContent || '';
         const category = projectCard.getAttribute('data-category') || '';
         
+        // CORRECTION: Créer une copie propre AVANT toute modification de style
+        const cleanCard = projectCard.cloneNode(true);
+        // Nettoyer les styles inline ajoutés par les filtres
+        cleanCard.style.display = '';
+        cleanCard.style.opacity = '';
+        
         return {
             title: title,
             category: category,
             originalCard: projectCard,
-            // Stocker le HTML complet pour recréer la modal si nécessaire
-            originalHTML: projectCard.outerHTML
+            // Stocker le HTML propre (sans styles de filtrage)
+            originalHTML: cleanCard.outerHTML
         };
     }
 
@@ -297,16 +303,25 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('Modal ouverte avec succès');
     }
 
-    // NOUVELLE FONCTION: Créer la modal à partir des données stockées
+    // NOUVELLE FONCTION: Créer la modal à partir des données stockées (AMÉLIORÉE)
     function createModalFromData(projectData) {
-        // Recréer l'élément depuis le HTML original pour éviter les problèmes de référence
+        // CORRECTION: Utiliser le HTML initial sauvegardé si disponible
+        const projectTitle = projectData.title;
+        const cleanHTML = initialProjectsHTML.get(projectTitle) || projectData.originalHTML;
+        
+        console.log('Création modal pour:', projectTitle, 'HTML initial disponible:', initialProjectsHTML.has(projectTitle));
+        
+        // Recréer l'élément depuis le HTML initial (propre)
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = projectData.originalHTML;
+        tempDiv.innerHTML = cleanHTML;
         const freshCard = tempDiv.firstElementChild;
         
         const modalCard = freshCard.cloneNode(true);
         modalCard.className = 'modal-card';
         modalCard.removeAttribute('data-category');
+        // Nettoyer les styles qui pourraient rester
+        modalCard.style.display = '';
+        modalCard.style.opacity = '';
         
         const projectMedia = modalCard.querySelector('.project-media');
         const projectInfo = modalCard.querySelector('.project-info');
@@ -342,6 +357,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
         modalContainer.innerHTML = '';
         modalContainer.appendChild(modalCard);
+        
+        console.log('Modal créée avec succès, contenu préservé');
     }
 
     // CORRECTION 4: Fonction de fermeture modal avec nettoyage URL
@@ -950,6 +967,42 @@ window.debugFilters = function() {
         
         console.log(`  - ${title}: catégorie="${category}", visible=${visible}, modal-listener=${hasListener}`);
     });
+    
+    console.log('============================');
+};
+
+// Fonction de debug pour les modals avec vérification du contenu
+window.debugModalContent = function() {
+    console.log('=== DEBUG CONTENU MODAL ===');
+    console.log('État modal:', isModalOpen ? 'OUVERTE' : 'FERMÉE');
+    console.log('HTML initial sauvegardé:', initialProjectsHTML.size, 'projets');
+    
+    if (currentModalCard) {
+        const modalMedia = currentModalCard.querySelector('.modal-media, .modal-media-content');
+        const modalInfo = currentModalCard.querySelector('.modal-info');
+        const modalDescription = currentModalCard.querySelector('.modal-description, .project-description');
+        const modalActions = currentModalCard.querySelector('.modal-actions, .project-actions');
+        
+        console.log('Contenu modal:');
+        console.log('- Média présent:', !!modalMedia);
+        console.log('- Info présente:', !!modalInfo);
+        console.log('- Description présente:', !!modalDescription);
+        console.log('- Actions présentes:', !!modalActions);
+        
+        if (modalDescription) {
+            console.log('- Texte description:', modalDescription.textContent.substring(0, 100) + '...');
+        }
+        
+        if (modalActions) {
+            const buttons = modalActions.querySelectorAll('button, a');
+            console.log('- Nombre de boutons/liens:', buttons.length);
+        }
+    }
+    
+    if (currentProjectData) {
+        console.log('Données projet:', currentProjectData.title);
+        console.log('HTML initial disponible:', initialProjectsHTML.has(currentProjectData.title));
+    }
     
     console.log('============================');
 };
