@@ -2050,15 +2050,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   animation: shimmer 2s infinite;
 }
 
-.other-skills {
-  text-align: center;
-}
-
-.other-skills h3 {
-  font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
-  color: var(--primary-color);
-}
 
 /* === PROJECTS SECTION === */
 .projects-grid {
