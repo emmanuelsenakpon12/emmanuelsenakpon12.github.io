@@ -2709,6 +2709,122 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-color: var(--primary-color);
 }
 
+/* === AJOUTS CSS POUR COMPATIBILITÉ COMPLÈTE === */
+/* À ajouter à la fin de votre section PROJECTS SECTION */
+
+/* Boutons modal vidéo dans les actions projet */
+.modal-video-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  font-family: inherit;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+  text-align: center;
+}
+
+.modal-video-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.modal-video-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Boutons YouTube demo dans les actions projet */
+.youtube-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: #ff0000;
+  border: 1px solid #ff0000;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  color: white;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  font-family: inherit;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+  text-align: center;
+}
+
+.youtube-demo-btn:hover {
+  background-color: #cc0000;
+  border-color: #cc0000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+}
+
+.youtube-demo-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Styles pour les versions modal de ces boutons */
+.modal-actions .modal-video-btn,
+.modal-actions .youtube-demo-btn {
+  flex: none;
+  min-width: 140px;
+}
+
+/* Amélioration responsive pour les actions de projet */
+@media (max-width: 768px) {
+  .project-actions,
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .project-link,
+  .modal-link,
+  .modal-video-btn,
+  .youtube-demo-btn {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* Styles pour les boutons dans la modal (versions modal-) */
+.modal-actions .modal-video-btn {
+  background-color: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.modal-actions .modal-video-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.modal-actions .youtube-demo-btn {
+  background-color: #ff0000;
+  border-color: #ff0000;
+  color: white;
+}
+
+.modal-actions .youtube-demo-btn:hover {
+  background-color: #cc0000;
+  border-color: #cc0000;
+}
+
 /* === CERTIFICATIONS SECTION === */
 .certification-filters {
   display: flex;
