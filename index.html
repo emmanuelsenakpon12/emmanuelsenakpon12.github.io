@@ -1,861 +1,872 @@
 <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mohamed Amine Sobhi - Portfolio</title>
-        <meta name="description" content="Portfolio de Mohamed Amine Sobhi, étudiant en Master MIAGE spécialisé en Data Science et Gestion de Projet">
-        <meta name="keywords" content="data science, MIAGE, machine learning, développement, portfolio">
-        <meta name="author" content="Mohamed Amine Sobhi">
-        
-        <!-- Open Graph pour les réseaux sociaux -->
-        <meta property="og:title" content="Mohamed Amine Sobhi - Portfolio Data Science">
-        <meta property="og:description" content="Apprenti en Data Science & Systèmes d'Information">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://med063.github.io">
-        
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
-        
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-        
-        <!-- CSS -->
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Amine Sobhi - Portfolio</title>
+    <meta name="description" content="Portfolio de Mohamed Amine Sobhi, étudiant en Master MIAGE spécialisé en Data Science et Gestion de Projet">
+    <meta name="keywords" content="data science, MIAGE, machine learning, développement, portfolio">
+    <meta name="author" content="Mohamed Amine Sobhi">
+    
+    <!-- Open Graph pour les réseaux sociaux -->
+    <meta property="og:title" content="Mohamed Amine Sobhi - Portfolio Data Science">
+    <meta property="og:description" content="Apprenti en Data Science & Systèmes d'Information">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://med063.github.io">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
 
-        <!-- Pop-up de construction centrée -->
-        <div id="construction-popup" class="popup-overlay">
-            <div class="popup-container">
-                <div class="popup-content">
-                    <div class="popup-header">
-                        <div class="popup-icon">
-                            <span>⚠</span>
-                        </div>
-                        <h3>Site en Construction</h3>
-                        <button id="close-popup" class="popup-close-btn" aria-label="Fermer la popup">
-                            <span>&times;</span>
-                        </button>
+    <!-- Pop-up de construction centrée -->
+    <div id="construction-popup" class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <div class="popup-icon">
+                        <span>⚠</span>
                     </div>
-                    <div class="popup-body">
-                        <p>Ce portfolio est encore en cours de construction. Certaines sections peuvent évoluer.</p>
-                        <p class="popup-subtitle">Merci pour votre visite et votre compréhension !</p>
-                    </div>
-                    <div class="popup-footer">
-                        <button id="popup-ok-btn" class="popup-ok-btn">Compris</button>
-                    </div>
+                    <h3>Site en Construction</h3>
+                    <button id="close-popup" class="popup-close-btn" aria-label="Fermer la popup">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="popup-body">
+                    <p>Ce portfolio est encore en cours de construction. Certaines sections peuvent évoluer.</p>
+                    <p class="popup-subtitle">Merci pour votre visite et votre compréhension !</p>
+                </div>
+                <div class="popup-footer">
+                    <button id="popup-ok-btn" class="popup-ok-btn">Compris</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="main-container">
-            <!-- Header/Navigation -->
-            <header class="header">
-                <div class="header-content">
-                    <div class="logo-section">
-                        <div class="logo">
-                            <span class="initials">MS</span>
-                        </div>
-                        <span class="name">Mohamed Amine Sobhi</span>
+    <div class="main-container">
+        <!-- Header/Navigation -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <span class="initials">MS</span>
                     </div>
-                    
-                    <nav class="nav" id="main-nav">
-                        <ul class="nav-list">
-                            <li><a href="#accueil">Accueil</a></li>
-                            <li><a href="#apropos">À propos</a></li>
-                            <li><a href="#competences">Compétences</a></li>
-                            <li><a href="#projets">Projets</a></li>
-                            <li><a href="#certifications">Certifications</a></li>
-                            <li><a href="#contact">Contact</a></li>
-                        </ul>
-                    </nav>
-                    
-                    <div class="header-actions">
-                        <button class="theme-toggle" id="theme-toggle" aria-label="Changer le thème">
-                            <div class="theme-icon">
-                                <div class="icon-wrapper"></div>
+                    <span class="name">Mohamed Amine Sobhi</span>
+                </div>
+                
+                <nav class="nav" id="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#apropos">À propos</a></li>
+                        <li><a href="#competences">Compétences</a></li>
+                        <li><a href="#projets">Projets</a></li>
+                        <li><a href="#certifications">Certifications</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Changer le thème">
+                        <div class="theme-icon">
+                            <div class="icon-wrapper"></div>
+                        </div>
+                    </button>
+                    <button class="lang-toggle" aria-label="Changer la langue">FR</button>
+                    <button class="menu-toggle" id="menu-toggle" aria-label="Menu mobile">
+                        <div class="hamburger">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="accueil" class="hero">
+            <div class="hero-content">
+                <h1>Mohamed Amine Sobhi</h1>
+                <div class="hero-text">
+                    <p class="job-title">Apprenti en Data Science & Systèmes d'Information</p>
+                    <p class="description">
+                        Passionné par les données et les systèmes numériques, je conçois des solutions intelligentes 
+                        qui allient technologie et efficacité.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="./assets/cv/Mohamed_Amine_Sobhi_CV.pdf" download class="btn btn-primary" id="download-cv-btn">
+                            <span>Télécharger CV</span>
+                            <div class="btn-icon">
+                                <div class="icon"></div>
                             </div>
-                        </button>
-                        <button class="lang-toggle" aria-label="Changer la langue">FR</button>
-                        <button class="menu-toggle" id="menu-toggle" aria-label="Menu mobile">
-                            <div class="hamburger">
-                                <div class="line"></div>
-                                <div class="line"></div>
-                                <div class="line"></div>
+                        </a>
+                        <button class="btn btn-secondary" id="view-projects-btn">
+                            <span>Voir Projets</span>
+                            <div class="btn-icon">
+                                <div class="icon"></div>
                             </div>
                         </button>
                     </div>
                 </div>
-            </header>
+            </div>
+            <div class="hero-visual">
+                <div class="profile-image">
+                    <img src="./assets/images/profile.jpg" alt="Photo de profil de Mohamed Amine Sobhi" class="profile-img" loading="lazy">
+                    <div class="image-placeholder"></div>
+                </div>
+                <div class="floating-element floating-element-1">
+                    <div class="element-content">
+                        <span class="floating-text">Data Science</span>
+                    </div>
+                </div>
+                <div class="floating-element floating-element-2">
+                    <div class="element-content">
+                        <span class="floating-text">MIAGE</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <!-- Hero Section -->
-            <section id="accueil" class="hero">
-                <div class="hero-content">
-                    <h1>Mohamed Amine Sobhi</h1>
-                    <div class="hero-text">
-                        <p class="job-title">Apprenti en Data Science & Systèmes d'Information</p>
-                        <p class="description">
-                            Passionné par les données et les systèmes numériques, je conçois des solutions intelligentes 
-                            qui allient technologie et efficacité.
+        <!-- Séparateur de section -->
+        <div class="section-divider"></div>
+
+        <!-- About Section -->
+        <section id="apropos" class="section about">
+            <h2>À Propos de Moi</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Qui Je Suis</h3>
+                    <div class="text-content">
+                        <p>
+                            Je suis étudiant en Master MIAGE (Méthodes Informatiques Appliquées à la Gestion d'Entreprise), 
+                            spécialisé en Data Science et Gestion de Projet. Avec une solide formation dans les domaines 
+                            techniques et business, je fais le lien entre l'analyse de données et les solutions pratiques d'entreprise.
                         </p>
-                        <div class="hero-actions">
-                            <a href="./assets/cv/Mohamed_Amine_Sobhi_CV.pdf" download class="btn btn-primary" id="download-cv-btn">
-                                <span>Télécharger CV</span>
-                                <div class="btn-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </a>
-                            <button class="btn btn-secondary" id="view-projects-btn">
-                                <span>Voir Projets</span>
-                                <div class="btn-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
+                        <p>
+                            Mon parcours académique m'a doté de compétences en analyse de données, machine learning et 
+                            architecture des systèmes d'information, tandis que mes stages m'ont apporté une expérience 
+                            concrète dans l'implémentation de ces technologies pour résoudre des défis business.
+                        </p>
+                        <div class="soft-skills">
+                            <h4>Compétences transversales</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Adaptabilité</span>
+                                <span class="skill-tag">Communication</span>
+                                <span class="skill-tag">Résolution de Problèmes</span>
+                                <span class="skill-tag">Travail d'Équipe</span>
+                                <span class="skill-tag">Pensée Critique</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="hero-visual">
-                    <div class="profile-image">
-                        <img src="./assets/images/profile.jpg" alt="Photo de profil de Mohamed Amine Sobhi" class="profile-img" loading="lazy">
-                        <div class="image-placeholder"></div>
-                    </div>
-                    <div class="floating-element floating-element-1">
-                        <div class="element-content">
-                            <span class="floating-text">Data Science</span>
+                
+                <div class="education-timeline">
+                    <h3>Parcours Académique</h3>
+                    <div class="timeline" role="list">
+                        <div class="timeline-item" role="listitem">
+                            <div class="timeline-icon">
+                                <div class="icon" aria-hidden="true"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Master 2 MIAGE – Parcours IDD (Ingénierie des Données de la Décision)</h4>
+                                <span class="institution">Université de Picardie Jules Verne, 2026 - 2027</span>
+                                <p>Spécialisation en data science, business intelligence, modélisation décisionnelle et pilotage des systèmes d'information.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="floating-element floating-element-2">
-                        <div class="element-content">
-                            <span class="floating-text">MIAGE</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- About Section -->
-            <section id="apropos" class="about">
-                <h2>À Propos de Moi</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <h3>Qui Je Suis</h3>
-                        <div class="text-content">
-                            <p>
-                                Je suis étudiant en Master MIAGE (Méthodes Informatiques Appliquées à la Gestion d'Entreprise), 
-                                spécialisé en Data Science et Gestion de Projet. Avec une solide formation dans les domaines 
-                                techniques et business, je fais le lien entre l'analyse de données et les solutions pratiques d'entreprise.
-                            </p>
-                            <p>
-                                Mon parcours académique m'a doté de compétences en analyse de données, machine learning et 
-                                architecture des systèmes d'information, tandis que mes stages m'ont apporté une expérience 
-                                concrète dans l'implémentation de ces technologies pour résoudre des défis business.
-                            </p>
-                            <div class="soft-skills">
-                                <h4>Compétences transversales</h4>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Adaptabilité</span>
-                                    <span class="skill-tag">Communication</span>
-                                    <span class="skill-tag">Résolution de Problèmes</span>
-                                    <span class="skill-tag">Travail d'Équipe</span>
-                                    <span class="skill-tag">Pensée Critique</span>
+                        <div class="timeline-item" role="listitem">
+                            <div class="timeline-icon">
+                                <div class="icon" aria-hidden="true"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Master 1 MIAGE – Parcours commun</h4>
+                                <span class="institution">Université de Picardie Jules Verne, 2025 - 2026</span>
+                                <p>Tronc commun en systèmes d'information, ingénierie logicielle, gestion de projet, et bases de la data science.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item" role="listitem">
+                            <div class="timeline-icon">
+                                <div class="icon" aria-hidden="true"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Licence Informatique</h4>
+                                <span class="institution">Université de Picardie Jules Verne, 2022 - 2025</span>
+                                <p>Fondements en programmation, structures de données, algorithmique et bases de données.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item" role="listitem">
+                            <div class="timeline-icon">
+                                <div class="icon" aria-hidden="true"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Baccalauréat Scientifique</h4>
+                                <span class="institution">2021</span>
+                                <p>Solide formation en mathématiques, physique et sciences de l'ingénieur.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tools-section">
+                <div class="tools-container">
+                    <h3>Outils et technologies que j'utilise</h3>
+                    <div class="tools-grid">
+                        <!-- Power Automate -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/power-automate.png" alt="Power Automate" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Power Automate</span>
+                        </div>
+
+                        <!-- Power BI -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/power-bi.png" alt="Power BI" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Power BI</span>
+                        </div>
+
+                        <!-- Tableau -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/tableau.png" alt="Tableau" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Tableau</span>
+                        </div>
+
+                        <!-- Microsoft Excel -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/excel.png" alt="Microsoft Excel" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Microsoft Excel</span>
+                        </div>
+
+                        <!-- Google Sheets -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/google-sheets.png" alt="Google Sheets" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Google Sheets</span>
+                        </div>
+
+                        <!-- Azure -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/azure.png" alt="Microsoft Azure" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Microsoft Azure</span>
+                        </div>
+
+                        <!-- AWS -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/aws.png" alt="Amazon AWS" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Amazon AWS</span>
+                        </div>
+
+                        <!-- phpMyAdmin -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/phpmyadmin.png" alt="phpMyAdmin" class="tool-logo">
+                            </div>
+                            <span class="tool-name">phpMyAdmin</span>
+                        </div>
+
+                        <!-- Keras -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/keras.png" alt="Keras" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Keras</span>
+                        </div>
+
+                        <!-- Ubuntu -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/ubuntu.png" alt="Ubuntu" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Ubuntu</span>
+                        </div>
+
+                        <!-- Shell/Unix -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/shell-unix.png" alt="Shell Unix" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Shell/Unix</span>
+                        </div>
+
+                        <!-- PowerShell/Windows -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/powershell.png" alt="PowerShell" class="tool-logo">
+                            </div>
+                            <span class="tool-name">PowerShell/Windows</span>
+                        </div>
+
+                        <!-- ERP Sage -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/sage.png" alt="ERP Sage" class="tool-logo">
+                            </div>
+                            <span class="tool-name">ERP Sage</span>
+                        </div>
+
+                        <!-- ERP Odoo -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/odoo.png" alt="ERP Odoo" class="tool-logo">
+                            </div>
+                            <span class="tool-name">ERP Odoo</span>
+                        </div>
+
+                        <!-- Modelio -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/modelio.png" alt="Modelio" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Modelio</span>
+                        </div>
+
+                        <!-- Draw.io -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/drawio.png" alt="Draw.io" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Draw.io</span>
+                        </div>
+
+                        <!-- Looping -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/looping.png" alt="Looping" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Looping</span>
+                        </div>
+
+                        <!-- Google Workspace -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/google-workspace.png" alt="Google Workspace" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Google Workspace</span>
+                        </div>
+
+                        <!-- Microsoft 365 -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/microsoft-365.png" alt="Microsoft 365" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Microsoft 365</span>
+                        </div>
+
+                        <!-- SharePoint -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/sharepoint.png" alt="SharePoint" class="tool-logo">
+                            </div>
+                            <span class="tool-name">SharePoint</span>
+                        </div>
+
+                        <!-- Anaconda -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/anaconda.png" alt="Anaconda" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Anaconda</span>
+                        </div>
+
+                        <!-- Docker -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/docker.png" alt="Docker" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Docker</span>
+                        </div>
+
+                        <!-- Figma -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/figma.png" alt="Figma" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Figma</span>
+                        </div>
+
+                        <!-- Visual Studio -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/visual-studio.png" alt="Visual Studio" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Visual Studio</span>
+                        </div>
+
+                        <!-- Microsoft .NET -->
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <img src="./assets/images/tools/dotnet.png" alt="Microsoft .NET" class="tool-logo">
+                            </div>
+                            <span class="tool-name">Microsoft .NET</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Séparateur de section -->
+        <div class="section-divider"></div>
+
+        <!-- Skills Section -->
+        <section id="competences" class="section skills">
+            <h2>Compétences Techniques</h2>
+            <div class="skills-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>
+                            <span>Langages de Programmation</span>
+                            <div class="category-icon">
+                                <div class="icon"></div>
+                            </div>
+                        </h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Python</span>
+                                    <span class="skill-level">75%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%" data-width="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">SQL</span>
+                                    <span class="skill-level">75%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 75%" data-width="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Java</span>
+                                    <span class="skill-level">70%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 70%" data-width="70"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">R</span>
+                                    <span class="skill-level">35%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 65%" data-width="65"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="education-timeline">
-                        <h3>Parcours Académique</h3>
-                        <div class="timeline" role="list">
-                            <div class="timeline-item" role="listitem">
-                                <div class="timeline-icon">
-                                    <div class="icon" aria-hidden="true"></div>
+                    <div class="skill-category">
+                        <h3>
+                            <span>Outils Data & IA</span>
+                            <div class="category-icon">
+                                <div class="icon"></div>
+                            </div>
+                        </h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Pandas</span>
+                                    <span class="skill-level">95%</span>
                                 </div>
-                                <div class="timeline-content">
-                                    <h4>Master 2 MIAGE – Parcours IDD (Ingénierie des Données de la Décision)</h4>
-                                    <span class="institution">Université de Picardie Jules Verne, 2026 - 2027</span>
-                                    <p>Spécialisation en data science, business intelligence, modélisation décisionnelle et pilotage des systèmes d'information.</p>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 95%" data-width="95"></div>
                                 </div>
                             </div>
-
-                            <div class="timeline-item" role="listitem">
-                                <div class="timeline-icon">
-                                    <div class="icon" aria-hidden="true"></div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Scikit-learn</span>
+                                    <span class="skill-level">90%</span>
                                 </div>
-                                <div class="timeline-content">
-                                    <h4>Master 1 MIAGE – Parcours commun</h4>
-                                    <span class="institution">Université de Picardie Jules Verne, 2025 - 2026</span>
-                                    <p>Tronc commun en systèmes d'information, ingénierie logicielle, gestion de projet, et bases de la data science.</p>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%" data-width="90"></div>
                                 </div>
                             </div>
-
-                            <div class="timeline-item" role="listitem">
-                                <div class="timeline-icon">
-                                    <div class="icon" aria-hidden="true"></div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">TensorFlow</span>
+                                    <span class="skill-level">85%</span>
                                 </div>
-                                <div class="timeline-content">
-                                    <h4>Licence Informatique</h4>
-                                    <span class="institution">Université de Picardie Jules Verne, 2022 - 2025</span>
-                                    <p>Fondements en programmation, structures de données, algorithmique et bases de données.</p>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%" data-width="85"></div>
                                 </div>
                             </div>
-
-                            <div class="timeline-item" role="listitem">
-                                <div class="timeline-icon">
-                                    <div class="icon" aria-hidden="true"></div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Power BI</span>
+                                    <span class="skill-level">80%</span>
                                 </div>
-                                <div class="timeline-content">
-                                    <h4>Baccalauréat Scientifique</h4>
-                                    <span class="institution">2021</span>
-                                    <p>Solide formation en mathématiques, physique et sciences de l'ingénieur.</p>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 80%" data-width="80"></div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tools-section">
-                        <h3>Outils et technologies que j'utilise</h3>
-                        <div class="tools-grid">
-                            <!-- Power Automate -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/power-automate.png" alt="Power Automate" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Power Automate</span>
-                            </div>
-
-                            <!-- Power BI -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/power-bi.png" alt="Power BI" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Power BI</span>
-                            </div>
-
-                            <!-- Tableau -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/tableau.png" alt="Tableau" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Tableau</span>
-                            </div>
-
-                            <!-- Microsoft Excel -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/excel.png" alt="Microsoft Excel" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Microsoft Excel</span>
-                            </div>
-
-                            <!-- Google Sheets -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/google-sheets.png" alt="Google Sheets" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Google Sheets</span>
-                            </div>
-
-                            <!-- Azure -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/azure.png" alt="Microsoft Azure" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Microsoft Azure</span>
-                            </div>
-
-                            <!-- AWS -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/aws.png" alt="Amazon AWS" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Amazon AWS</span>
-                            </div>
-
-                            <!-- phpMyAdmin -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/phpmyadmin.png" alt="phpMyAdmin" class="tool-logo">
-                                </div>
-                                <span class="tool-name">phpMyAdmin</span>
-                            </div>
-
-                            <!-- Keras -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/keras.png" alt="Keras" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Keras</span>
-                            </div>
-
-                            <!-- Ubuntu -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/ubuntu.png" alt="Ubuntu" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Ubuntu</span>
-                            </div>
-
-                            <!-- Shell/Unix -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/shell-unix.png" alt="Shell Unix" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Shell/Unix</span>
-                            </div>
-
-                            <!-- PowerShell/Windows -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/powershell.png" alt="PowerShell" class="tool-logo">
-                                </div>
-                                <span class="tool-name">PowerShell/Windows</span>
-                            </div>
-
-                            <!-- ERP Sage -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/sage.png" alt="ERP Sage" class="tool-logo">
-                                </div>
-                                <span class="tool-name">ERP Sage</span>
-                            </div>
-
-                            <!-- ERP Odoo -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/odoo.png" alt="ERP Odoo" class="tool-logo">
-                                </div>
-                                <span class="tool-name">ERP Odoo</span>
-                            </div>
-
-                            <!-- Modelio -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/modelio.png" alt="Modelio" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Modelio</span>
-                            </div>
-
-                            <!-- Draw.io -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/drawio.png" alt="Draw.io" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Draw.io</span>
-                            </div>
-
-                            <!-- Looping -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/looping.png" alt="Looping" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Looping</span>
-                            </div>
-
-                            <!-- Google Workspace -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/google-workspace.png" alt="Google Workspace" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Google Workspace</span>
-                            </div>
-
-                            <!-- Microsoft 365 -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/microsoft-365.png" alt="Microsoft 365" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Microsoft 365</span>
-                            </div>
-
-                            <!-- SharePoint -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/sharepoint.png" alt="SharePoint" class="tool-logo">
-                                </div>
-                                <span class="tool-name">SharePoint</span>
-                            </div>
-
-                            <!-- Anaconda -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/anaconda.png" alt="Anaconda" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Anaconda</span>
-                            </div>
-
-                            <!-- Docker -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/docker.png" alt="Docker" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Docker</span>
-                            </div>
-
-                            <!-- Figma -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/figma.png" alt="Figma" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Figma</span>
-                            </div>
-
-                            <!-- Visual Studio -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/visual-studio.png" alt="Visual Studio" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Visual Studio</span>
-                            </div>
-
-                            <!-- Microsoft .NET -->
-                            <div class="tool-item">
-                                <div class="tool-icon">
-                                    <img src="./assets/images/tools/dotnet.png" alt="Microsoft .NET" class="tool-logo">
-                                </div>
-                                <span class="tool-name">Microsoft .NET</span>
                             </div>
                         </div>
                     </div>
                     
-            </section>
+                    <div class="skill-category">
+                        <h3>
+                            <span>Bases de Données</span>
+                            <div class="category-icon">
+                                <div class="icon"></div>
+                            </div>
+                        </h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">SQL (Oracle, MySQL, PostgreSQL)</span>
+                                    <span class="skill-level">90%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%" data-width="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">MongoDB</span>
+                                    <span class="skill-level">75%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 75%" data-width="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Redis</span>
+                                    <span class="skill-level">60%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 60%" data-width="60"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>
+                            <span>Business Intelligence</span>
+                            <div class="category-icon">
+                                <div class="icon"></div>
+                            </div>
+                        </h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Power BI</span>
+                                    <span class="skill-level">85%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%" data-width="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Tableau</span>
+                                    <span class="skill-level">70%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 70%" data-width="70"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">SAP Analytics</span>
+                                    <span class="skill-level">65%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 65%" data-width="65"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="other-skills">
+                    <h3>Autres Compétences</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Agile/Scrum</span>
+                        <span class="skill-tag">SharePoint</span>
+                        <span class="skill-tag">MS Project</span>
+                        <span class="skill-tag">Office 365</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">BPMN</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">UML</span>
+                        <span class="skill-tag">Git</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <!-- Skills Section -->
-            <section id="competences" class="skills">
-                <h2>Compétences Techniques</h2>
-                <div class="skills-content">
-                    <div class="skills-grid">
-                        <div class="skill-category">
-                            <h3>
-                                <span>Langages de Programmation</span>
-                                <div class="category-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </h3>
-                            <div class="skill-items">
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Python</span>
-                                        <span class="skill-level">75%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 90%" data-width="90"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">SQL</span>
-                                        <span class="skill-level">75%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 75%" data-width="75"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Java</span>
-                                        <span class="skill-level">70%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 70%" data-width="70"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">R</span>
-                                        <span class="skill-level">35%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 65%" data-width="65"></div>
-                                    </div>
+        <!-- Séparateur de section -->
+        <div class="section-divider"></div>
+
+        <!-- Projects Section -->
+        <section id="projets" class="section projects">
+            <h2>Projets</h2>
+            <div class="projects-content">
+                <div class="project-filters" role="tablist">
+                    <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
+                    <button class="filter-btn" data-filter="ia" role="tab" aria-selected="false">IA</button>
+                    <button class="filter-btn" data-filter="data-bi" role="tab" aria-selected="false">Data & BI</button>
+                    <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
+                    <button class="filter-btn" data-filter="systemes" role="tab" aria-selected="false">Programmation Systèmes</button>
+                </div>
+                
+                <div class="projects-grid" role="tabpanel">
+                    <!-- Projet 1: Reporting BI Avancé - Data & BI -->
+                    <article class="project-card" data-category="data-bi">
+                        <div class="project-media">
+                            <div class="slideshow-container">
+                                <img src="./assets/images/bi-dashboard.jpg" 
+                                    alt="Tableau de bord principal Business Intelligence" 
+                                    class="slide active" loading="lazy">
+                                <img src="./assets/images/bi-kpis.jpg" 
+                                    alt="Interface KPIs et métriques clés" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/bi-charts.jpg" 
+                                    alt="Graphiques et visualisations avancées" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/bi-reports.jpg" 
+                                    alt="Interface de reporting détaillé" 
+                                    class="slide" loading="lazy">
+                                
+                                <div class="slide-dots">
+                                    <button class="slide-dot active" aria-label="Image 1"></button>
+                                    <button class="slide-dot" aria-label="Image 2"></button>
+                                    <button class="slide-dot" aria-label="Image 3"></button>
+                                    <button class="slide-dot" aria-label="Image 4"></button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="skill-category">
-                            <h3>
-                                <span>Outils Data & IA</span>
-                                <div class="category-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </h3>
-                            <div class="skill-items">
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Pandas</span>
-                                        <span class="skill-level">95%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 95%" data-width="95"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Scikit-learn</span>
-                                        <span class="skill-level">90%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 90%" data-width="90"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">TensorFlow</span>
-                                        <span class="skill-level">85%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 85%" data-width="85"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Power BI</span>
-                                        <span class="skill-level">80%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 80%" data-width="80"></div>
-                                    </div>
+                        <div class="project-info">
+                            <h3>Reporting BI Avancé</h3>
+                            <div class="project-tags">
+                                <span class="tag">Power BI</span>
+                                <span class="tag">Tableau</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">SQL</span>
+                            </div>
+                            <p class="project-description">Solution de reporting business intelligence avec tableaux de bord interactifs, KPIs temps réel et analyses prédictives pour la prise de décision stratégique. Intégration multi-sources et visualisations personnalisées pour une vision globale des performances.</p>
+                        </div>
+                    </article>
+
+                    <!-- Projet 2: SI Logistique Dockerisé - Data & BI + Web -->
+                    <article class="project-card" data-category="data-bi web">
+                        <div class="project-media">
+                            <div class="slideshow-container">
+                                <img src="./assets/images/logistique-merise.jpg" 
+                                    alt="Modélisation MERISE du système logistique" 
+                                    class="slide active" loading="lazy">
+                                <img src="./assets/images/logistique-schema.jpg" 
+                                    alt="Schéma relationnel de la base de données" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/logistique-sql.jpg" 
+                                    alt="Requêtes SQL avancées et optimisations" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/logistique-docker.jpg" 
+                                    alt="Architecture dockerisée et déploiement" 
+                                    class="slide" loading="lazy">
+                                
+                                <div class="slide-dots">
+                                    <button class="slide-dot active" aria-label="Image 1"></button>
+                                    <button class="slide-dot" aria-label="Image 2"></button>
+                                    <button class="slide-dot" aria-label="Image 3"></button>
+                                    <button class="slide-dot" aria-label="Image 4"></button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="skill-category">
-                            <h3>
-                                <span>Bases de Données</span>
-                                <div class="category-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </h3>
-                            <div class="skill-items">
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">SQL (Oracle, MySQL, PostgreSQL)</span>
-                                        <span class="skill-level">90%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 90%" data-width="90"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">MongoDB</span>
-                                        <span class="skill-level">75%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 75%" data-width="75"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Redis</span>
-                                        <span class="skill-level">60%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 60%" data-width="60"></div>
-                                    </div>
+                        <div class="project-info">
+                            <h3>SI Logistique Dockerisé</h3>
+                            <div class="project-tags">
+                                <span class="tag">MERISE</span>
+                                <span class="tag">Oracle</span>
+                                <span class="tag">Docker</span>
+                                <span class="tag">SQL Avancé</span>
+                            </div>
+                            <p class="project-description">Système d'information logistique complet avec modélisation MERISE et réalisation du schéma relationnel (entrepôts, livraisons, stocks). Requêtes SQL avancées : jointures complexes, agrégations, sous-requêtes, vues matérialisées. Déploiement dockerisé de la base et automatisation du chargement de données via des scripts SQL dynamiques.</p>
+                        </div>
+                    </article>
+
+                    <!-- Projet 3: MACSI - Application de gestion des soutenances - Web -->
+                    <article class="project-card" data-category="web">
+                        <div class="project-media">
+                            <div class="slideshow-container">
+                                <img src="./assets/images/macsi-dashboard.jpg" 
+                                    alt="Interface principale MACSI" 
+                                    class="slide active" loading="lazy">
+                                <img src="./assets/images/macsi-planning.jpg" 
+                                    alt="Module de planification des soutenances" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/macsi-evaluation.jpg" 
+                                    alt="Interface d'évaluation et notation" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/macsi-reports.jpg" 
+                                    alt="Génération de rapports automatiques" 
+                                    class="slide" loading="lazy">
+                                
+                                <div class="slide-dots">
+                                    <button class="slide-dot active" aria-label="Image 1"></button>
+                                    <button class="slide-dot" aria-label="Image 2"></button>
+                                    <button class="slide-dot" aria-label="Image 3"></button>
+                                    <button class="slide-dot" aria-label="Image 4"></button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="skill-category">
-                            <h3>
-                                <span>Business Intelligence</span>
-                                <div class="category-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </h3>
-                            <div class="skill-items">
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Power BI</span>
-                                        <span class="skill-level">85%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 85%" data-width="85"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">Tableau</span>
-                                        <span class="skill-level">70%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 70%" data-width="70"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name">SAP Analytics</span>
-                                        <span class="skill-level">65%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 65%" data-width="65"></div>
-                                    </div>
+                        <div class="project-info">
+                            <h3>MACSI — Application de gestion des soutenances</h3>
+                            <div class="project-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">PostgreSQL</span>
+                                <span class="tag">Express</span>
+                            </div>
+                            <p class="project-description">Application web complète pour la gestion des soutenances académiques avec planification automatique, attribution des jurys, évaluation en ligne et génération de rapports. Interface utilisateur moderne et workflow optimisé pour les établissements d'enseignement.</p>
+                        </div>
+                    </article>
+
+                    <!-- Projet 4: ISOLCA - Plateforme IA - IA -->
+                    <article class="project-card" data-category="ia">
+                        <div class="project-media">
+                            <div class="youtube-embed" data-video-id="VOTRE_YOUTUBE_ID_ISOLCA">
+                                <img src="https://img.youtube.com/vi/VOTRE_YOUTUBE_ID_ISOLCA/maxresdefault.jpg" 
+                                    alt="Présentation ISOLCA sur YouTube" 
+                                    class="youtube-thumbnail">
+                                <button class="youtube-play-btn" aria-label="Lire la présentation YouTube">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="project-info">
+                            <h3>ISOLCA — Plateforme IA</h3>
+                            <div class="project-tags">
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">React</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">MongoDB</span>
+                            </div>
+                            <p class="project-description">Plateforme d'intelligence artificielle pour l'analyse et la classification automatique de données complexes avec algorithmes de machine learning avancés. Interface utilisateur intuitive et API RESTful complète pour l'intégration enterprise.</p>
+                            <div class="project-actions">
+                                <a href="#isolca-results" class="project-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                                    </svg>
+                                    <span>Voir les résultats</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet 5: Détection de caries par IA - IA -->
+                    <article class="project-card" data-category="ia">
+                        <div class="project-media">
+                            <div class="slideshow-container">
+                                <img src="./assets/images/caries-detection.jpg" 
+                                    alt="Interface de détection de caries par IA" 
+                                    class="slide active" loading="lazy">
+                                <img src="./assets/images/caries-analysis.jpg" 
+                                    alt="Analyse automatique par vision artificielle" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/caries-results.jpg" 
+                                    alt="Interface de résultats et diagnostic" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/caries-stats.jpg" 
+                                    alt="Statistiques et métriques de performance" 
+                                    class="slide" loading="lazy">
+                                
+                                <div class="slide-dots">
+                                    <button class="slide-dot active" aria-label="Image 1"></button>
+                                    <button class="slide-dot" aria-label="Image 2"></button>
+                                    <button class="slide-dot" aria-label="Image 3"></button>
+                                    <button class="slide-dot" aria-label="Image 4"></button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="other-skills">
-                        <h3>Autres Compétences</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Agile/Scrum</span>
-                            <span class="skill-tag">SharePoint</span>
-                            <span class="skill-tag">MS Project</span>
-                            <span class="skill-tag">Office 365</span>
-                            <span class="skill-tag">Docker</span>
-                            <span class="skill-tag">BPMN</span>
-                            <span class="skill-tag">Azure</span>
-                            <span class="skill-tag">AWS</span>
-                            <span class="skill-tag">UML</span>
-                            <span class="skill-tag">Git</span>
+                        
+                        <div class="project-info">
+                            <h3>Détection de caries par IA</h3>
+                            <div class="project-tags">
+                                <span class="tag">Computer Vision</span>
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">OpenCV</span>
+                                <span class="tag">Flask</span>
+                            </div>
+                            <p class="project-description">Système de détection automatique de caries dentaires utilisant la vision par ordinateur et les réseaux de neurones convolutionnels pour l'aide au diagnostic médical. Précision de 94% validée cliniquement avec dataset de plus de 10 000 images radiographiques.</p>
                         </div>
-                    </div>
+                    </article>
+
+                    <!-- Projet 6: Protocole TFTP Multithreadé - Programmation Systèmes -->
+                    <article class="project-card" data-category="systemes">
+                        <div class="project-media">
+                            <div class="slideshow-container">
+                                <img src="./assets/images/tftp-architecture.jpg" 
+                                    alt="Architecture client-serveur TFTP" 
+                                    class="slide active" loading="lazy">
+                                <img src="./assets/images/tftp-structures.jpg" 
+                                    alt="Définition des structures de données" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/tftp-threads.jpg" 
+                                    alt="Gestion multithreadée des connexions" 
+                                    class="slide" loading="lazy">
+                                <img src="./assets/images/tftp-protocol.jpg" 
+                                    alt="Implémentation du protocole RFC 7440" 
+                                    class="slide" loading="lazy">
+                                
+                                <div class="slide-dots">
+                                    <button class="slide-dot active" aria-label="Image 1"></button>
+                                    <button class="slide-dot" aria-label="Image 2"></button>
+                                    <button class="slide-dot" aria-label="Image 3"></button>
+                                    <button class="slide-dot" aria-label="Image 4"></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-info">
+                            <h3>Protocole TFTP Multithreadé</h3>
+                            <div class="project-tags">
+                                <span class="tag">C</span>
+                                <span class="tag">Bash</span>
+                                <span class="tag">RFC 7440</span>
+                                <span class="tag">Multithreading</span>
+                            </div>
+                            <p class="project-description">Développement d'un protocole de communication multithreadé client-serveur TFTP suivant le RFC 7440 en C et Bash. Implémentation complète avec définition des structures de données, gestion des threads, synchronisation et gestion d'erreurs pour transferts de fichiers fiables et performants.</p>
+                        </div>
+                    </article>
                 </div>
-            </section>
-
-                    <!-- Projects Section -->
-            <section id="projets" class="section projects">
-                <h2>Projets</h2>
-                <div class="projects-content">
-                    <div class="project-filters" role="tablist">
-                        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
-                        <button class="filter-btn" data-filter="ia" role="tab" aria-selected="false">IA</button>
-                        <button class="filter-btn" data-filter="data-bi" role="tab" aria-selected="false">Data & BI</button>
-                        <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
-                        <button class="filter-btn" data-filter="systemes" role="tab" aria-selected="false">Programmation Systèmes</button>
-                    </div>
-                    
-                    <div class="projects-grid" role="tabpanel">
-                        <!-- Projet 1: Reporting BI Avancé - Data & BI -->
-                        <article class="project-card" data-category="data-bi">
-                            <div class="project-media">
-                                <div class="slideshow-container">
-                                    <img src="./assets/images/bi-dashboard.jpg" 
-                                        alt="Tableau de bord principal Business Intelligence" 
-                                        class="slide active" loading="lazy">
-                                    <img src="./assets/images/bi-kpis.jpg" 
-                                        alt="Interface KPIs et métriques clés" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/bi-charts.jpg" 
-                                        alt="Graphiques et visualisations avancées" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/bi-reports.jpg" 
-                                        alt="Interface de reporting détaillé" 
-                                        class="slide" loading="lazy">
-                                    
-                                    <div class="slide-dots">
-                                        <button class="slide-dot active" aria-label="Image 1"></button>
-                                        <button class="slide-dot" aria-label="Image 2"></button>
-                                        <button class="slide-dot" aria-label="Image 3"></button>
-                                        <button class="slide-dot" aria-label="Image 4"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>Reporting BI Avancé</h3>
-                                <div class="project-tags">
-                                    <span class="tag">Power BI</span>
-                                    <span class="tag">Tableau</span>
-                                    <span class="tag">Python</span>
-                                    <span class="tag">SQL</span>
-                                </div>
-                                <p class="project-description">Solution de reporting business intelligence avec tableaux de bord interactifs, KPIs temps réel et analyses prédictives pour la prise de décision stratégique. Intégration multi-sources et visualisations personnalisées pour une vision globale des performances.</p>
-                            </div>
-                        </article>
-
-                        <!-- Projet 2: SI Logistique Dockerisé - Data & BI + Web -->
-                        <article class="project-card" data-category="data-bi web">
-                            <div class="project-media">
-                                <div class="slideshow-container">
-                                    <img src="./assets/images/logistique-merise.jpg" 
-                                        alt="Modélisation MERISE du système logistique" 
-                                        class="slide active" loading="lazy">
-                                    <img src="./assets/images/logistique-schema.jpg" 
-                                        alt="Schéma relationnel de la base de données" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/logistique-sql.jpg" 
-                                        alt="Requêtes SQL avancées et optimisations" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/logistique-docker.jpg" 
-                                        alt="Architecture dockerisée et déploiement" 
-                                        class="slide" loading="lazy">
-                                    
-                                    <div class="slide-dots">
-                                        <button class="slide-dot active" aria-label="Image 1"></button>
-                                        <button class="slide-dot" aria-label="Image 2"></button>
-                                        <button class="slide-dot" aria-label="Image 3"></button>
-                                        <button class="slide-dot" aria-label="Image 4"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>SI Logistique Dockerisé</h3>
-                                <div class="project-tags">
-                                    <span class="tag">MERISE</span>
-                                    <span class="tag">Oracle</span>
-                                    <span class="tag">Docker</span>
-                                    <span class="tag">SQL Avancé</span>
-                                </div>
-                                <p class="project-description">Système d'information logistique complet avec modélisation MERISE et réalisation du schéma relationnel (entrepôts, livraisons, stocks). Requêtes SQL avancées : jointures complexes, agrégations, sous-requêtes, vues matérialisées. Déploiement dockerisé de la base et automatisation du chargement de données via des scripts SQL dynamiques.</p>
-                            </div>
-                        </article>
-
-                        <!-- Projet 3: MACSI - Application de gestion des soutenances - Web -->
-                        <article class="project-card" data-category="web">
-                            <div class="project-media">
-                                <div class="slideshow-container">
-                                    <img src="./assets/images/macsi-dashboard.jpg" 
-                                        alt="Interface principale MACSI" 
-                                        class="slide active" loading="lazy">
-                                    <img src="./assets/images/macsi-planning.jpg" 
-                                        alt="Module de planification des soutenances" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/macsi-evaluation.jpg" 
-                                        alt="Interface d'évaluation et notation" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/macsi-reports.jpg" 
-                                        alt="Génération de rapports automatiques" 
-                                        class="slide" loading="lazy">
-                                    
-                                    <div class="slide-dots">
-                                        <button class="slide-dot active" aria-label="Image 1"></button>
-                                        <button class="slide-dot" aria-label="Image 2"></button>
-                                        <button class="slide-dot" aria-label="Image 3"></button>
-                                        <button class="slide-dot" aria-label="Image 4"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>MACSI — Application de gestion des soutenances</h3>
-                                <div class="project-tags">
-                                    <span class="tag">React</span>
-                                    <span class="tag">Node.js</span>
-                                    <span class="tag">PostgreSQL</span>
-                                    <span class="tag">Express</span>
-                                </div>
-                                <p class="project-description">Application web complète pour la gestion des soutenances académiques avec planification automatique, attribution des jurys, évaluation en ligne et génération de rapports. Interface utilisateur moderne et workflow optimisé pour les établissements d'enseignement.</p>
-                            </div>
-                        </article>
-
-                        <!-- Projet 4: ISOLCA - Plateforme IA - IA -->
-                        <article class="project-card" data-category="ia">
-                            <div class="project-media">
-                                <div class="youtube-embed" data-video-id="VOTRE_YOUTUBE_ID_ISOLCA">
-                                    <img src="https://img.youtube.com/vi/VOTRE_YOUTUBE_ID_ISOLCA/maxresdefault.jpg" 
-                                        alt="Présentation ISOLCA sur YouTube" 
-                                        class="youtube-thumbnail">
-                                    <button class="youtube-play-btn" aria-label="Lire la présentation YouTube">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>ISOLCA — Plateforme IA</h3>
-                                <div class="project-tags">
-                                    <span class="tag">TensorFlow</span>
-                                    <span class="tag">React</span>
-                                    <span class="tag">Node.js</span>
-                                    <span class="tag">MongoDB</span>
-                                </div>
-                                <p class="project-description">Plateforme d'intelligence artificielle pour l'analyse et la classification automatique de données complexes avec algorithmes de machine learning avancés. Interface utilisateur intuitive et API RESTful complète pour l'intégration enterprise.</p>
-                                <div class="project-actions">
-                                    <a href="#isolca-results" class="project-link">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                                        </svg>
-                                        <span>Voir les résultats</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- Projet 5: Détection de caries par IA - IA -->
-                        <article class="project-card" data-category="ia">
-                            <div class="project-media">
-                                <div class="slideshow-container">
-                                    <img src="./assets/images/caries-detection.jpg" 
-                                        alt="Interface de détection de caries par IA" 
-                                        class="slide active" loading="lazy">
-                                    <img src="./assets/images/caries-analysis.jpg" 
-                                        alt="Analyse automatique par vision artificielle" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/caries-results.jpg" 
-                                        alt="Interface de résultats et diagnostic" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/caries-stats.jpg" 
-                                        alt="Statistiques et métriques de performance" 
-                                        class="slide" loading="lazy">
-                                    
-                                    <div class="slide-dots">
-                                        <button class="slide-dot active" aria-label="Image 1"></button>
-                                        <button class="slide-dot" aria-label="Image 2"></button>
-                                        <button class="slide-dot" aria-label="Image 3"></button>
-                                        <button class="slide-dot" aria-label="Image 4"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>Détection de caries par IA</h3>
-                                <div class="project-tags">
-                                    <span class="tag">Computer Vision</span>
-                                    <span class="tag">TensorFlow</span>
-                                    <span class="tag">OpenCV</span>
-                                    <span class="tag">Flask</span>
-                                </div>
-                                <p class="project-description">Système de détection automatique de caries dentaires utilisant la vision par ordinateur et les réseaux de neurones convolutionnels pour l'aide au diagnostic médical. Précision de 94% validée cliniquement avec dataset de plus de 10 000 images radiographiques.</p>
-                            </div>
-                        </article>
-
-                        <!-- Projet 6: Protocole TFTP Multithreadé - Programmation Systèmes -->
-                        <article class="project-card" data-category="systemes">
-                            <div class="project-media">
-                                <div class="slideshow-container">
-                                    <img src="./assets/images/tftp-architecture.jpg" 
-                                        alt="Architecture client-serveur TFTP" 
-                                        class="slide active" loading="lazy">
-                                    <img src="./assets/images/tftp-structures.jpg" 
-                                        alt="Définition des structures de données" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/tftp-threads.jpg" 
-                                        alt="Gestion multithreadée des connexions" 
-                                        class="slide" loading="lazy">
-                                    <img src="./assets/images/tftp-protocol.jpg" 
-                                        alt="Implémentation du protocole RFC 7440" 
-                                        class="slide" loading="lazy">
-                                    
-                                    <div class="slide-dots">
-                                        <button class="slide-dot active" aria-label="Image 1"></button>
-                                        <button class="slide-dot" aria-label="Image 2"></button>
-                                        <button class="slide-dot" aria-label="Image 3"></button>
-                                        <button class="slide-dot" aria-label="Image 4"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="project-info">
-                                <h3>Protocole TFTP Multithreadé</h3>
-                                <div class="project-tags">
-                                    <span class="tag">C</span>
-                                    <span class="tag">Bash</span>
-                                    <span class="tag">RFC 7440</span>
-                                    <span class="tag">Multithreading</span>
-                                </div>
-                                <p class="project-description">Développement d'un protocole de communication multithreadé client-serveur TFTP suivant le RFC 7440 en C et Bash. Implémentation complète avec définition des structures de données, gestion des threads, synchronisation et gestion d'erreurs pour transferts de fichiers fiables et performants.</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
+            </div>
+        </section>
 
         <!-- Éléments modaux créés par JavaScript -->
         <!-- Le backdrop et container seront créés automatiquement par le JS -->
@@ -884,236 +895,238 @@
         <!-- Overlay pour les cartes étendues -->
         <div class="projects-overlay"></div>
 
-            <!-- Certifications Section -->
-            <section id="certifications" class="section certifications">
-                <h2>Certifications & Badges</h2>
-                <div class="certifications-content">
-                    <div class="certification-filters" role="tablist">
-                        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
-                        <button class="filter-btn" data-filter="data-ml" role="tab" aria-selected="false">Data & ML</button>
-                        <button class="filter-btn" data-filter="ai-deep-learning" role="tab" aria-selected="false">IA & Deep Learning</button>
-                        <button class="filter-btn" data-filter="network" role="tab" aria-selected="false">Réseau</button>
-                    </div>
-                    
-                    <div class="certifications-grid" role="tabpanel">
-                        <!-- IBM Python for Data Science -->
-                        <article class="certification-card" data-category="data-ml">
-                            <div class="certification-logo">
-                                <img src="./assets/images/certifications/ibm-logo.png" alt="Logo IBM" class="logo-img" loading="lazy">
-                            </div>
-                            <div class="certification-info">
-                                <h3>Python for Data Science</h3>
-                                <span class="issuer">IBM</span>
-                                <span class="certification-code">PY0101EN</span>
-                                <span class="date">Certification professionnelle • Pas d'expiration</span>
-                                <a href="https://www.credly.com/badges/IBM-PY0101EN" 
-                                class="verify-btn" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Vérifier la certification IBM Python">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                    </svg>
-                                    <span>Vérifier</span>
-                                </a>
-                            </div>
-                        </article>
-                        
-                        <!-- Microsoft Data Platform -->
-                        <article class="certification-card" data-category="microsoft data-ml">
-                            <div class="certification-logo">
-                                <img src="./assets/images/certifications/microsoft-logo.png" alt="Logo Microsoft" class="logo-img" loading="lazy">
-                            </div>
-                            <div class="certification-info">
-                                <h3>Microsoft Data: SharePoint, Power Platform, Access, Excel</h3>
-                                <span class="issuer">Microsoft Learning</span>
-                                <span class="date">LinkedIn Learning • Pas d'expiration</span>
-                                <a href="https://www.linkedin.com/learning/certificates/b2e39ff0bba564928fff44e108b863c91a7d3cd648913234ee9c8263a13d2e3a" 
-                                class="verify-btn" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Vérifier la certification Microsoft Data">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                    </svg>
-                                    <span>Vérifier</span>
-                                </a>
-                            </div>
-                        </article>
-                        
-                        <!-- Machine Learning Algorithms -->
-                        <article class="certification-card" data-category="data-ml ai-deep-learning">
-                            <div class="certification-logo">
-                                <img src="./assets/images/certifications/machine-learning-logo.png" alt="Logo Machine Learning" class="logo-img" loading="lazy">
-                            </div>
-                            <div class="certification-info">
-                                <h3>Machine Learning: Algorithms</h3>
-                                <span class="issuer">LinkedIn Learning</span>
-                                <span class="date">Certification professionnelle • Pas d'expiration</span>
-                                <a href="https://www.linkedin.com/learning/certificates/427fe056aa5674d2e7a0d7634a215a65d9da36b9211a51bd39f7f4a4863a6920" 
-                                class="verify-btn" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Vérifier la certification Machine Learning">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                    </svg>
-                                    <span>Vérifier</span>
-                                </a>
-                            </div>
-                        </article>
-                        
-                        <!-- TensorFlow 2.0 Working with Images -->
-                        <article class="certification-card" data-category="ai-deep-learning">
-                            <div class="certification-logo">
-                                <img src="./assets/images/certifications/tensorflow-logo.png" alt="Logo TensorFlow" class="logo-img" loading="lazy">
-                            </div>
-                            <div class="certification-info">
-                                <h3>TensorFlow 2.0: Working with Images</h3>
-                                <span class="issuer">LinkedIn Learning</span>
-                                <span class="date">Deep Learning spécialisé • Pas d'expiration</span>
-                                <a href="https://www.linkedin.com/learning/certificates/c9320ad6b3a9298890e9b73134620717906566ea384212f80f347d09013c5c0b" 
-                                class="verify-btn" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Vérifier la certification TensorFlow">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                    </svg>
-                                    <span>Vérifier</span>
-                                </a>
-                            </div>
-                        </article>
-                        
-                        <!-- CCNA Introduction to Networks -->
-                        <article class="certification-card" data-category="network">
-                            <div class="certification-logo">
-                                <img src="./assets/images/certifications/cisco-logo.png" alt="Logo Cisco" class="logo-img" loading="lazy">
-                            </div>
-                            <div class="certification-info">
-                                <h3>CCNA: Introduction to Networks</h3>
-                                <span class="issuer">Cisco Networking Academy</span>
-                                <span class="date">Badge Credly • Pas d'expiration</span>
-                                <a href="https://www.credly.com/badges/a9f1d8f8-176d-41b5-9495-6e8df156ed3d/linked_in_profile" 
-                                class="verify-btn" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                aria-label="Vérifier le badge CCNA Cisco">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                    </svg>
-                                    <span>Vérifier</span>
-                                </a>
-                            </div>
-                        </article>
-                    </div>
+        <!-- Séparateur de section -->
+        <div class="section-divider"></div>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="section certifications">
+            <h2>Certifications & Badges</h2>
+            <div class="certifications-content">
+                <div class="certification-filters" role="tablist">
+                    <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">Tous</button>
+                    <button class="filter-btn" data-filter="data-ml" role="tab" aria-selected="false">Data & ML</button>
+                    <button class="filter-btn" data-filter="ai-deep-learning" role="tab" aria-selected="false">IA & Deep Learning</button>
+                    <button class="filter-btn" data-filter="network" role="tab" aria-selected="false">Réseau</button>
                 </div>
-            </section>
+                
+                <div class="certifications-grid" role="tabpanel">
+                    <!-- IBM Python for Data Science -->
+                    <article class="certification-card" data-category="data-ml">
+                        <div class="certification-logo">
+                            <img src="./assets/images/certifications/ibm-logo.png" alt="Logo IBM" class="logo-img" loading="lazy">
+                        </div>
+                        <div class="certification-info">
+                            <h3>Python for Data Science</h3>
+                            <span class="issuer">IBM</span>
+                            <span class="certification-code">PY0101EN</span>
+                            <span class="date">Certification professionnelle • Pas d'expiration</span>
+                            <a href="https://www.credly.com/badges/IBM-PY0101EN" 
+                            class="verify-btn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Vérifier la certification IBM Python">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                </svg>
+                                <span>Vérifier</span>
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Microsoft Data Platform -->
+                    <article class="certification-card" data-category="microsoft data-ml">
+                        <div class="certification-logo">
+                            <img src="./assets/images/certifications/microsoft-logo.png" alt="Logo Microsoft" class="logo-img" loading="lazy">
+                        </div>
+                        <div class="certification-info">
+                            <h3>Microsoft Data: SharePoint, Power Platform, Access, Excel</h3>
+                            <span class="issuer">Microsoft Learning</span>
+                            <span class="date">LinkedIn Learning • Pas d'expiration</span>
+                            <a href="https://www.linkedin.com/learning/certificates/b2e39ff0bba564928fff44e108b863c91a7d3cd648913234ee9c8263a13d2e3a" 
+                            class="verify-btn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Vérifier la certification Microsoft Data">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                </svg>
+                                <span>Vérifier</span>
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Machine Learning Algorithms -->
+                    <article class="certification-card" data-category="data-ml ai-deep-learning">
+                        <div class="certification-logo">
+                            <img src="./assets/images/certifications/machine-learning-logo.png" alt="Logo Machine Learning" class="logo-img" loading="lazy">
+                        </div>
+                        <div class="certification-info">
+                            <h3>Machine Learning: Algorithms</h3>
+                            <span class="issuer">LinkedIn Learning</span>
+                            <span class="date">Certification professionnelle • Pas d'expiration</span>
+                            <a href="https://www.linkedin.com/learning/certificates/427fe056aa5674d2e7a0d7634a215a65d9da36b9211a51bd39f7f4a4863a6920" 
+                            class="verify-btn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Vérifier la certification Machine Learning">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                </svg>
+                                <span>Vérifier</span>
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- TensorFlow 2.0 Working with Images -->
+                    <article class="certification-card" data-category="ai-deep-learning">
+                        <div class="certification-logo">
+                            <img src="./assets/images/certifications/tensorflow-logo.png" alt="Logo TensorFlow" class="logo-img" loading="lazy">
+                        </div>
+                        <div class="certification-info">
+                            <h3>TensorFlow 2.0: Working with Images</h3>
+                            <span class="issuer">LinkedIn Learning</span>
+                            <span class="date">Deep Learning spécialisé • Pas d'expiration</span>
+                            <a href="https://www.linkedin.com/learning/certificates/c9320ad6b3a9298890e9b73134620717906566ea384212f80f347d09013c5c0b" 
+                            class="verify-btn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Vérifier la certification TensorFlow">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                </svg>
+                                <span>Vérifier</span>
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- CCNA Introduction to Networks -->
+                    <article class="certification-card" data-category="network">
+                        <div class="certification-logo">
+                            <img src="./assets/images/certifications/cisco-logo.png" alt="Logo Cisco" class="logo-img" loading="lazy">
+                        </div>
+                        <div class="certification-info">
+                            <h3>CCNA: Introduction to Networks</h3>
+                            <span class="issuer">Cisco Networking Academy</span>
+                            <span class="date">Badge Credly • Pas d'expiration</span>
+                            <a href="https://www.credly.com/badges/a9f1d8f8-176d-41b5-9495-6e8df156ed3d/linked_in_profile" 
+                            class="verify-btn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Vérifier le badge CCNA Cisco">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                </svg>
+                                <span>Vérifier</span>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-            <!-- Contact Section -->
-            <section id="contact" class="contact">
-                <h2>Contactez-moi</h2>
-                <div class="contact-content">
-                    <!-- Infos de contact -->
-                    <div class="contact-info">
-                        <h3>Informations de Contact</h3>
-                        <p class="contact-intro">
-                            Vous êtes à la recherche d'un apprenti en data science, avez un projet à proposer ou souhaitez simplement échanger ? Contactez-moi !
-                        </p>
+        <!-- Séparateur de section -->
+        <div class="section-divider"></div>
 
-                        <div class="contact-details">
-                            <div class="contact-item">
-                                <h4>Email</h4>
-                                <div class="contact-value">
-                                    <a href="mailto:etudeefr@gmail.com" aria-label="Envoyer un email">
-                                        <span class="contact-icon"></span>
-                                        etudeefr@gmail.com
-                                    </a>
-                                </div>
-                            </div>
+        <!-- Contact Section -->
+        <section id="contact" class="section contact">
+            <h2>Contactez-moi</h2>
+            <div class="contact-content">
+                <!-- Infos de contact -->
+                <div class="contact-info">
+                    <h3>Informations de Contact</h3>
+                    <p class="contact-intro">
+                        Vous êtes à la recherche d'un apprenti en data science, avez un projet à proposer ou souhaitez simplement échanger ? Contactez-moi !
+                    </p>
 
-                            <div class="contact-item">
-                                <h4>Localisation</h4>
-                                <div class="contact-value">
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <h4>Email</h4>
+                            <div class="contact-value">
+                                <a href="mailto:etudeefr@gmail.com" aria-label="Envoyer un email">
                                     <span class="contact-icon"></span>
-                                    <span>Amiens, France</span>
-                                </div>
+                                    etudeefr@gmail.com
+                                </a>
                             </div>
+                        </div>
 
-                            <div class="contact-item">
-                                <h4>LinkedIn</h4>
-                                <div class="contact-value">
-                                    <a href="https://www.linkedin.com/in/mohamed-amine-s-34b1b61bb/" target="_blank" rel="noopener noreferrer" aria-label="Profil LinkedIn">
-                                        <span class="contact-icon"></span>
-                                        linkedin.com/in/mohamed-amine-s
-                                    </a>
-                                </div>
+                        <div class="contact-item">
+                            <h4>Localisation</h4>
+                            <div class="contact-value">
+                                <span class="contact-icon"></span>
+                                <span>Amiens, France</span>
                             </div>
+                        </div>
 
-                            <div class="contact-item">
-                                <h4>GitHub</h4>
-                                <div class="contact-value">
-                                    <a href="https://github.com/MED063" target="_blank" rel="noopener noreferrer" aria-label="Profil GitHub">
-                                        <span class="contact-icon"></span>
-                                        github.com/MED063
-                                    </a>
-                                </div>
+                        <div class="contact-item">
+                            <h4>LinkedIn</h4>
+                            <div class="contact-value">
+                                <a href="https://www.linkedin.com/in/mohamed-amine-s-34b1b61bb/" target="_blank" rel="noopener noreferrer" aria-label="Profil LinkedIn">
+                                    <span class="contact-icon"></span>
+                                    linkedin.com/in/mohamed-amine-s
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <h4>GitHub</h4>
+                            <div class="contact-value">
+                                <a href="https://github.com/MED063" target="_blank" rel="noopener noreferrer" aria-label="Profil GitHub">
+                                    <span class="contact-icon"></span>
+                                    github.com/MED063
+                                </a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Formulaire de contact -->
-                    <div class="contact-form">
-                        <h3>Envoyez-moi un message</h3>
-                        <form id="contact-form" novalidate>
-                            <div class="form-group">
-                                <label for="name">Votre nom *</label>
-                                <input type="text" id="name" name="name" required aria-describedby="name-error">
-                                <span class="error-message" id="name-error"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email">Votre email *</label>
-                                <input type="email" id="email" name="email" required aria-describedby="email-error">
-                                <span class="error-message" id="email-error"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="subject">Sujet *</label>
-                                <input type="text" id="subject" name="subject" required aria-describedby="subject-error">
-                                <span class="error-message" id="subject-error"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
-                                <span class="error-message" id="message-error"></span>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">
-                                <span>Envoyer</span>
-                                <div class="btn-icon">
-                                    <div class="icon"></div>
-                                </div>
-                            </button>
-                            <div class="form-status" id="form-status"></div>
-                        </form>
-                    </div>
                 </div>
-            </section>
-        </div>
 
-        <!-- Loading indicator -->
-        <div id="loading" class="loading-indicator" aria-hidden="true">
-            <div class="spinner"></div>
-        </div>
+                <!-- Formulaire de contact -->
+                <div class="contact-form">
+                    <h3>Envoyez-moi un message</h3>
+                    <form id="contact-form" novalidate>
+                        <div class="form-group">
+                            <label for="name">Votre nom *</label>
+                            <input type="text" id="name" name="name" required aria-describedby="name-error">
+                            <span class="error-message" id="name-error"></span>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="email">Votre email *</label>
+                            <input type="email" id="email" name="email" required aria-describedby="email-error">
+                            <span class="error-message" id="email-error"></span>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <input type="text" id="subject" name="subject" required aria-describedby="subject-error">
+                            <span class="error-message" id="subject-error"></span>
+                        </div>
 
-        <!-- js -->
-        <script src="./script.js"></script>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
+                            <span class="error-message" id="message-error"></span>
+                        </div>
 
+                        <button type="submit" class="btn btn-primary">
+                            <span>Envoyer</span>
+                            <div class="btn-icon">
+                                <div class="icon"></div>
+                            </div>
+                        </button>
+                        <div class="form-status" id="form-status"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
 
-    </body>
+    <!-- Loading indicator -->
+    <div id="loading" class="loading-indicator" aria-hidden="true">
+        <div class="spinner"></div>
+    </div>
 
+    <!-- js -->
+    <script src="./script.js"></script>
+
+</body>
 </html>
