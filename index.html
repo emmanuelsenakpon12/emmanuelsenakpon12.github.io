@@ -761,12 +761,13 @@
                             <!-- PAS DE BOUTONS POUR CE PROJET -->
                         </div>
                     </article>
-
+                    
                     <!-- Projet 2: SI Logistique Dockerisé - DEMO PARTIELLE + 2 BOUTONS -->
                     <article class="project-card" data-category="data-bi web">
                         <div class="project-media">
+                            <!-- Démo interactive -->
                             <div class="demo-iframe-container">
-                                <iframe src="https://med063.github.io/si-logistique-demo/" 
+                                <iframe src="https://med063.github.io/si/" 
                                         title="Démo SI Logistique" 
                                         class="demo-iframe"
                                         loading="lazy">
@@ -775,8 +776,19 @@
                                     <span class="demo-label">Démo Interactive</span>
                                 </div>
                             </div>
+
+                            <!-- Démo vidéo -->
+                            <div class="demo-video-container">
+                                <video controls class="demo-video" preload="metadata">
+                                    <source src="./assets/videos/si.mp4" type="video/mp4">
+                                    Votre navigateur ne supporte pas les vidéos HTML5.
+                                </video>
+                                <div class="demo-overlay">
+                                    <span class="demo-label">Démo Vidéo</span>
+                                </div>
+                            </div>
                         </div>
-                        
+
                         <div class="project-info">
                             <h3>SI Logistique Dockerisé</h3>
                             <div class="project-tags">
@@ -785,7 +797,11 @@
                                 <span class="tag">Docker</span>
                                 <span class="tag">SQL Avancé</span>
                             </div>
-                            <p class="project-description">Système d'information logistique complet avec modélisation MERISE et réalisation du schéma relationnel (entrepôts, livraisons, stocks). Requêtes SQL avancées : jointures complexes, agrégations, sous-requêtes, vues matérialisées. Déploiement dockerisé de la base et automatisation du chargement de données via des scripts SQL dynamiques.</p>
+                            <p class="project-description">
+                                Système d'information logistique complet avec modélisation MERISE et réalisation du schéma relationnel (entrepôts, livraisons, stocks).
+                                Requêtes SQL avancées : jointures complexes, agrégations, sous-requêtes, vues matérialisées.
+                                Déploiement dockerisé de la base et automatisation du chargement de données via des scripts SQL dynamiques.
+                            </p>
                             <div class="project-actions">
                                 <a href="https://drive.google.com/file/d/1fvQrDQ86i9m2DDufBIws28LqfhCDCYFn/view?usp=drive_link" class="project-link drive-demo-btn" target="_blank" rel="noopener noreferrer">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -802,6 +818,7 @@
                             </div>
                         </div>
                     </article>
+
 
                     <!-- Projet 3: MACSI - DESCRIPTION + DIAPO + BOUTON FIGMA -->
                     <article class="project-card" data-category="web">
