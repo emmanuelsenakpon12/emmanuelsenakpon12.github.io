@@ -7,6 +7,24 @@ document.addEventListener("DOMContentLoaded", function () {
     let isModalOpen = false;
     let originalProjectsHTML = new Map();
 
+    // Cache DOM pour performance
+    const domCache = {
+        popup: null,
+        videoModal: null,
+        modalVideo: null,
+        nav: null,
+        menuToggle: null,
+        contactForm: null,
+        init() {
+            this.popup = document.getElementById("construction-popup");
+            this.videoModal = document.getElementById("video-modal");
+            this.modalVideo = document.getElementById("modal-video");
+            this.nav = document.getElementById("main-nav");
+            this.menuToggle = document.getElementById("menu-toggle");
+            this.contactForm = document.getElementById("contact-form");
+        }
+    };
+
     // Fonction utilitaire pour débounce
     function debounce(func, wait) {
         let timeout;
@@ -21,52 +39,57 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // === GESTION POPUP CONSTRUCTION ===
-    const popup = document.getElementById("construction-popup");
-    const closeBtn = document.getElementById("close-popup");
-    const okBtn = document.getElementById("popup-ok-btn");
+    function setupPopup() {
+        const { popup } = domCache;
+        if (!popup) return;
 
-    function closePopup() {
-        if (popup) {
+        function closePopup() {
             popup.classList.add('popup-closing');
             setTimeout(() => {
                 popup.style.display = "none";
                 popup.classList.remove('popup-closing');
             }, 300);
         }
-    }
 
-    if (closeBtn) closeBtn.addEventListener("click", closePopup);
-    if (okBtn) okBtn.addEventListener("click", closePopup);
-    if (popup) {
+        // Event listeners unifiés
+        const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
+        closeElements.forEach(el => el?.addEventListener("click", closePopup));
+        
         popup.addEventListener("click", function(e) {
             if (e.target === popup) closePopup();
         });
+
+        // Fonction globale pour fermeture
+        window.closePopup = closePopup;
     }
 
     // === GESTION BOUTONS HERO ===
-    const downloadCvBtn = document.getElementById("download-cv-btn");
-    const viewProjectsBtn = document.getElementById("view-projects-btn");
+    function setupHeroButtons() {
+        const downloadCvBtn = document.getElementById("download-cv-btn");
+        const viewProjectsBtn = document.getElementById("view-projects-btn");
 
-    if (downloadCvBtn) {
-        downloadCvBtn.addEventListener("click", function(e) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'download_cv', {
-                    event_category: 'engagement'
-                });
-            }
-        });
-    }
+        if (downloadCvBtn) {
+            downloadCvBtn.addEventListener("click", function(e) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'download_cv', {
+                        event_category: 'engagement'
+                    });
+                }
+            });
+        }
 
-    if (viewProjectsBtn) {
-        viewProjectsBtn.addEventListener("click", function() {
-            const projectsSection = document.getElementById("projets");
-            if (projectsSection) {
-                projectsSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
+        if (viewProjectsBtn) {
+            viewProjectsBtn.addEventListener("click", function() {
+                const projectsSection = document.getElementById("projets");
+                if (projectsSection) {
+                    if (isModalOpen) closeProjectModal();
+                    projectsSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        }
     }
 
     // === CRÉATION ÉLÉMENTS MODAUX ===
@@ -81,17 +104,13 @@ document.addEventListener("DOMContentLoaded", function () {
         modalContainer.className = 'modal-container';
         document.body.appendChild(modalContainer);
         
-        // Event listeners pour fermeture
-        modalBackdrop.addEventListener('click', function(e) {
-            if (e.target === modalBackdrop) {
-                closeProjectModal();
-            }
-        });
-        
-        modalContainer.addEventListener('click', function(e) {
-            if (e.target === modalContainer) {
-                closeProjectModal();
-            }
+        // Event listeners unifiés pour fermeture
+        [modalBackdrop, modalContainer].forEach(element => {
+            element.addEventListener('click', function(e) {
+                if (e.target === element) {
+                    closeProjectModal();
+                }
+            });
         });
         
         console.log("Éléments modaux créés");
@@ -107,6 +126,25 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("HTML original sauvegardé pour", originalProjectsHTML.size, "projets");
     }
 
+    // === GESTION BODY ET SCROLL ===
+    function toggleBodyScroll(lock = true) {
+        if (lock) {
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
+        }
+    }
+
+    // === GESTION SLIDESHOWS ===
+    function toggleSlideshows(action = 'stop') {
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            const method = action === 'stop' ? '_stopSlide' : '_startSlide';
+            if (container[method]) container[method]();
+        });
+    }
+
     // === OUVERTURE MODAL ===
     function openProjectModal(projectCard) {
         if (isModalOpen || !modalBackdrop || !modalContainer) return;
@@ -114,13 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Ouverture modal pour:", projectCard.querySelector('h3')?.textContent);
         
         isModalOpen = true;
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('no-scroll');
-        
-        // Arrêter les slideshows
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            if (container._stopSlide) container._stopSlide();
-        });
+        toggleBodyScroll(true);
+        toggleSlideshows('stop');
         
         // Créer la modal
         createModalFromCard(projectCard);
@@ -134,9 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateURL(title);
         
         // Réinitialiser les slideshows après animation
-        setTimeout(() => {
-            initSlideshows();
-        }, 350);
+        setTimeout(initSlideshows, 350);
     }
 
     // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
@@ -211,13 +242,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
         setTimeout(() => {
             modalContainer.innerHTML = '';
-            document.body.style.overflow = '';
-            document.body.classList.remove('no-scroll');
-            
-            // Redémarrer les slideshows
-            document.querySelectorAll('.slideshow-container').forEach(container => {
-                if (container._startSlide) container._startSlide();
-            });
+            toggleBodyScroll(false);
+            toggleSlideshows('start');
         }, 250);
     }
 
@@ -339,10 +365,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Listeners attachés à", projectCards.length, "cartes projets");
     }
 
-    // === FILTRES PROJETS ===
-    function setupProjectFilters() {
-        const filters = document.querySelectorAll('.projects .filter-btn');
-        const cards = document.querySelectorAll('.project-card');
+    // === FILTRES UNIVERSELS ===
+    function setupFilters(containerSelector, cardSelector) {
+        const filters = document.querySelectorAll(`${containerSelector} .filter-btn`);
+        const cards = document.querySelectorAll(cardSelector);
 
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
@@ -350,8 +376,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 console.log("Filtre sélectionné:", filterValue);
                 
-                // Fermer la modal si ouverte
-                if (isModalOpen) {
+                // Fermer la modal si ouverte (projets uniquement)
+                if (isModalOpen && containerSelector.includes('projects')) {
                     closeProjectModal();
                 }
                 
@@ -370,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
-                        card.style.display = 'block';
+                        card.style.display = cardSelector.includes('certification') ? 'flex' : 'block';
                         card.style.opacity = '1';
                         visibleCount++;
                     } else {
@@ -383,56 +409,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                console.log(`${visibleCount} projets visibles après filtrage`);
+                console.log(`${visibleCount} éléments visibles après filtrage`);
                 
-                // Réattacher les listeners après un court délai
-                setTimeout(() => {
-                    attachProjectListeners();
-                }, 350);
+                // Réattacher les listeners pour les projets
+                if (containerSelector.includes('projects')) {
+                    setTimeout(attachProjectListeners, 350);
+                }
             });
         });
     }
 
-    // === FILTRES CERTIFICATIONS ===
-    function setupCertificationFilters() {
-        const filters = document.querySelectorAll('.certifications .filter-btn');
-        const cards = document.querySelectorAll('.certification-card');
-
-        filters.forEach(filter => {
-            filter.addEventListener('click', function() {
-                const filterValue = this.getAttribute('data-filter');
-                
-                // Mettre à jour les boutons
-                filters.forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.setAttribute('aria-selected', 'false');
-                });
-                this.classList.add('active');
-                this.setAttribute('aria-selected', 'true');
-                
-                // Filtrer les cartes
-                cards.forEach(card => {
-                    const category = card.getAttribute('data-category') || '';
-                    const shouldShow = filterValue === 'all' || category.includes(filterValue);
-                    
-                    if (shouldShow) {
-                        card.style.display = 'flex';
-                        card.style.opacity = '1';
-                    } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => {
-                            if (card.style.opacity === '0') {
-                                card.style.display = 'none';
-                            }
-                        }, 300);
-                    }
-                });
-            });
-        });
-    }
-
-    // === GESTION YOUTUBE ===
-    function setupYouTubeHandlers() {
+    // === GESTION YOUTUBE ET VIDÉOS ===
+    function setupMediaHandlers() {
         // YouTube embeds (dans les project-media)
         document.querySelectorAll('.youtube-embed').forEach(embed => {
             embed.addEventListener('click', function(e) {
@@ -453,8 +441,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Boutons YouTube demo (dans les project-actions)
+        // Gestionnaire unifié pour les boutons YouTube et vidéo
         document.addEventListener('click', function(e) {
+            // Boutons YouTube demo
             if (e.target.closest('.youtube-demo-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -464,41 +453,46 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener,noreferrer');
                 }
             }
-        });
-    }
-
-    // === GESTION MODAL VIDÉO ===
-    function setupVideoModal() {
-        const videoModal = document.getElementById('video-modal');
-        const modalVideo = document.getElementById('modal-video');
-        const modalVideoSource = document.getElementById('modal-video-source');
-        const modalTitle = document.getElementById('modal-title');
-        const modalClose = document.getElementById('modal-close');
-
-        if (!videoModal) return;
-
-        // Boutons modal vidéo
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.modal-video-btn')) {
+            
+            // Boutons modal vidéo
+            else if (e.target.closest('.modal-video-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
                 const btn = e.target.closest('.modal-video-btn');
                 const videoSrc = btn.getAttribute('data-video');
                 const projectTitle = btn.closest('.project-card, .modal-card')?.querySelector('h3')?.textContent || 'Projet';
                 
-                if (modalVideoSource && modalTitle) {
-                    modalVideoSource.src = videoSrc;
-                    modalTitle.textContent = `Démo - ${projectTitle}`;
-                    modalVideo.load();
-                    videoModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                    
-                    setTimeout(() => {
-                        videoModal.classList.add('modal-open');
-                    }, 10);
-                }
+                openVideoModal(videoSrc, projectTitle);
             }
         });
+    }
+
+    // === GESTION MODAL VIDÉO ===
+    function openVideoModal(videoSrc, title) {
+        const { videoModal, modalVideo } = domCache;
+        if (!videoModal || !modalVideo) return;
+
+        const modalVideoSource = document.getElementById('modal-video-source');
+        const modalTitle = document.getElementById('modal-title');
+        
+        if (modalVideoSource && modalTitle) {
+            modalVideoSource.src = videoSrc;
+            modalTitle.textContent = `Démo - ${title}`;
+            modalVideo.load();
+            videoModal.style.display = 'flex';
+            toggleBodyScroll(true);
+            
+            setTimeout(() => {
+                videoModal.classList.add('modal-open');
+            }, 10);
+        }
+    }
+
+    function setupVideoModal() {
+        const { videoModal, modalVideo } = domCache;
+        if (!videoModal) return;
+
+        const modalClose = document.getElementById('modal-close');
 
         // Fermeture modal vidéo
         function closeVideoModal() {
@@ -510,8 +504,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 videoModal.classList.remove('modal-open');
                 setTimeout(() => {
                     videoModal.style.display = 'none';
+                    const modalVideoSource = document.getElementById('modal-video-source');
                     if (modalVideoSource) modalVideoSource.src = '';
-                    document.body.style.overflow = '';
+                    toggleBodyScroll(false);
                 }, 300);
             }
         }
@@ -525,13 +520,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 closeVideoModal();
             }
         });
+
+        // Fonction globale
+        window.closeVideoModal = closeVideoModal;
     }
 
     // === NAVIGATION ===
     function setupNavigation() {
         const navLinks = document.querySelectorAll('.nav-list a');
-        const menuToggle = document.getElementById('menu-toggle');
-        const nav = document.getElementById('main-nav');
+        const { nav, menuToggle } = domCache;
 
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
@@ -591,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CLAVIER ===
+    // === GESTION CLAVIER GLOBALE ===
     function setupKeyboardHandlers() {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -599,10 +596,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (isModalOpen) {
                     closeProjectModal();
-                } else if (document.getElementById('video-modal')?.style.display === 'flex') {
-                    document.getElementById('modal-close')?.click();
-                } else if (popup && popup.style.display !== "none") {
-                    closePopup();
+                } else if (domCache.videoModal?.style.display === 'flex') {
+                    window.closeVideoModal?.();
+                } else if (domCache.popup && domCache.popup.style.display !== "none") {
+                    window.closePopup?.();
                 }
             }
         });
@@ -630,7 +627,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // === FORMULAIRE CONTACT ===
     function setupContactForm() {
-        const contactForm = document.getElementById('contact-form');
+        const { contactForm } = domCache;
         if (!contactForm) return;
 
         contactForm.addEventListener('submit', function(e) {
@@ -642,6 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let isValid = true;
             const fields = ['name', 'email', 'subject', 'message'];
             
+            // Validation des champs
             fields.forEach(field => {
                 const input = document.getElementById(field);
                 const error = document.getElementById(`${field}-error`);
@@ -656,6 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
             
+            // Validation email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (data.email && !emailRegex.test(data.email)) {
                 const emailError = document.getElementById('email-error');
@@ -709,6 +708,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function initialize() {
         console.log("Début de l'initialisation...");
         
+        // Initialiser le cache DOM
+        domCache.init();
+        
         // Sauvegarder le HTML original AVANT tout
         saveOriginalHTML();
         
@@ -716,11 +718,16 @@ document.addEventListener("DOMContentLoaded", function () {
         createModalElements();
         
         // Initialiser tous les composants
+        setupPopup();
+        setupHeroButtons();
         initSlideshows();
         attachProjectListeners();
-        setupProjectFilters();
-        setupCertificationFilters();
-        setupYouTubeHandlers();
+        
+        // Filtres (utilisation de la fonction universelle)
+        setupFilters('.projects', '.project-card');
+        setupFilters('.certifications', '.certification-card');
+        
+        setupMediaHandlers();
         setupVideoModal();
         setupNavigation();
         setupTheme();
@@ -752,6 +759,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Projets HTML sauvegardés:", originalProjectsHTML.size);
         console.log("Cartes projets:", document.querySelectorAll('.project-card').length);
         console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-modal-listener]').length);
+        console.log("Cache DOM:", domCache);
         console.log("========================");
     };
 
