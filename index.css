@@ -1428,7 +1428,15 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; /* AJOUT: Centre la vidéo */
   cursor: pointer;
+  display: block; /* AJOUT: Force l'affichage en bloc */
+}
+
+/* AJOUT: Vidéos dans les modals - affichage optimal */
+.modal-media-content .project-video,
+.modal-media .project-video {
+  object-fit: contain; /* Dans la modal, on veut voir toute la vidéo */
 }
 
 .video-controls {
