@@ -1433,6 +1433,15 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: block; /* AJOUT: Force l'affichage en bloc */
 }
 
+/* AJOUT: Correction pour les images du slideshow */
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center; /* Centre l'image */
+  display: block;
+}
+
 /* AJOUT: Vidéos dans les modals - affichage optimal */
 .modal-media-content .project-video,
 .modal-media .project-video {
