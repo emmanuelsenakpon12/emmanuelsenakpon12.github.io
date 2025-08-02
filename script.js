@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === GESTION SLIDESHOWS ===
+   // === GESTION SLIDESHOWS ===
     function toggleSlideshows(action = 'stop') {
         document.querySelectorAll('.slideshow-container').forEach(container => {
             const method = action === 'stop' ? '_stopSlide' : '_startSlide';
@@ -166,8 +166,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = projectCard.querySelector('h3')?.textContent || '';
         updateURL(title);
         
-        // Réinitialiser les slideshows après animation
-        setTimeout(initSlideshows, 350);
+        // CORRECTION: Réinitialiser les slideshows UNIQUEMENT dans la modal après animation
+        setTimeout(() => {
+            initModalSlideshows();
+        }, 350);
     }
 
     // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
@@ -276,57 +278,84 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // === SLIDESHOWS ===
+    // === SLIDESHOWS PRINCIPAL (pour les cartes) ===
     function initSlideshows() {
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            const slides = container.querySelectorAll('.slide');
-            const dots = container.querySelectorAll('.slide-dot');
-            let currentSlide = 0;
-            let slideInterval;
-
-            if (slides.length <= 1) return;
-
-            function showSlide(index) {
-                if (index === currentSlide || index < 0 || index >= slides.length) return;
-                
-                slides[currentSlide].classList.remove('active');
-                dots[currentSlide]?.classList.remove('active');
-                
-                currentSlide = index;
-                slides[currentSlide].classList.add('active');
-                dots[currentSlide]?.classList.add('active');
-            }
-
-            // Navigation dots
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showSlide(index);
-                });
-            });
-
-            // Auto-slide
-            function startSlide() {
-                if (!isModalOpen) {
-                    slideInterval = setInterval(() => {
-                        if (!isModalOpen) {
-                            showSlide((currentSlide + 1) % slides.length);
-                        }
-                    }, 4000);
-                }
-            }
-
-            function stopSlide() {
-                clearInterval(slideInterval);
-            }
-
-            startSlide();
-            container.addEventListener('mouseenter', stopSlide);
-            container.addEventListener('mouseleave', startSlide);
-            
-            container._startSlide = startSlide;
-            container._stopSlide = stopSlide;
+        // Seulement les slideshows dans les cartes (pas dans les modals)
+        document.querySelectorAll('.project-card .slideshow-container').forEach(container => {
+            setupSlideshow(container, false); // false = pas dans une modal
         });
+    }
+
+    // === NOUVEAU: SLIDESHOWS POUR MODALS ===
+    function initModalSlideshows() {
+        // Seulement les slideshows dans les modals
+        document.querySelectorAll('.modal-container .slideshow-container').forEach(container => {
+            setupSlideshow(container, true); // true = dans une modal
+        });
+    }
+
+    // === FONCTION UNIFIÉE POUR CONFIGURER UN SLIDESHOW ===
+    function setupSlideshow(container, isInModal = false) {
+        const slides = container.querySelectorAll('.slide');
+        const dots = container.querySelectorAll('.slide-dot');
+        let currentSlide = 0;
+        let slideInterval;
+
+        if (slides.length <= 1) return;
+
+        // Réinitialiser l'état des slides
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active');
+            if (index === 0) slide.classList.add('active');
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.classList.remove('active');
+            if (index === 0) dot.classList.add('active');
+        });
+
+        function showSlide(index) {
+            if (index === currentSlide || index < 0 || index >= slides.length) return;
+            
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide]?.classList.remove('active');
+            
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide]?.classList.add('active');
+        }
+
+        // Navigation dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showSlide(index);
+            });
+        });
+
+        // Auto-slide (conditions différentes selon le contexte)
+        function startSlide() {
+            const shouldStart = isInModal ? isModalOpen : !isModalOpen;
+            if (shouldStart) {
+                slideInterval = setInterval(() => {
+                    const shouldContinue = isInModal ? isModalOpen : !isModalOpen;
+                    if (shouldContinue) {
+                        showSlide((currentSlide + 1) % slides.length);
+                    }
+                }, 4000);
+            }
+        }
+
+        function stopSlide() {
+            clearInterval(slideInterval);
+        }
+
+        startSlide();
+        container.addEventListener('mouseenter', stopSlide);
+        container.addEventListener('mouseleave', startSlide);
+        
+        container._startSlide = startSlide;
+        container._stopSlide = stopSlide;
     }
 
     // === LISTENERS CARTES PROJETS ===
