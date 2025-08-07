@@ -1,4 +1,4 @@
-/* === VARIABLES CSS OPTIMISÉES === */
+/* === VARIABLES CSS  === */
 :root {
   /* === COULEURS PRINCIPALES === */
   --primary-color: #007acc;
@@ -38,13 +38,13 @@
   --border-radius-lg: 1rem;
   --border-radius-xl: 1.5rem;
 
-  /* === TRANSITIONS SIMPLIFIÉES === */
+  /* === TRANSITIONS  === */
   --transition-instant: all 0.1s ease-out;
   --transition-fast: all 0.15s ease-out;
   --transition: all 0.3s ease-in-out;
   --transition-slow: all 0.5s ease-in-out;
 
-  /* === SYSTÈME D'ESPACEMENT UNIFIÉ === */
+  /* === ESPACEMENT  === */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -123,7 +123,7 @@
   to { opacity: 0; transform: translateY(-20px) scale(0.98); }
 }
 
-/* === SUPPRESSION TOTALE DE TOUS LES EFFETS DE FLOU === */
+
 *,
 *::before,
 *::after {
@@ -263,7 +263,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   z-index: var(--z-background);
 }
 
-/* === SÉPARATEUR DE SECTION === */
+/* === SEPARATEUR  === */
 .section-divider {
   width: 100%;
   height: 1px;
@@ -1376,23 +1376,23 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* Centre l'image */
+  object-position: center; 
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  display: block; /* Force l'affichage en bloc */
+  display: block; 
 }
 
 .slide.active {
   opacity: 1;
 }
 
-/* Images du slideshow dans les modals - affichage optimal */
+
 .modal-media-content .slide,
 .modal-media .slide {
-  object-fit: contain; /* Dans la modal, on veut voir toute l'image */
+  object-fit: contain; 
 }
 
 .slide-dots {
@@ -1436,15 +1436,15 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* Centre la vidéo */
+  object-position: center; 
   cursor: pointer;
-  display: block; /* Force l'affichage en bloc */
+  display: block; 
 }
 
-/* Vidéos dans les modals - affichage optimal */
+
 .modal-media-content .project-video,
 .modal-media .project-video {
-  object-fit: contain; /* Dans la modal, on veut voir toute la vidéo */
+  object-fit: contain; 
 }
 
 .video-controls {
@@ -1610,7 +1610,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   font-size: 0.9rem;
 }
 
-/* === MODAL VIDÉO SÉPARÉE === */
+/* === MODAL VIDEO === */
 .video-modal-overlay {
   position: fixed;
   top: 0;

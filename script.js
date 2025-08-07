@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Initialisation du portfolio...");
 
-    // Variables globales simplifiées
+    // Variables globales 
     let modalBackdrop = null;
     let modalContainer = null;
     let isModalOpen = false;
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // Fonction utilitaire pour débounce
+    //  utilitaire pour debounce
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
-        // Event listeners unifiés
+        // Event listeners uni
         const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
         closeElements.forEach(el => el?.addEventListener("click", closePopup));
         
@@ -92,19 +92,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === CRÉATION ÉLÉMENTS MODAUX ===
+    // === CReATION eLeMENTS MODAUX ===
     function createModalElements() {
-        // Créer le backdrop
+        // backdrop
         modalBackdrop = document.createElement('div');
         modalBackdrop.className = 'modal-backdrop';
         document.body.appendChild(modalBackdrop);
         
-        // Créer le conteneur
+        //  conteneur
         modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
         document.body.appendChild(modalContainer);
         
-        // Event listeners unifiés pour fermeture
+        // Event listeners unified pour fermeture
         [modalBackdrop, modalContainer].forEach(element => {
             element.addEventListener('click', function(e) {
                 if (e.target === element) {
@@ -155,32 +155,32 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBodyScroll(true);
         toggleSlideshows('stop');
         
-        // Créer la modal
+        // Cree la modal
         createModalFromCard(projectCard);
         
-        // Afficher la modal
+        // Affichee la modal
         modalBackdrop.classList.add('active');
         modalContainer.classList.add('active');
         
-        // Gérer l'URL
+        // Gestion URL
         const title = projectCard.querySelector('h3')?.textContent || '';
         updateURL(title);
         
-        // CORRECTION: Réinitialiser les slideshows UNIQUEMENT dans la modal après animation
+        // Renit
         setTimeout(() => {
             initModalSlideshows();
         }, 350);
     }
 
-    // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
+    // === MODAL À PARTIR D'UNE CARTE ===
     function createModalFromCard(projectCard) {
         const title = projectCard.querySelector('h3')?.textContent || '';
         const originalHTML = originalProjectsHTML.get(title);
         
-        // Utiliser le HTML original si disponible, sinon le HTML actuel
+        
         const htmlToUse = originalHTML || projectCard.outerHTML;
         
-        // Créer un élément temporaire pour parser le HTML
+        
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlToUse;
         const cardElement = tempDiv.firstElementChild;
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modalCard.style.display = '';
         modalCard.style.opacity = '';
         
-        // Extraire les éléments
+        // Extraire
         const projectMedia = modalCard.querySelector('.project-media');
         const projectInfo = modalCard.querySelector('.project-info');
         
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
         }
         
-        // Ajouter bouton de fermeture
+        //  bouton de fermeture
         const closeBtn = document.createElement('button');
         closeBtn.className = 'modal-close';
         closeBtn.innerHTML = '×';
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         closeBtn.addEventListener('click', closeProjectModal);
         modalCard.appendChild(closeBtn);
         
-        // Ajouter à la modal
+        // Ajout à la modal
         modalContainer.innerHTML = '';
         modalContainer.appendChild(modalCard);
         
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // === SLIDESHOWS PRINCIPAL (pour les cartes) ===
     function initSlideshows() {
-        // Seulement les slideshows dans les cartes (pas dans les modals)
+        
         document.querySelectorAll('.project-card .slideshow-container').forEach(container => {
             setupSlideshow(container, false); // false = pas dans une modal
         });
@@ -288,13 +288,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // === NOUVEAU: SLIDESHOWS POUR MODALS ===
     function initModalSlideshows() {
-        // Seulement les slideshows dans les modals
+        /
         document.querySelectorAll('.modal-container .slideshow-container').forEach(container => {
             setupSlideshow(container, true); // true = dans une modal
         });
     }
 
-    // === FONCTION UNIFIÉE POUR CONFIGURER UN SLIDESHOW ===
+    // === CONFIG  SLIDESHOW ===
     function setupSlideshow(container, isInModal = false) {
         const slides = container.querySelectorAll('.slide');
         const dots = container.querySelectorAll('.slide-dot');
@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (slides.length <= 1) return;
 
-        // Réinitialiser l'état des slides
+       // Reset de l'état des slides
         slides.forEach((slide, index) => {
             slide.classList.remove('active');
             if (index === 0) slide.classList.add('active');
@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
             dots[currentSlide]?.classList.add('active');
         }
 
-        // Navigation dots
+        // Gestion des points de navigation
         dots.forEach((dot, index) => {
             dot.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Auto-slide (conditions différentes selon le contexte)
+        // Auto-slide avec conditions pour modal/normal
         function startSlide() {
             const shouldStart = isInModal ? isModalOpen : !isModalOpen;
             if (shouldStart) {
@@ -358,17 +358,17 @@ document.addEventListener("DOMContentLoaded", function () {
         container._stopSlide = stopSlide;
     }
 
-    // === LISTENERS CARTES PROJETS ===
+    // Gestion des événements sur les cartes de projets
     function attachProjectListeners() {
         const projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
-            // Éviter les doublons
+            // Évite les doublons d'événements
             if (card.hasAttribute('data-modal-listener')) return;
             card.setAttribute('data-modal-listener', 'true');
             
             card.addEventListener('click', function(e) {
-                // Éviter les clics sur les boutons internes
+                // Ignore les clics sur les éléments interactifs internes
                 if (e.target.closest(`
                     a, 
                     button:not(.modal-close), 
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Listeners attachés à", projectCards.length, "cartes projets");
     }
 
-    // === FILTRES UNIVERSELS ===
+    // Système de filtres réutilisable pour projets et certifications
     function setupFilters(containerSelector, cardSelector) {
         const filters = document.querySelectorAll(`${containerSelector} .filter-btn`);
         const cards = document.querySelectorAll(cardSelector);
@@ -405,12 +405,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 console.log("Filtre sélectionné:", filterValue);
                 
-                // Fermer la modal si ouverte (projets uniquement)
+                // Ferme la modal si elle est ouverte (projets seulement)
                 if (isModalOpen && containerSelector.includes('projects')) {
                     closeProjectModal();
                 }
                 
-                // Mettre à jour les boutons
+                // Met à jour l'état des boutons
                 filters.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-selected', 'false');
@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                // Filtrer les cartes
+                // Applique le filtre sur les cartes
                 let visibleCount = 0;
                 cards.forEach(card => {
                     const category = card.getAttribute('data-category') || '';
@@ -440,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 console.log(`${visibleCount} éléments visibles après filtrage`);
                 
-                // Réattacher les listeners pour les projets
+                // Re-attache les listeners pour les projets après filtrage
                 if (containerSelector.includes('projects')) {
                     setTimeout(attachProjectListeners, 350);
                 }
@@ -448,9 +448,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION YOUTUBE ET VIDÉOS ===
+    // Configuration des gestionnaires pour médias et YouTube
     function setupMediaHandlers() {
-        // YouTube embeds (dans les project-media)
+        // Embeds YouTube dans les médias de projets
         document.querySelectorAll('.youtube-embed').forEach(embed => {
             embed.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -470,9 +470,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Gestionnaire unifié pour les boutons YouTube et vidéo
+        // Gestionnaire unifié pour tous les boutons vidéo
         document.addEventListener('click', function(e) {
-            // Boutons YouTube demo
+            // Boutons démo YouTube
             if (e.target.closest('.youtube-demo-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -483,7 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             
-            // Boutons modal vidéo
+            // Boutons vidéo en modal
             else if (e.target.closest('.modal-video-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -496,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION MODAL VIDÉO ===
+    // Ouverture de la modal vidéo
     function openVideoModal(videoSrc, title) {
         const { videoModal, modalVideo } = domCache;
         if (!videoModal || !modalVideo) return;
@@ -523,7 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const modalClose = document.getElementById('modal-close');
 
-        // Fermeture modal vidéo
+        // Fermeture de la modal vidéo
         function closeVideoModal() {
             if (modalVideo) {
                 modalVideo.pause();
@@ -550,11 +550,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Fonction globale
+        // Rend la fonction accessible globalement
         window.closeVideoModal = closeVideoModal;
     }
 
-    // === NAVIGATION ===
+    // Configuration de la navigation
     function setupNavigation() {
         const navLinks = document.querySelectorAll('.nav-list a');
         const { nav, menuToggle } = domCache;
@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Menu mobile
+        // Toggle menu mobile
         if (menuToggle && nav) {
             menuToggle.addEventListener('click', function() {
                 nav.classList.toggle('mobile-open');
@@ -591,7 +591,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === GESTION THÈME ===
+    // Gestion du thème sombre/clair
     function setupTheme() {
         const themeToggle = document.getElementById('theme-toggle');
         if (!themeToggle) return;
@@ -617,7 +617,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CLAVIER GLOBALE ===
+    // Gestion des raccourcis clavier
     function setupKeyboardHandlers() {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === ANIMATIONS SECTIONS ===
+    // Animations d'apparition des sections
     function setupSectionAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -654,7 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === FORMULAIRE CONTACT ===
+    // Configuration du formulaire de contact
     function setupContactForm() {
         const { contactForm } = domCache;
         if (!contactForm) return;
@@ -668,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let isValid = true;
             const fields = ['name', 'email', 'subject', 'message'];
             
-            // Validation des champs
+            // Validation des champs obligatoires
             fields.forEach(field => {
                 const input = document.getElementById(field);
                 const error = document.getElementById(`${field}-error`);
@@ -683,7 +683,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
             
-            // Validation email
+            // Validation format email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (data.email && !emailRegex.test(data.email)) {
                 const emailError = document.getElementById('email-error');
@@ -708,7 +708,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CHARGEMENT URL ===
+    // Gestion URL avec hash pour ouverture directe de projet
     function handleInitialURL() {
         const hash = window.location.hash;
         if (hash.startsWith('#projet-')) {
@@ -733,26 +733,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === INITIALISATION COMPLÈTE ===
+    // Fonction d'initialisation principale
     function initialize() {
         console.log("Début de l'initialisation...");
         
-        // Initialiser le cache DOM
+        // Init du cache DOM
         domCache.init();
         
-        // Sauvegarder le HTML original AVANT tout
+        // Sauvegarde du HTML original avant modifications
         saveOriginalHTML();
         
-        // Créer les éléments modaux
+        // Création des éléments de modal
         createModalElements();
         
-        // Initialiser tous les composants
+        // Init de tous les composants
         setupPopup();
         setupHeroButtons();
         initSlideshows();
         attachProjectListeners();
         
-        // Filtres (utilisation de la fonction universelle)
+        // Filtres pour projets et certifications
         setupFilters('.projects', '.project-card');
         setupFilters('.certifications', '.certification-card');
         
@@ -764,13 +764,13 @@ document.addEventListener("DOMContentLoaded", function () {
         setupSectionAnimations();
         setupContactForm();
         
-        // Gérer l'URL initiale
+        // Traitement URL initiale
         handleInitialURL();
         
         console.log("Initialisation terminée avec succès !");
     }
 
-    // Masquer le loading et initialiser
+    // Cache l'écran de chargement et lance l'init
     setTimeout(() => {
         const loading = document.getElementById('loading');
         if (loading) {
@@ -779,7 +779,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initialize();
     }, 500);
 
-    // === FONCTIONS DE DEBUG ===
+    // Fonctions de debug pour développement
     window.debugPortfolio = function() {
         console.log("=== DEBUG PORTFOLIO ===");
         console.log("Modal ouverte:", isModalOpen);
@@ -807,7 +807,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
-// Service Worker
+// Enregistrement du Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
