@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Initialisation de la section projets...");
+    console.log("Initialisation du portfolio...");
 
-    // Variables globales pour la section projets
+    // Variables globales adaptées de votre ancien code
+    let modalBackdrop = null;
+    let modalContainer = null;
+    let isModalOpen = false;
     let isImageModalOpen = false;
-    let isCardExpanded = false;
-    let expandedCard = null;
-    let expandedOverlay = null;
     let originalProjectsHTML = new Map();
 
     // Cache DOM pour performance
@@ -28,12 +28,95 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // === CRÉATION DE L'OVERLAY POUR CARTES ÉTENDUES ===
-    function createExpandedOverlay() {
-        expandedOverlay = document.createElement('div');
-        expandedOverlay.className = 'expanded-overlay';
-        expandedOverlay.addEventListener('click', closeExpandedCard);
-        document.body.appendChild(expandedOverlay);
+    // Fonction utilitaire pour débounce
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // === GESTION POPUP CONSTRUCTION ===
+    function setupPopup() {
+        const { popup } = domCache;
+        if (!popup) return;
+
+        function closePopup() {
+            popup.classList.add('popup-closing');
+            setTimeout(() => {
+                popup.style.display = "none";
+                popup.classList.remove('popup-closing');
+            }, 300);
+        }
+
+        const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
+        closeElements.forEach(el => el?.addEventListener("click", closePopup));
+        
+        popup.addEventListener("click", function(e) {
+            if (e.target === popup) closePopup();
+        });
+
+        window.closePopup = closePopup;
+    }
+
+    // === GESTION BOUTONS HERO ===
+    function setupHeroButtons() {
+        const downloadCvBtn = document.getElementById("download-cv-btn");
+        const viewProjectsBtn = document.getElementById("view-projects-btn");
+
+        if (downloadCvBtn) {
+            downloadCvBtn.addEventListener("click", function(e) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'download_cv', {
+                        event_category: 'engagement'
+                    });
+                }
+            });
+        }
+
+        if (viewProjectsBtn) {
+            viewProjectsBtn.addEventListener("click", function() {
+                const projectsSection = document.getElementById("projets");
+                if (projectsSection) {
+                    if (isModalOpen) closeProjectModal();
+                    projectsSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        }
+    }
+
+    // === CRÉATION ÉLÉMENTS MODAUX (inspiré de votre ancien code) ===
+    function createModalElements() {
+        // Créer le backdrop
+        modalBackdrop = document.createElement('div');
+        modalBackdrop.className = 'expanded-overlay';
+        document.body.appendChild(modalBackdrop);
+        
+        // Créer le conteneur - pas besoin car on utilise la carte elle-même
+        modalContainer = document.createElement('div');
+        modalContainer.className = 'modal-container';
+        modalContainer.style.display = 'none'; // Caché par défaut
+        document.body.appendChild(modalContainer);
+        
+        // Event listeners unifiés pour fermeture
+        modalBackdrop.addEventListener('click', function(e) {
+            if (e.target === modalBackdrop) {
+                closeProjectModal();
+            }
+        });
+        
+        // Créer le modal d'images si nécessaire
+        createImageModal();
+        
+        console.log("Éléments modaux créés");
     }
 
     // === CRÉATION DU MODAL D'IMAGES ===
@@ -112,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             imageModal.classList.add('active');
             isImageModalOpen = true;
-            document.body.style.overflow = 'hidden';
+            toggleBodyScroll(true);
         }
 
         function closeImageModal() {
@@ -120,8 +203,10 @@ document.addEventListener("DOMContentLoaded", function () {
             
             imageModal.classList.remove('active');
             isImageModalOpen = false;
-            if (!isCardExpanded) {
-                document.body.style.overflow = '';
+            
+            // Restaurer le scroll seulement si aucune carte étendue
+            if (!isModalOpen) {
+                toggleBodyScroll(false);
             }
         }
 
@@ -170,75 +255,85 @@ document.addEventListener("DOMContentLoaded", function () {
         window.closeImageModal = closeImageModal;
     }
 
-    // === OUVERTURE CARTE ÉTENDUE ===
-    function openExpandedCard(card) {
-        if (isCardExpanded) return;
+    // === SAUVEGARDE HTML INITIAL ===
+    function saveOriginalHTML() {
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach((card, index) => {
+            const title = card.querySelector('h3')?.textContent || `projet-${index}`;
+            originalProjectsHTML.set(title, card.outerHTML);
+        });
+        console.log("HTML original sauvegardé pour", originalProjectsHTML.size, "projets");
+    }
+
+    // === GESTION BODY ET SCROLL ===
+    function toggleBodyScroll(lock = true) {
+        if (lock) {
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
+        }
+    }
+
+    // === GESTION SLIDESHOWS ===
+    function toggleSlideshows(action = 'stop') {
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            const method = action === 'stop' ? '_stopSlide' : '_startSlide';
+            if (container[method]) container[method]();
+        });
+    }
+
+    // === OUVERTURE MODAL (carte étendue) ===
+    function openProjectModal(projectCard) {
+        if (isModalOpen || !modalBackdrop) return;
         
-        console.log("Ouverture carte étendue:", card.querySelector('h3')?.textContent);
+        console.log("Ouverture carte étendue pour:", projectCard.querySelector('h3')?.textContent);
         
-        // Sauvegarder la position originale
-        const rect = card.getBoundingClientRect();
-        card.setAttribute('data-original-pos', JSON.stringify({
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height
-        }));
+        isModalOpen = true;
+        toggleBodyScroll(true);
+        toggleSlideshows('stop');
         
-        // Restructurer le contenu pour l'affichage étendu
-        restructureCardForExpansion(card);
+        // Restructurer la carte pour l'affichage étendu
+        restructureCardForExpansion(projectCard);
         
         // Marquer comme étendue
-        card.classList.add('expanded');
-        isCardExpanded = true;
-        expandedCard = card;
+        projectCard.classList.add('expanded');
         
         // Afficher l'overlay
-        if (expandedOverlay) {
-            expandedOverlay.classList.add('active');
-        }
+        modalBackdrop.classList.add('active');
         
-        // Bloquer le scroll
-        document.body.style.overflow = 'hidden';
+        // Gérer l'URL
+        const title = projectCard.querySelector('h3')?.textContent || '';
+        updateURL(title);
         
         // Réinitialiser les slideshows dans la carte étendue
         setTimeout(() => {
-            const slideshowContainer = card.querySelector('.slideshow-container');
-            if (slideshowContainer) {
-                setupSlideshow(slideshowContainer);
-            }
-        }, 300);
+            initModalSlideshows(projectCard);
+            addMediaExpandButton(projectCard);
+        }, 350);
     }
 
     // === RESTRUCTURATION CARTE POUR EXPANSION ===
     function restructureCardForExpansion(card) {
-        const projectMedia = card.querySelector('.project-media');
-        const projectInfo = card.querySelector('.project-info');
-        
-        if (!projectMedia || !projectInfo) return;
-        
-        // Créer le conteneur principal
+        // Assurer la structure .project-content
         let projectContent = card.querySelector('.project-content');
         if (!projectContent) {
             projectContent = document.createElement('div');
             projectContent.className = 'project-content';
             
-            // Déplacer tous les enfants dans le nouveau conteneur
-            while (card.firstChild) {
-                if (card.firstChild.classList && card.firstChild.classList.contains('expand-badge')) {
-                    card.firstChild.remove();
-                    continue;
+            // Déplacer tous les enfants sauf expand-badge
+            const children = Array.from(card.children);
+            children.forEach(child => {
+                if (!child.classList.contains('expand-badge')) {
+                    projectContent.appendChild(child);
                 }
-                projectContent.appendChild(card.firstChild);
-            }
+            });
             card.appendChild(projectContent);
         }
         
         // Ajouter les boutons de contrôle
         addExpandedCardControls(card);
-        
-        // Ajouter le bouton d'agrandissement média
-        addMediaExpandButton(projectMedia);
     }
 
     // === AJOUT DES CONTRÔLES DE CARTE ÉTENDUE ===
@@ -252,23 +347,15 @@ document.addEventListener("DOMContentLoaded", function () {
             closeBtn.title = 'Fermer';
             closeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                closeExpandedCard();
+                closeProjectModal();
             });
             card.appendChild(closeBtn);
-        }
-        
-        // Badge d'expansion (maintenir pour cohérence)
-        let expandBadge = card.querySelector('.expand-badge');
-        if (!expandBadge) {
-            expandBadge = document.createElement('div');
-            expandBadge.className = 'expand-badge';
-            expandBadge.textContent = 'Détails du projet';
-            card.appendChild(expandBadge);
         }
     }
 
     // === AJOUT BOUTON AGRANDISSEMENT MÉDIA ===
-    function addMediaExpandButton(mediaContainer) {
+    function addMediaExpandButton(card) {
+        const mediaContainer = card.querySelector('.project-media');
         if (!mediaContainer) return;
         
         let expandBtn = mediaContainer.querySelector('.media-expand-btn');
@@ -287,7 +374,6 @@ document.addEventListener("DOMContentLoaded", function () {
             
             expandBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const card = mediaContainer.closest('.project-card');
                 const video = mediaContainer.querySelector('.project-video');
                 
                 if (video) {
@@ -307,53 +393,90 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === FERMETURE CARTE ÉTENDUE ===
-    function closeExpandedCard() {
-        if (!isCardExpanded || !expandedCard) return;
+    // === FERMETURE MODAL ===
+    function closeProjectModal() {
+        if (!isModalOpen) return;
         
         console.log("Fermeture carte étendue");
         
-        // Retirer la classe expanded
-        expandedCard.classList.remove('expanded');
+        isModalOpen = false;
         
-        // Masquer l'overlay
-        if (expandedOverlay) {
-            expandedOverlay.classList.remove('active');
+        // Trouver la carte étendue et la fermer
+        const expandedCard = document.querySelector('.project-card.expanded');
+        if (expandedCard) {
+            expandedCard.classList.remove('expanded');
         }
         
-        // Restaurer le scroll si aucun modal ouvert
-        if (!isImageModalOpen) {
-            document.body.style.overflow = '';
-        }
+        modalBackdrop.classList.remove('active');
         
-        // Réinitialiser les variables
-        isCardExpanded = false;
-        expandedCard = null;
+        clearURL();
         
-        // Réattacher les listeners après un délai
         setTimeout(() => {
+            // Restaurer le scroll si aucun modal image ouvert
+            if (!isImageModalOpen) {
+                toggleBodyScroll(false);
+            }
+            toggleSlideshows('start');
+            
+            // Nettoyer les éléments ajoutés
+            const controls = document.querySelectorAll('.close-expanded, .media-expand-btn');
+            controls.forEach(control => control.remove());
+            
+            // Réattacher les listeners
             attachProjectListeners();
-        }, 350);
+        }, 250);
     }
 
-    // === SAUVEGARDE HTML INITIAL ===
-    function saveOriginalHTML() {
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach((card, index) => {
-            const title = card.querySelector('h3')?.textContent || `projet-${index}`;
-            originalProjectsHTML.set(title, card.outerHTML);
-        });
-        console.log("HTML original sauvegardé pour", originalProjectsHTML.size, "projets");
+    // === GESTION URL ===
+    function updateURL(projectTitle) {
+        if (history.pushState && projectTitle) {
+            const urlSlug = projectTitle.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            history.pushState(
+                { modal: true, project: urlSlug }, 
+                '', 
+                '#projet-' + urlSlug
+            );
+        }
     }
 
-    // === GESTION SLIDESHOWS ===
+    function clearURL() {
+        if (history.pushState) {
+            history.pushState(null, '', window.location.pathname + window.location.search);
+        }
+    }
+
+    // === GESTION HISTORIQUE NAVIGATEUR ===
+    window.addEventListener('popstate', function(e) {
+        if (isImageModalOpen) {
+            window.closeImageModal();
+        } else if (isModalOpen) {
+            closeProjectModal();
+        }
+    });
+
+    // === SLIDESHOWS PRINCIPAL ===
     function initSlideshows() {
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            setupSlideshow(container);
+        document.querySelectorAll('.project-card:not(.expanded) .slideshow-container').forEach(container => {
+            setupSlideshow(container, false);
         });
     }
 
-    function setupSlideshow(container) {
+    // === SLIDESHOWS POUR CARTES ÉTENDUES ===
+    function initModalSlideshows(card) {
+        if (card) {
+            const container = card.querySelector('.slideshow-container');
+            if (container) {
+                setupSlideshow(container, true);
+            }
+        }
+    }
+
+    // === FONCTION UNIFIÉE POUR CONFIGURER UN SLIDESHOW ===
+    function setupSlideshow(container, isInModal = false) {
         const slides = container.querySelectorAll('.slide');
         const dots = container.querySelectorAll('.slide-dot');
         let currentSlide = 0;
@@ -366,12 +489,19 @@ document.addEventListener("DOMContentLoaded", function () {
             slide.classList.remove('active');
             if (index === 0) slide.classList.add('active');
             
-            // Retirer les anciens listeners pour éviter les doublons
-            slide.replaceWith(slide.cloneNode(true));
+            // Ajouter event listener pour expansion sur clic (seulement en mode étendu)
+            if (isInModal) {
+                slide.addEventListener('click', function(e) {
+                    if (e.target.closest('.slide-dot, .media-expand-btn, button')) return;
+                    
+                    e.stopPropagation();
+                    const parentCard = container.closest('.project-card');
+                    if (parentCard && window.openImageModal) {
+                        window.openImageModal(parentCard);
+                    }
+                });
+            }
         });
-        
-        // Re-sélectionner après clonage
-        const newSlides = container.querySelectorAll('.slide');
         
         dots.forEach((dot, index) => {
             dot.classList.remove('active');
@@ -379,13 +509,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         function showSlide(index) {
-            if (index === currentSlide || index < 0 || index >= newSlides.length) return;
+            if (index === currentSlide || index < 0 || index >= slides.length) return;
             
-            newSlides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('active');
             dots[currentSlide]?.classList.remove('active');
             
             currentSlide = index;
-            newSlides[currentSlide].classList.add('active');
+            slides[currentSlide].classList.add('active');
             dots[currentSlide]?.classList.add('active');
         }
 
@@ -397,12 +527,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Auto-slide seulement si pas dans une carte étendue
+        // Auto-slide (pas en mode étendu)
         function startSlide() {
-            const parentCard = container.closest('.project-card');
-            if (!parentCard || !parentCard.classList.contains('expanded')) {
+            if (!isInModal) {
                 slideInterval = setInterval(() => {
-                    showSlide((currentSlide + 1) % newSlides.length);
+                    showSlide((currentSlide + 1) % slides.length);
                 }, 4000);
             }
         }
@@ -415,7 +544,6 @@ document.addEventListener("DOMContentLoaded", function () {
         container.addEventListener('mouseenter', stopSlide);
         container.addEventListener('mouseleave', startSlide);
         
-        // Stocker les fonctions pour contrôle externe
         container._startSlide = startSlide;
         container._stopSlide = stopSlide;
     }
@@ -426,19 +554,25 @@ document.addEventListener("DOMContentLoaded", function () {
         
         projectCards.forEach(card => {
             // Éviter les doublons
-            if (card.hasAttribute('data-listener-attached')) return;
-            card.setAttribute('data-listener-attached', 'true');
+            if (card.hasAttribute('data-modal-listener')) return;
+            card.setAttribute('data-modal-listener', 'true');
             
-            // Listener principal pour ouverture carte étendue
             card.addEventListener('click', function(e) {
-                // Éviter les clics sur les liens et boutons
-                if (e.target.closest('a, button, .project-link')) {
+                // Éviter les clics sur les boutons internes
+                if (e.target.closest(`
+                    a, 
+                    button:not(.modal-close), 
+                    .project-link, 
+                    .modal-link,
+                    .slide-dot, 
+                    iframe
+                `)) {
                     return;
                 }
                 
                 e.preventDefault();
                 e.stopPropagation();
-                openExpandedCard(this);
+                openProjectModal(this);
             });
             
             // Listener spécifique pour le badge d'expansion
@@ -447,7 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 expandBadge.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    openExpandedCard(card);
+                    openProjectModal(card);
                 });
             }
         });
@@ -455,10 +589,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Listeners attachés à", projectCards.length, "cartes projets");
     }
 
-    // === FILTRES PROJETS ===
-    function setupProjectFilters() {
-        const filters = document.querySelectorAll('.project-filters .filter-btn');
-        const cards = document.querySelectorAll('.project-card');
+    // === FILTRES UNIVERSELS ===
+    function setupFilters(containerSelector, cardSelector) {
+        const filters = document.querySelectorAll(`${containerSelector} .filter-btn`);
+        const cards = document.querySelectorAll(cardSelector);
 
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
@@ -466,9 +600,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 console.log("Filtre sélectionné:", filterValue);
                 
-                // Fermer la carte étendue si ouverte
-                if (isCardExpanded) {
-                    closeExpandedCard();
+                // Fermer la modal si ouverte
+                if (isModalOpen && containerSelector.includes('projects')) {
+                    closeProjectModal();
                 }
                 
                 // Mettre à jour les boutons
@@ -486,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
-                        card.style.display = 'block';
+                        card.style.display = cardSelector.includes('certification') ? 'flex' : 'block';
                         card.style.opacity = '1';
                         visibleCount++;
                     } else {
@@ -499,19 +633,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                console.log(`${visibleCount} projets visibles après filtrage`);
+                console.log(`${visibleCount} éléments visibles après filtrage`);
                 
-                // Réattacher les listeners après filtrage
-                setTimeout(() => {
-                    attachProjectListeners();
-                }, 350);
+                // Réattacher les listeners
+                if (containerSelector.includes('projects')) {
+                    setTimeout(attachProjectListeners, 350);
+                }
             });
         });
     }
 
     // === GESTION VIDÉOS ===
-    function setupVideoHandlers() {
-        // Gestion des vidéos dans les cartes projets normales
+    function setupMediaHandlers() {
+        // Gestion des vidéos dans les cartes normales
         document.addEventListener('click', function(e) {
             const video = e.target.closest('.project-video');
             if (video && !video.closest('.project-card.expanded')) {
@@ -536,7 +670,7 @@ document.addEventListener("DOMContentLoaded", function () {
             modalTitle.textContent = `Démo - ${title}`;
             modalVideo.load();
             videoModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            toggleBodyScroll(true);
             
             setTimeout(() => {
                 videoModal.classList.add('modal-open');
@@ -562,9 +696,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     const modalVideoSource = document.getElementById('modal-video-source');
                     if (modalVideoSource) modalVideoSource.src = '';
                     
-                    // Restaurer le scroll seulement si aucune carte étendue
-                    if (!isCardExpanded && !isImageModalOpen) {
-                        document.body.style.overflow = '';
+                    // Restaurer le scroll approprié
+                    if (!isModalOpen && !isImageModalOpen) {
+                        toggleBodyScroll(false);
                     }
                 }, 300);
             }
@@ -583,62 +717,6 @@ document.addEventListener("DOMContentLoaded", function () {
         window.closeVideoModal = closeVideoModal;
     }
 
-    // === GESTION POPUP CONSTRUCTION ===
-    function setupPopup() {
-        const { popup } = domCache;
-        if (!popup) return;
-
-        function closePopup() {
-            popup.classList.add('popup-closing');
-            setTimeout(() => {
-                popup.style.display = "none";
-                popup.classList.remove('popup-closing');
-            }, 300);
-        }
-
-        const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
-        closeElements.forEach(el => el?.addEventListener("click", closePopup));
-        
-        popup.addEventListener("click", function(e) {
-            if (e.target === popup) closePopup();
-        });
-
-        window.closePopup = closePopup;
-    }
-
-    // === GESTION BOUTONS HERO ===
-    function setupHeroButtons() {
-        const downloadCvBtn = document.getElementById("download-cv-btn");
-        const viewProjectsBtn = document.getElementById("view-projects-btn");
-
-        if (downloadCvBtn) {
-            downloadCvBtn.addEventListener("click", function(e) {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'download_cv', {
-                        event_category: 'engagement'
-                    });
-                }
-            });
-        }
-
-        if (viewProjectsBtn) {
-            viewProjectsBtn.addEventListener("click", function() {
-                const projectsSection = document.getElementById("projets");
-                if (projectsSection) {
-                    // Fermer la carte étendue si ouverte
-                    if (isCardExpanded) {
-                        closeExpandedCard();
-                    }
-                    
-                    projectsSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        }
-    }
-
     // === NAVIGATION ===
     function setupNavigation() {
         const navLinks = document.querySelectorAll('.nav-list a');
@@ -650,9 +728,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
                 if (targetSection) {
-                    // Fermer la carte étendue si ouverte
-                    if (isCardExpanded) {
-                        closeExpandedCard();
+                    if (isModalOpen) {
+                        closeProjectModal();
                     }
                     
                     targetSection.scrollIntoView({
@@ -668,7 +745,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Menu mobile
         if (menuToggle && nav) {
             menuToggle.addEventListener('click', function() {
                 nav.classList.toggle('mobile-open');
@@ -703,7 +779,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CLAVIER ===
+    // === GESTION CLAVIER GLOBALE ===
     function setupKeyboardHandlers() {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -711,8 +787,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (isImageModalOpen) {
                     window.closeImageModal();
-                } else if (isCardExpanded) {
-                    closeExpandedCard();
+                } else if (isModalOpen) {
+                    closeProjectModal();
                 } else if (domCache.videoModal?.style.display === 'flex') {
                     window.closeVideoModal?.();
                 } else if (domCache.popup && domCache.popup.style.display !== "none") {
@@ -807,6 +883,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // === GESTION CHARGEMENT URL ===
+    function handleInitialURL() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#projet-')) {
+            const projectSlug = hash.replace('#projet-', '');
+            const matchingCard = Array.from(document.querySelectorAll('.project-card')).find(card => {
+                const title = card.querySelector('h3')?.textContent || '';
+                const slug = title.toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .trim();
+                return slug === projectSlug;
+            });
+            
+            if (matchingCard) {
+                setTimeout(() => {
+                    openProjectModal(matchingCard);
+                }, 500);
+            } else {
+                clearURL();
+            }
+        }
+    }
+
     // === INITIALISATION COMPLÈTE ===
     function initialize() {
         console.log("Début de l'initialisation...");
@@ -814,12 +915,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Initialiser le cache DOM
         domCache.init();
         
-        // Créer les éléments nécessaires
-        createExpandedOverlay();
-        createImageModal();
-        
-        // Sauvegarder le HTML original
+        // Sauvegarder le HTML original AVANT tout
         saveOriginalHTML();
+        
+        // Créer les éléments modaux
+        createModalElements();
         
         // Initialiser tous les composants
         setupPopup();
@@ -827,17 +927,20 @@ document.addEventListener("DOMContentLoaded", function () {
         initSlideshows();
         attachProjectListeners();
         
-        // Configuration spécifique aux projets
-        setupProjectFilters();
-        setupVideoHandlers();
-        setupVideoModal();
+        // Filtres (utilisation de la fonction universelle)
+        setupFilters('.projects', '.project-card');
+        setupFilters('.certifications', '.certification-card');
         
-        // Composants généraux
+        setupMediaHandlers();
+        setupVideoModal();
         setupNavigation();
         setupTheme();
         setupKeyboardHandlers();
         setupSectionAnimations();
         setupContactForm();
+        
+        // Gérer l'URL initiale
+        handleInitialURL();
         
         console.log("Initialisation terminée avec succès !");
     }
@@ -852,25 +955,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 500);
 
     // === FONCTIONS DE DEBUG ===
-    window.debugProjects = function() {
-        console.log("=== DEBUG PROJETS ===");
-        console.log("Carte étendue:", isCardExpanded);
+    window.debugPortfolio = function() {
+        console.log("=== DEBUG PORTFOLIO ===");
+        console.log("Carte étendue ouverte:", isModalOpen);
         console.log("Modal image ouverte:", isImageModalOpen);
+        console.log("Backdrop présent:", !!modalBackdrop);
+        console.log("Container présent:", !!modalContainer);
         console.log("Image modal présent:", !!domCache.imageModal);
-        console.log("Overlay étendu présent:", !!expandedOverlay);
         console.log("Projets HTML sauvegardés:", originalProjectsHTML.size);
         console.log("Cartes projets:", document.querySelectorAll('.project-card').length);
-        console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-listener-attached]').length);
-        console.log("Slideshows:", document.querySelectorAll('.slideshow-container').length);
+        console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-modal-listener]').length);
+        console.log("Cartes étendues:", document.querySelectorAll('.project-card.expanded').length);
         console.log("Cache DOM:", domCache);
-        console.log("===================");
+        console.log("========================");
     };
 
-    window.testExpandedCard = function() {
+    window.testModal = function() {
         const firstCard = document.querySelector('.project-card');
         if (firstCard) {
             console.log("Test de la carte étendue...");
-            openExpandedCard(firstCard);
+            openProjectModal(firstCard);
         } else {
             console.log("Aucune carte trouvée");
         }
@@ -886,14 +990,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    window.forceCloseAll = function() {
-        if (isImageModalOpen && window.closeImageModal) {
+    window.forceClose = function() {
+        if (isImageModalOpen) {
             window.closeImageModal();
         }
-        if (isCardExpanded) {
-            closeExpandedCard();
+        if (isModalOpen) {
+            closeProjectModal();
         }
-        if (domCache.videoModal?.style.display === 'flex' && window.closeVideoModal) {
+        if (domCache.videoModal?.style.display === 'flex') {
             window.closeVideoModal();
         }
     };
