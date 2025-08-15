@@ -1114,7 +1114,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* === SYSTÈME MODAL === */
+/* === SYSTÈME MODAL EXISTANT === */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -1195,7 +1195,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  position: relative; /* AJOUTÉ: Pour positionner le bouton d'expansion */
+  position: relative;
 }
 
 .modal-info {
@@ -1292,9 +1292,9 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: scale(1.1);
 }
 
-/* === PROJECT CARD ORIGINAL AVEC AMÉLIORATION === */
+/* === PROJECT CARD AMÉLIORÉ === */
 .project-media {
-  height: 300px; /* MODIFIÉ: Augmenté de 200px à 300px pour mieux voir les images */
+  height: 300px; /* Augmenté pour une meilleure visibilité */
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -1365,7 +1365,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   color: white;
 }
 
-/* === NOUVEAU: BOUTON D'EXPANSION === */
+/* === BOUTON D'EXPANSION (créé dynamiquement par JS) === */
 .expand-btn {
   position: absolute;
   top: 1rem;
@@ -1380,12 +1380,13 @@ img, video { max-width: 100%; height: auto; display: block; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
   z-index: 15;
   opacity: 0;
   transform: scale(0.8);
 }
 
+/* Affichage au survol - Compatible avec votre JS */
 .project-media:hover .expand-btn,
 .modal-media-content:hover .expand-btn {
   opacity: 1;
@@ -1397,7 +1398,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: scale(1.1);
 }
 
-/* === NOUVEAU: MODAL D'EXPANSION D'IMAGES === */
+/* === MODAL D'EXPANSION D'IMAGES (créé dynamiquement par JS) === */
 .image-modal {
   display: none;
   position: fixed;
@@ -1406,7 +1407,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.9);
-  z-index: calc(var(--z-modal) + 10); /* Plus élevé que la modal de projet */
+  z-index: calc(var(--z-modal) + 10);
   backdrop-filter: blur(5px);
 }
 
@@ -1451,6 +1452,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   }
 }
 
+/* Bouton fermer dans image modal - différent du modal principal */
 .image-modal .modal-close {
   position: absolute;
   top: -50px;
@@ -1467,7 +1469,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   justify-content: center;
   font-size: 1.2rem;
   font-weight: bold;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
+  z-index: 1001;
 }
 
 .image-modal .modal-close:hover {
@@ -1475,6 +1478,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: scale(1.1);
 }
 
+/* Boutons de navigation */
 .modal-nav {
   position: absolute;
   top: 50%;
@@ -1491,7 +1495,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   justify-content: center;
   font-size: 1.2rem;
   font-weight: bold;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
+  z-index: 1001;
 }
 
 .modal-nav:hover {
@@ -1507,7 +1512,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   right: -70px;
 }
 
-.modal-info {
+/* Informations image */
+.image-modal .modal-info {
   position: absolute;
   bottom: -60px;
   left: 0;
@@ -1516,9 +1522,15 @@ img, video { max-width: 100%; height: auto; display: block; }
   color: white;
   font-size: 0.9rem;
   opacity: 0.8;
+  background: none;
+  padding: 0;
+  overflow: visible;
+  width: auto;
+  height: auto;
+  display: block;
 }
 
-/* === BADGE D'EXPANSION MODERNE === */
+/* === BADGE D'EXPANSION === */
 .expand-badge {
   position: absolute;
   top: 15px;
@@ -1540,7 +1552,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   user-select: none;
 }
 
-/* Badge avec icône d'expansion */
+
 .expand-badge::before {
   content: "⤢";
   margin-right: 6px;
@@ -1550,13 +1562,13 @@ img, video { max-width: 100%; height: auto; display: block; }
   transition: transform 0.3s ease;
 }
 
-/* Animation au survol de la carte */
+
 .project-card:hover .expand-badge {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Animation au survol du badge */
+
 .expand-badge:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 122, 204, 0.4);
@@ -1566,7 +1578,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: rotate(90deg);
 }
 
-/* === SLIDESHOW AMÉLIORÉ === */
+/* === SLIDESHOW === */
 .slideshow-container {
   width: 100%;
   height: 100%;
@@ -1585,17 +1597,17 @@ img, video { max-width: 100%; height: auto; display: block; }
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   display: block;
-  cursor: pointer; /* AJOUTÉ: Curseur pointer pour indiquer qu'on peut cliquer */
+  cursor: pointer; /* Compatible avec votre JS qui ajoute le clic */
 }
 
 .slide.active {
   opacity: 1;
 }
 
-/* Images du slideshow dans les modals - affichage optimal */
+/* Affichage optimal dans les modals */
 .modal-media-content .slide,
 .modal-media .slide {
-  object-fit: contain; /* Dans la modal, on veut voir toute l'image */
+  object-fit: contain;
 }
 
 .slide-dots {
@@ -1615,7 +1627,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   background-color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   border: none;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
   outline: none;
 }
 
@@ -1634,7 +1646,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   outline-offset: 2px;
 }
 
-/* === VIDÉOS ET MÉDIAS === */
+/* === VIDÉOS === */
 .project-video {
   width: 100%;
   height: 100%;
@@ -1644,7 +1656,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: block;
 }
 
-/* Vidéos dans les modals - affichage optimal */
 .modal-media-content .project-video,
 .modal-media .project-video {
   object-fit: contain;
@@ -1661,7 +1672,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.2s ease;
 }
 
 .project-media:hover .video-controls {
@@ -1680,7 +1691,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
   font-size: 1.5rem;
 }
 
@@ -1691,12 +1702,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: scale(1.1);
 }
 
-.modal-play-btn {
-  width: 70px;
-  height: 70px;
-  font-size: 2rem;
-  margin-bottom: var(--spacing-sm);
-}
+
 
 .video-overlay {
   position: absolute;
@@ -1722,7 +1728,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: var(--transition);
+  transition: transform 0.2s ease;
 }
 
 .youtube-embed:hover .youtube-thumbnail {
@@ -1743,77 +1749,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* === GIF DÉMO === */
-.gif-demo {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.demo-gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.gif-overlay {
-  position: absolute;
-  top: var(--spacing-sm);
-  left: var(--spacing-sm);
-  background: var(--gradient-secondary);
-  color: white;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-/* === IMAGE AVEC VIDÉO === */
-.image-with-video {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.project-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: var(--transition);
-}
-
-.image-with-video:hover .project-image {
-  transform: scale(1.05);
-}
-
-.video-play-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.image-with-video:hover .video-play-overlay {
-  opacity: 1;
-}
-
-.video-label {
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-/* === MODAL VIDÉO SÉPARÉE === */
+/* === MODAL VIDÉO EXISTANT === */
 .video-modal-overlay {
   position: fixed;
   top: 0;
@@ -1848,7 +1784,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   background-color: white;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   max-width: 800px;
   width: 100%;
   transform: scale(0.7);
@@ -1883,7 +1819,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition);
+  transition: background-color 0.2s ease;
   color: white;
   font-size: 1.5rem;
 }
@@ -1924,7 +1860,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   padding: var(--spacing-sm) var(--spacing-lg);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
   font-weight: 500;
 }
 
@@ -1937,7 +1873,8 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 /* === BOUTONS SPÉCIAUX === */
 .modal-video-btn,
-.youtube-demo-btn {
+.youtube-demo-btn,
+.drive-demo-btn {
   font-size: 0.9rem;
   flex: 1;
   min-width: 120px;
@@ -1970,13 +1907,33 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
 }
 
-.modal-actions .modal-video-btn,
-.modal-actions .youtube-demo-btn {
-  flex: none;
-  min-width: 140px;
+.drive-demo-btn {
+  background-color: #4285f4;
+  border: 1px solid #4285f4;
+  color: white;
 }
 
-/* === RESPONSIVE POUR L'EXPANSION D'IMAGES === */
+.drive-demo-btn:hover {
+  background-color: #3367d6;
+  border-color: #3367d6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.figma-btn {
+  background-color: #f24e1e;
+  border: 1px solid #f24e1e;
+  color: white;
+}
+
+.figma-btn:hover {
+  background-color: #e7341e;
+  border-color: #e7341e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(242, 78, 30, 0.3);
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .modal-nav {
     width: 40px;
@@ -1999,7 +1956,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   }
 
   .project-media {
-    height: 250px; /* Hauteur réduite sur mobile */
+    height: 250px;
   }
 
   .expand-btn {
@@ -2010,6 +1967,29 @@ img, video { max-width: 100%; height: auto; display: block; }
   .expand-btn svg {
     width: 16px;
     height: 16px;
+  }
+
+  .expand-badge {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+
+  .modal-card {
+    flex-direction: column;
+  }
+
+  .modal-media {
+    width: 100%;
+    height: 60%;
+  }
+
+  .modal-info {
+    width: 100%;
+    height: 40%;
+  }
+
+  .modal-info h3 {
+    font-size: 1.8rem;
   }
 }
 
