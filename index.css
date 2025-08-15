@@ -1109,192 +1109,14 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--spacing-md);
 }
 
-.project-card:hover:not(.modal-active) {
+.project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* === SYSTÈME MODAL EXISTANT === */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: var(--z-modal);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
-}
-
-.modal-backdrop.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: calc(var(--z-modal) + 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--container-padding);
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
-}
-
-.modal-container.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.modal-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 100%;
-  max-width: 95vw;
-  max-height: 95vh;
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  position: relative;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
-
-.modal-container.active .modal-card {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.modal-media {
-  width: 60%;
-  height: 100%;
-  background-color: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.modal-media-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.modal-info {
-  width: 40%;
-  height: 100%;
-  background-color: #ffffff;
-  padding: var(--content-padding);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  color: var(--text-primary);
-}
-
-.modal-info h3 {
-  font-size: 2.2rem;
-  margin-bottom: var(--spacing-lg);
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.modal-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: var(--spacing-xl);
-  color: var(--text-secondary);
-}
-
-.modal-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xl);
-}
-
-.modal-tag {
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 0.9rem;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: var(--border-radius);
-  font-weight: 500;
-}
-
-.modal-actions {
-  display: flex;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
-  margin-top: auto;
-}
-
-.modal-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 600;
-  background-color: var(--bg-glass);
-  border: 1px solid var(--border-color);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius);
-  transition: var(--transition-fast);
-  flex: 1;
-  justify-content: center;
-}
-
-.modal-link:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 40px;
-  height: 40px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 24px;
-  font-weight: 300;
-  cursor: pointer;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.modal-close:hover {
-  background-color: rgba(0, 0, 0, 0.95);
-  transform: scale(1.1);
-}
-
-/* === PROJECT CARD AMÉLIORÉ === */
+/* === PROJECT CARD CONTENT === */
 .project-media {
-  height: 300px; /* Augmenté pour une meilleure visibilité */
+  height: 300px;
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -1363,174 +1185,10 @@ img, video { max-width: 100%; height: auto; display: block; }
 .project-link:hover {
   background-color: var(--primary-color);
   color: white;
+  transform: translateY(-1px);
 }
 
-/* === BOUTON D'EXPANSION (créé dynamiquement par JS) === */
-.expand-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 15;
-  opacity: 0;
-  transform: scale(0.8);
-}
-
-/* Affichage au survol - Compatible avec votre JS */
-.project-media:hover .expand-btn,
-.modal-media-content:hover .expand-btn {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.expand-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: scale(1.1);
-}
-
-/* === MODAL D'EXPANSION D'IMAGES (créé dynamiquement par JS) === */
-.image-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: calc(var(--z-modal) + 10);
-  backdrop-filter: blur(5px);
-}
-
-.image-modal.active {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: modalFadeIn 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.image-modal .modal-content {
-  position: relative;
-  max-width: 95vw;
-  max-height: 95vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: imageZoomIn 0.3s ease;
-}
-
-@keyframes imageZoomIn {
-  from { 
-    opacity: 0; 
-    transform: scale(0.8);
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1);
-  }
-}
-
-/* Bouton fermer dans image modal - différent du modal principal */
-.image-modal .modal-close {
-  position: absolute;
-  top: -50px;
-  right: 0;
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  z-index: 1001;
-}
-
-.image-modal .modal-close:hover {
-  background: white;
-  transform: scale(1.1);
-}
-
-/* Boutons de navigation */
-.modal-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  z-index: 1001;
-}
-
-.modal-nav:hover {
-  background: white;
-  transform: translateY(-50%) scale(1.1);
-}
-
-.modal-nav.prev {
-  left: -70px;
-}
-
-.modal-nav.next {
-  right: -70px;
-}
-
-/* Informations image */
-.image-modal .modal-info {
-  position: absolute;
-  bottom: -60px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: white;
-  font-size: 0.9rem;
-  opacity: 0.8;
-  background: none;
-  padding: 0;
-  overflow: visible;
-  width: auto;
-  height: auto;
-  display: block;
-}
-
-/* === BADGE D'EXPANSION === */
+/* === EXPAND BADGE === */
 .expand-badge {
   position: absolute;
   top: 15px;
@@ -1552,7 +1210,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   user-select: none;
 }
 
-
 .expand-badge::before {
   content: "⤢";
   margin-right: 6px;
@@ -1562,12 +1219,10 @@ img, video { max-width: 100%; height: auto; display: block; }
   transition: transform 0.3s ease;
 }
 
-
 .project-card:hover .expand-badge {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-
 
 .expand-badge:hover {
   transform: translateY(-2px) scale(1.05);
@@ -1597,17 +1252,11 @@ img, video { max-width: 100%; height: auto; display: block; }
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   display: block;
-  cursor: pointer; /* Compatible avec votre JS qui ajoute le clic */
+  cursor: pointer;
 }
 
 .slide.active {
   opacity: 1;
-}
-
-/* Affichage optimal dans les modals */
-.modal-media-content .slide,
-.modal-media .slide {
-  object-fit: contain;
 }
 
 .slide-dots {
@@ -1656,54 +1305,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: block;
 }
 
-.modal-media-content .project-video,
-.modal-media .project-video {
-  object-fit: contain;
-}
-
-.video-controls {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.project-media:hover .video-controls {
-  opacity: 1;
-}
-
-.video-play-btn,
-.youtube-play-btn,
-.modal-play-btn {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 1.5rem;
-}
-
-.video-play-btn:hover,
-.youtube-play-btn:hover,
-.modal-play-btn:hover {
-  background-color: white;
-  transform: scale(1.1);
-}
-
-
-
 .video-overlay {
   position: absolute;
   bottom: var(--spacing-sm);
@@ -1715,41 +1316,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   font-size: 0.8rem;
 }
 
-/* === YOUTUBE EMBED === */
-.youtube-embed {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.youtube-thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.2s ease;
-}
-
-.youtube-embed:hover .youtube-thumbnail {
-  transform: scale(1.05);
-}
-
-.youtube-play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 0, 0, 0.8);
-  color: white;
-}
-
-.youtube-play-btn:hover {
-  background-color: rgba(255, 0, 0, 1);
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-/* === MODAL VIDÉO EXISTANT === */
+/* === VIDEO MODAL === */
 .video-modal-overlay {
   position: fixed;
   top: 0;
@@ -1840,9 +1407,150 @@ img, video { max-width: 100%; height: auto; display: block; }
   display: block;
 }
 
+/* === IMAGE MODAL === */
+.image-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: calc(var(--z-modal) + 10);
+  backdrop-filter: blur(5px);
+}
+
+.image-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.image-modal .modal-content {
+  position: relative;
+  max-width: 95vw;
+  max-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: imageZoomIn 0.3s ease;
+}
+
+@keyframes imageZoomIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.8);
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+}
+
+.image-modal .modal-close {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.image-modal .modal-close:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.modal-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.modal-nav.prev {
+  left: -70px;
+}
+
+.modal-nav.next {
+  right: -70px;
+}
+
+.image-modal .modal-info {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* === OVERLAY === */
+.projects-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: calc(var(--z-modal) - 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.projects-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* === FILTRES === */
-.project-filters,
-.certification-filters {
+.project-filters {
   display: flex;
   justify-content: center;
   gap: var(--spacing-md);
@@ -1862,6 +1570,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
+  border-radius: var(--border-radius);
 }
 
 .filter-btn:hover,
@@ -1872,41 +1581,6 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 /* === BOUTONS SPÉCIAUX === */
-.modal-video-btn,
-.youtube-demo-btn,
-.drive-demo-btn {
-  font-size: 0.9rem;
-  flex: 1;
-  min-width: 120px;
-  text-align: center;
-}
-
-.modal-video-btn {
-  background-color: var(--bg-glass);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-}
-
-.modal-video-btn:hover {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-  transform: translateY(-1px);
-}
-
-.youtube-demo-btn {
-  background-color: #ff0000;
-  border: 1px solid #ff0000;
-  color: white;
-}
-
-.youtube-demo-btn:hover {
-  background-color: #cc0000;
-  border-color: #cc0000;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
-}
-
 .drive-demo-btn {
   background-color: #4285f4;
   border: 1px solid #4285f4;
@@ -1935,6 +1609,27 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .project-card {
+    height: auto;
+    min-height: 350px;
+  }
+
+  .project-media {
+    height: 250px;
+  }
+
+  .expand-badge {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    top: 10px;
+    right: 10px;
+  }
+
   .modal-nav {
     width: 40px;
     height: 40px;
@@ -1953,43 +1648,20 @@ img, video { max-width: 100%; height: auto; display: block; }
     top: -40px;
     width: 35px;
     height: 35px;
+    font-size: 1rem;
   }
 
-  .project-media {
-    height: 250px;
+  .video-modal-container {
+    max-width: 95vw;
+    max-height: 95vh;
   }
 
-  .expand-btn {
-    width: 35px;
-    height: 35px;
+  .video-modal-content {
+    max-width: none;
   }
 
-  .expand-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .expand-badge {
-    padding: 6px 12px;
-    font-size: 0.7rem;
-  }
-
-  .modal-card {
-    flex-direction: column;
-  }
-
-  .modal-media {
-    width: 100%;
-    height: 60%;
-  }
-
-  .modal-info {
-    width: 100%;
-    height: 40%;
-  }
-
-  .modal-info h3 {
-    font-size: 1.8rem;
+  #modal-video {
+    max-height: 60vh;
   }
 }
 

@@ -1,21 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Initialisation du portfolio...");
+    console.log("Initialisation de la section projets...");
 
-    // Variables globales simplifiées
-    let modalBackdrop = null;
-    let modalContainer = null;
-    let isModalOpen = false;
-    let originalProjectsHTML = new Map();
-    
-    // === NOUVELLES VARIABLES POUR L'EXPANSION D'IMAGES ===
-    let imageModal = null;
+    // Variables globales pour la section projets
     let isImageModalOpen = false;
+    let originalProjectsHTML = new Map();
 
     // Cache DOM pour performance
     const domCache = {
         popup: null,
         videoModal: null,
         modalVideo: null,
+        imageModal: null,
         nav: null,
         menuToggle: null,
         contactForm: null,
@@ -23,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             this.popup = document.getElementById("construction-popup");
             this.videoModal = document.getElementById("video-modal");
             this.modalVideo = document.getElementById("modal-video");
+            this.imageModal = document.getElementById("imageModal");
             this.nav = document.getElementById("main-nav");
             this.menuToggle = document.getElementById("menu-toggle");
             this.contactForm = document.getElementById("contact-form");
@@ -55,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
-        // Event listeners unifiés
         const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
         closeElements.forEach(el => el?.addEventListener("click", closePopup));
         
@@ -63,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (e.target === popup) closePopup();
         });
 
-        // Fonction globale pour fermeture
         window.closePopup = closePopup;
     }
 
@@ -86,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
             viewProjectsBtn.addEventListener("click", function() {
                 const projectsSection = document.getElementById("projets");
                 if (projectsSection) {
-                    if (isModalOpen) closeProjectModal();
                     projectsSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -96,50 +89,37 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === CRÉATION ÉLÉMENTS MODAUX ===
-    function createModalElements() {
-        // Créer le backdrop
-        modalBackdrop = document.createElement('div');
-        modalBackdrop.className = 'modal-backdrop';
-        document.body.appendChild(modalBackdrop);
+    // === CRÉATION DU MODAL D'IMAGES ===
+    function createImageModal() {
+        // Utiliser le modal existant s'il est présent dans le HTML
+        let imageModal = document.getElementById('imageModal');
         
-        // Créer le conteneur
-        modalContainer = document.createElement('div');
-        modalContainer.className = 'modal-container';
-        document.body.appendChild(modalContainer);
+        if (!imageModal) {
+            imageModal = document.createElement('div');
+            imageModal.className = 'image-modal';
+            imageModal.id = 'imageModal';
+            imageModal.innerHTML = `
+                <div class="modal-content">
+                    <button class="modal-close" id="imageModalClose" title="Fermer">&times;</button>
+                    <button class="modal-nav prev" id="modalPrev" title="Image précédente">&larr;</button>
+                    <img class="modal-image" id="modalImage" alt="">
+                    <button class="modal-nav next" id="modalNext" title="Image suivante">&rarr;</button>
+                    <div class="modal-info" id="modalInfo"></div>
+                </div>
+            `;
+            document.body.appendChild(imageModal);
+        }
         
-        // Event listeners unifiés pour fermeture
-        [modalBackdrop, modalContainer].forEach(element => {
-            element.addEventListener('click', function(e) {
-                if (e.target === element) {
-                    closeProjectModal();
-                }
-            });
-        });
-        
-        // === CRÉATION DU MODAL D'EXPANSION D'IMAGES ===
-        imageModal = document.createElement('div');
-        imageModal.className = 'image-modal';
-        imageModal.id = 'imageModal';
-        imageModal.innerHTML = `
-            <div class="modal-content">
-                <button class="modal-close" id="imageModalClose" title="Fermer">&times;</button>
-                <button class="modal-nav prev" id="modalPrev" title="Image précédente">&larr;</button>
-                <img class="modal-image" id="modalImage" alt="">
-                <button class="modal-nav next" id="modalNext" title="Image suivante">&rarr;</button>
-                <div class="modal-info" id="modalInfo"></div>
-            </div>
-        `;
-        document.body.appendChild(imageModal);
-        
-        // Event listeners pour le modal d'images
+        domCache.imageModal = imageModal;
         setupImageModal();
-        
-        console.log("Éléments modaux créés");
+        console.log("Modal d'images créé/configuré");
     }
 
-    // === NOUVELLE FONCTION: CONFIGURATION DU MODAL D'IMAGES ===
+    // === CONFIGURATION DU MODAL D'IMAGES ===
     function setupImageModal() {
+        const { imageModal } = domCache;
+        if (!imageModal) return;
+
         const modalClose = document.getElementById('imageModalClose');
         const modalPrev = document.getElementById('modalPrev');
         const modalNext = document.getElementById('modalNext');
@@ -213,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 modalInfo.textContent = `${index + 1} / ${currentSlides.length} - ${slide.alt}`;
             }
             
-            // Masquer les boutons de navigation si nécessaire
+            // Gestion des boutons de navigation
             if (modalPrev) {
                 modalPrev.style.display = index === 0 ? 'none' : 'flex';
             }
@@ -237,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Exposer les fonctions pour utilisation externe
+        // Exposer les fonctions globalement
         window.openImageModal = openImageModal;
         window.closeImageModal = closeImageModal;
     }
@@ -252,213 +232,14 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("HTML original sauvegardé pour", originalProjectsHTML.size, "projets");
     }
 
-    // === GESTION BODY ET SCROLL ===
-    function toggleBodyScroll(lock = true) {
-        if (lock) {
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('no-scroll');
-        } else {
-            document.body.style.overflow = '';
-            document.body.classList.remove('no-scroll');
-        }
-    }
-
-   // === GESTION SLIDESHOWS ===
-    function toggleSlideshows(action = 'stop') {
-        document.querySelectorAll('.slideshow-container').forEach(container => {
-            const method = action === 'stop' ? '_stopSlide' : '_startSlide';
-            if (container[method]) container[method]();
-        });
-    }
-
-    // === OUVERTURE MODAL ===
-    function openProjectModal(projectCard) {
-        if (isModalOpen || !modalBackdrop || !modalContainer) return;
-        
-        console.log("Ouverture modal pour:", projectCard.querySelector('h3')?.textContent);
-        
-        isModalOpen = true;
-        toggleBodyScroll(true);
-        toggleSlideshows('stop');
-        
-        // Créer la modal
-        createModalFromCard(projectCard);
-        
-        // Afficher la modal
-        modalBackdrop.classList.add('active');
-        modalContainer.classList.add('active');
-        
-        // Gérer l'URL
-        const title = projectCard.querySelector('h3')?.textContent || '';
-        updateURL(title);
-        
-        // CORRECTION: Réinitialiser les slideshows UNIQUEMENT dans la modal après animation
-        setTimeout(() => {
-            initModalSlideshows();
-            // === NOUVEAU: Ajouter les boutons d'expansion dans la modal ===
-            addExpandButtonsToModal();
-        }, 350);
-    }
-
-    // === NOUVELLE FONCTION: AJOUTER BOUTONS D'EXPANSION DANS LA MODAL ===
-    function addExpandButtonsToModal() {
-        const modalMediaContainers = modalContainer.querySelectorAll('.modal-media-content, .project-media');
-        
-        modalMediaContainers.forEach(container => {
-            // Vérifier si le bouton n'existe pas déjà
-            if (container.querySelector('.expand-btn')) return;
-            
-            const expandBtn = document.createElement('button');
-            expandBtn.className = 'expand-btn';
-            expandBtn.title = 'Agrandir l\'image';
-            expandBtn.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15,3 21,3 21,9"></polyline>
-                    <polyline points="9,21 3,21 3,15"></polyline>
-                    <line x1="21" y1="3" x2="14" y2="10"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-            `;
-            
-            expandBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const parentCard = container.closest('.modal-card') || container.closest('.project-card');
-                if (parentCard) {
-                    window.openImageModal(parentCard);
-                }
-            });
-            
-            container.style.position = 'relative';
-            container.appendChild(expandBtn);
-        });
-    }
-
-    // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
-    function createModalFromCard(projectCard) {
-        const title = projectCard.querySelector('h3')?.textContent || '';
-        const originalHTML = originalProjectsHTML.get(title);
-        
-        // Utiliser le HTML original si disponible, sinon le HTML actuel
-        const htmlToUse = originalHTML || projectCard.outerHTML;
-        
-        // Créer un élément temporaire pour parser le HTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlToUse;
-        const cardElement = tempDiv.firstElementChild;
-        
-        // Cloner et nettoyer
-        const modalCard = cardElement.cloneNode(true);
-        modalCard.className = 'modal-card';
-        modalCard.removeAttribute('data-category');
-        modalCard.style.display = '';
-        modalCard.style.opacity = '';
-        
-        // Extraire les éléments
-        const projectMedia = modalCard.querySelector('.project-media');
-        const projectInfo = modalCard.querySelector('.project-info');
-        
-        if (projectMedia && projectInfo) {
-            // Restructurer pour la modal
-            modalCard.innerHTML = `
-                <div class="modal-media">
-                    ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
-                </div>
-                <div class="modal-info">
-                    ${projectInfo.innerHTML
-                        .replace(/project-description/g, 'modal-description')
-                        .replace(/project-tags/g, 'modal-tags')
-                        .replace(/tag(?![s-])/g, 'modal-tag')
-                        .replace(/project-actions/g, 'modal-actions')
-                        .replace(/project-link/g, 'modal-link')
-                    }
-                </div>
-            `;
-        }
-        
-        // Ajouter bouton de fermeture
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'modal-close';
-        closeBtn.innerHTML = '×';
-        closeBtn.setAttribute('aria-label', 'Fermer le projet');
-        closeBtn.addEventListener('click', closeProjectModal);
-        modalCard.appendChild(closeBtn);
-        
-        // Ajouter à la modal
-        modalContainer.innerHTML = '';
-        modalContainer.appendChild(modalCard);
-        
-        console.log("Modal créée avec succès");
-    }
-
-    // === FERMETURE MODAL ===
-    function closeProjectModal() {
-        if (!isModalOpen) return;
-        
-        console.log("Fermeture modal");
-        
-        isModalOpen = false;
-        
-        modalBackdrop.classList.remove('active');
-        modalContainer.classList.remove('active');
-        
-        clearURL();
-        
-        setTimeout(() => {
-            modalContainer.innerHTML = '';
-            toggleBodyScroll(false);
-            toggleSlideshows('start');
-        }, 250);
-    }
-
-    // === GESTION URL ===
-    function updateURL(projectTitle) {
-        if (history.pushState && projectTitle) {
-            const urlSlug = projectTitle.toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim();
-            history.pushState(
-                { modal: true, project: urlSlug }, 
-                '', 
-                '#projet-' + urlSlug
-            );
-        }
-    }
-
-    function clearURL() {
-        if (history.pushState) {
-            history.pushState(null, '', window.location.pathname + window.location.search);
-        }
-    }
-
-    // === GESTION HISTORIQUE NAVIGATEUR ===
-    window.addEventListener('popstate', function(e) {
-        if (isImageModalOpen) {
-            window.closeImageModal();
-        } else if (isModalOpen) {
-            closeProjectModal();
-        }
-    });
-
-    // === SLIDESHOWS PRINCIPAL (pour les cartes) ===
+    // === GESTION SLIDESHOWS ===
     function initSlideshows() {
-        // Seulement les slideshows dans les cartes (pas dans les modals)
-        document.querySelectorAll('.project-card .slideshow-container').forEach(container => {
-            setupSlideshow(container, false); // false = pas dans une modal
+        document.querySelectorAll('.slideshow-container').forEach(container => {
+            setupSlideshow(container);
         });
     }
 
-    // === NOUVEAU: SLIDESHOWS POUR MODALS ===
-    function initModalSlideshows() {
-        // Seulement les slideshows dans les modals
-        document.querySelectorAll('.modal-container .slideshow-container').forEach(container => {
-            setupSlideshow(container, true); // true = dans une modal
-        });
-    }
-
-    // === FONCTION UNIFIÉE POUR CONFIGURER UN SLIDESHOW ===
-    function setupSlideshow(container, isInModal = false) {
+    function setupSlideshow(container) {
         const slides = container.querySelectorAll('.slide');
         const dots = container.querySelectorAll('.slide-dot');
         let currentSlide = 0;
@@ -471,14 +252,14 @@ document.addEventListener("DOMContentLoaded", function () {
             slide.classList.remove('active');
             if (index === 0) slide.classList.add('active');
             
-            // === NOUVEAU: Ajouter event listener pour expansion sur clic ===
+            // Ajouter event listener pour expansion sur clic
             slide.addEventListener('click', function(e) {
                 // Éviter l'expansion si on clique sur un dot ou un bouton
-                if (e.target.closest('.slide-dot, .expand-btn, button')) return;
+                if (e.target.closest('.slide-dot, .expand-badge, button')) return;
                 
                 e.stopPropagation();
-                const parentCard = container.closest('.project-card') || container.closest('.modal-card');
-                if (parentCard) {
+                const parentCard = container.closest('.project-card');
+                if (parentCard && window.openImageModal) {
                     window.openImageModal(parentCard);
                 }
             });
@@ -508,17 +289,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // Auto-slide (conditions différentes selon le contexte)
+        // Auto-slide
         function startSlide() {
-            const shouldStart = isInModal ? isModalOpen : !isModalOpen;
-            if (shouldStart) {
-                slideInterval = setInterval(() => {
-                    const shouldContinue = isInModal ? isModalOpen : !isModalOpen;
-                    if (shouldContinue) {
-                        showSlide((currentSlide + 1) % slides.length);
-                    }
-                }, 4000);
-            }
+            slideInterval = setInterval(() => {
+                showSlide((currentSlide + 1) % slides.length);
+            }, 4000);
         }
 
         function stopSlide() {
@@ -529,38 +304,9 @@ document.addEventListener("DOMContentLoaded", function () {
         container.addEventListener('mouseenter', stopSlide);
         container.addEventListener('mouseleave', startSlide);
         
+        // Stocker les fonctions pour contrôle externe
         container._startSlide = startSlide;
         container._stopSlide = stopSlide;
-    }
-
-    // === NOUVELLE FONCTION: AJOUTER BOUTONS D'EXPANSION AUX CARTES ===
-    function addExpandButtonsToCards() {
-        const projectCards = document.querySelectorAll('.project-card');
-        
-        projectCards.forEach(card => {
-            const projectMedia = card.querySelector('.project-media');
-            if (!projectMedia || projectMedia.querySelector('.expand-btn')) return;
-            
-            const expandBtn = document.createElement('button');
-            expandBtn.className = 'expand-btn';
-            expandBtn.title = 'Agrandir l\'image';
-            expandBtn.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15,3 21,3 21,9"></polyline>
-                    <polyline points="9,21 3,21 3,15"></polyline>
-                    <line x1="21" y1="3" x2="14" y2="10"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-            `;
-            
-            expandBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                window.openImageModal(card);
-            });
-            
-            projectMedia.style.position = 'relative';
-            projectMedia.appendChild(expandBtn);
-        });
     }
 
     // === LISTENERS CARTES PROJETS ===
@@ -569,52 +315,35 @@ document.addEventListener("DOMContentLoaded", function () {
         
         projectCards.forEach(card => {
             // Éviter les doublons
-            if (card.hasAttribute('data-modal-listener')) return;
-            card.setAttribute('data-modal-listener', 'true');
+            if (card.hasAttribute('data-listener-attached')) return;
+            card.setAttribute('data-listener-attached', 'true');
             
-            card.addEventListener('click', function(e) {
-                // Éviter les clics sur les boutons internes et NOUVEAU: expand-btn
-                if (e.target.closest(`
-                    a, 
-                    button:not(.modal-close), 
-                    .project-link, 
-                    .modal-link,
-                    .video-play-btn, 
-                    .youtube-embed, 
-                    .slide-dot, 
-                    iframe, 
-                    .youtube-demo-btn, 
-                    .modal-video-btn,
-                    .youtube-play-btn,
-                    .expand-btn
-                `)) {
-                    return;
-                }
-                
-                e.preventDefault();
-                e.stopPropagation();
-                openProjectModal(this);
-            });
+            // Listener pour le badge d'expansion
+            const expandBadge = card.querySelector('.expand-badge');
+            if (expandBadge) {
+                expandBadge.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.openImageModal) {
+                        window.openImageModal(card);
+                    }
+                });
+            }
         });
         
         console.log("Listeners attachés à", projectCards.length, "cartes projets");
     }
 
-    // === FILTRES UNIVERSELS ===
-    function setupFilters(containerSelector, cardSelector) {
-        const filters = document.querySelectorAll(`${containerSelector} .filter-btn`);
-        const cards = document.querySelectorAll(cardSelector);
+    // === FILTRES PROJETS ===
+    function setupProjectFilters() {
+        const filters = document.querySelectorAll('.project-filters .filter-btn');
+        const cards = document.querySelectorAll('.project-card');
 
         filters.forEach(filter => {
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
                 console.log("Filtre sélectionné:", filterValue);
-                
-                // Fermer la modal si ouverte (projets uniquement)
-                if (isModalOpen && containerSelector.includes('projects')) {
-                    closeProjectModal();
-                }
                 
                 // Mettre à jour les boutons
                 filters.forEach(btn => {
@@ -631,7 +360,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const shouldShow = filterValue === 'all' || category.includes(filterValue);
                     
                     if (shouldShow) {
-                        card.style.display = cardSelector.includes('certification') ? 'flex' : 'block';
+                        card.style.display = 'block';
                         card.style.opacity = '1';
                         visibleCount++;
                     } else {
@@ -644,64 +373,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 
-                console.log(`${visibleCount} éléments visibles après filtrage`);
+                console.log(`${visibleCount} projets visibles après filtrage`);
                 
-                // Réattacher les listeners pour les projets
-                if (containerSelector.includes('projects')) {
-                    setTimeout(() => {
-                        attachProjectListeners();
-                        // === NOUVEAU: Ajouter les boutons d'expansion après filtrage ===
-                        addExpandButtonsToCards();
-                    }, 350);
-                }
+                // Réattacher les listeners après filtrage
+                setTimeout(() => {
+                    attachProjectListeners();
+                }, 350);
             });
         });
     }
 
-    // === GESTION YOUTUBE ET VIDÉOS ===
-    function setupMediaHandlers() {
-        // YouTube embeds (dans les project-media)
-        document.querySelectorAll('.youtube-embed').forEach(embed => {
-            embed.addEventListener('click', function(e) {
+    // === GESTION VIDÉOS ===
+    function setupVideoHandlers() {
+        // Gestion des vidéos dans les cartes projets
+        document.querySelectorAll('.project-video').forEach(video => {
+            video.addEventListener('click', function(e) {
                 e.stopPropagation();
-                const videoId = this.getAttribute('data-video-id');
-                if (videoId) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-                    iframe.width = '100%';
-                    iframe.height = '100%';
-                    iframe.frameBorder = '0';
-                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                    iframe.allowFullscreen = true;
-                    
-                    this.innerHTML = '';
-                    this.appendChild(iframe);
-                }
+                const projectTitle = this.closest('.project-card')?.querySelector('h3')?.textContent || 'Projet';
+                openVideoModal(this.querySelector('source')?.src || this.src, projectTitle);
             });
         });
 
-        // Gestionnaire unifié pour les boutons YouTube et vidéo
+        // Gestionnaire pour les boutons demo
         document.addEventListener('click', function(e) {
-            // Boutons YouTube demo
-            if (e.target.closest('.youtube-demo-btn')) {
+            if (e.target.closest('.drive-demo-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
-                const btn = e.target.closest('.youtube-demo-btn');
-                const videoId = btn.getAttribute('data-youtube');
-                if (videoId) {
-                    window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener,noreferrer');
-                }
-            }
-            
-            // Boutons modal vidéo
-            else if (e.target.closest('.modal-video-btn')) {
-                e.preventDefault();
-                e.stopPropagation();
-                const btn = e.target.closest('.modal-video-btn');
-                const videoSrc = btn.getAttribute('data-video');
-                const projectTitle = btn.closest('.project-card, .modal-card')?.querySelector('h3')?.textContent || 'Projet';
-                
-                openVideoModal(videoSrc, projectTitle);
+                // Les liens Google Drive s'ouvrent normalement via href
+                return;
             }
         });
     }
@@ -719,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
             modalTitle.textContent = `Démo - ${title}`;
             modalVideo.load();
             videoModal.style.display = 'flex';
-            toggleBodyScroll(true);
+            document.body.style.overflow = 'hidden';
             
             setTimeout(() => {
                 videoModal.classList.add('modal-open');
@@ -733,7 +432,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const modalClose = document.getElementById('modal-close');
 
-        // Fermeture modal vidéo
         function closeVideoModal() {
             if (modalVideo) {
                 modalVideo.pause();
@@ -745,7 +443,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     videoModal.style.display = 'none';
                     const modalVideoSource = document.getElementById('modal-video-source');
                     if (modalVideoSource) modalVideoSource.src = '';
-                    toggleBodyScroll(false);
+                    document.body.style.overflow = '';
                 }, 300);
             }
         }
@@ -760,7 +458,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Fonction globale
         window.closeVideoModal = closeVideoModal;
     }
 
@@ -775,10 +472,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
                 if (targetSection) {
-                    if (isModalOpen) {
-                        closeProjectModal();
-                    }
-                    
                     targetSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -827,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CLAVIER GLOBALE ===
+    // === GESTION CLAVIER ===
     function setupKeyboardHandlers() {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -835,8 +528,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (isImageModalOpen) {
                     window.closeImageModal();
-                } else if (isModalOpen) {
-                    closeProjectModal();
                 } else if (domCache.videoModal?.style.display === 'flex') {
                     window.closeVideoModal?.();
                 } else if (domCache.popup && domCache.popup.style.display !== "none") {
@@ -844,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             
-            // === NOUVEAU: Navigation clavier dans le modal d'images ===
+            // Navigation clavier dans le modal d'images
             if (isImageModalOpen) {
                 if (e.key === 'ArrowLeft') {
                     e.preventDefault();
@@ -931,31 +622,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === GESTION CHARGEMENT URL ===
-    function handleInitialURL() {
-        const hash = window.location.hash;
-        if (hash.startsWith('#projet-')) {
-            const projectSlug = hash.replace('#projet-', '');
-            const matchingCard = Array.from(document.querySelectorAll('.project-card')).find(card => {
-                const title = card.querySelector('h3')?.textContent || '';
-                const slug = title.toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-')
-                    .trim();
-                return slug === projectSlug;
-            });
-            
-            if (matchingCard) {
-                setTimeout(() => {
-                    openProjectModal(matchingCard);
-                }, 500);
-            } else {
-                clearURL();
-            }
-        }
-    }
-
     // === INITIALISATION COMPLÈTE ===
     function initialize() {
         console.log("Début de l'initialisation...");
@@ -963,11 +629,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Initialiser le cache DOM
         domCache.init();
         
-        // Sauvegarder le HTML original AVANT tout
+        // Sauvegarder le HTML original
         saveOriginalHTML();
         
-        // Créer les éléments modaux
-        createModalElements();
+        // Créer et configurer le modal d'images
+        createImageModal();
         
         // Initialiser tous les composants
         setupPopup();
@@ -975,23 +641,17 @@ document.addEventListener("DOMContentLoaded", function () {
         initSlideshows();
         attachProjectListeners();
         
-        // === NOUVEAU: Ajouter les boutons d'expansion aux cartes ===
-        addExpandButtonsToCards();
-        
-        // Filtres (utilisation de la fonction universelle)
-        setupFilters('.projects', '.project-card');
-        setupFilters('.certifications', '.certification-card');
-        
-        setupMediaHandlers();
+        // Configuration spécifique aux projets
+        setupProjectFilters();
+        setupVideoHandlers();
         setupVideoModal();
+        
+        // Composants généraux
         setupNavigation();
         setupTheme();
         setupKeyboardHandlers();
         setupSectionAnimations();
         setupContactForm();
-        
-        // Gérer l'URL initiale
-        handleInitialURL();
         
         console.log("Initialisation terminée avec succès !");
     }
@@ -1006,47 +666,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 500);
 
     // === FONCTIONS DE DEBUG ===
-    window.debugPortfolio = function() {
-        console.log("=== DEBUG PORTFOLIO ===");
-        console.log("Modal projet ouverte:", isModalOpen);
+    window.debugProjects = function() {
+        console.log("=== DEBUG PROJETS ===");
         console.log("Modal image ouverte:", isImageModalOpen);
-        console.log("Backdrop présent:", !!modalBackdrop);
-        console.log("Container présent:", !!modalContainer);
-        console.log("Image modal présent:", !!imageModal);
+        console.log("Image modal présent:", !!domCache.imageModal);
         console.log("Projets HTML sauvegardés:", originalProjectsHTML.size);
         console.log("Cartes projets:", document.querySelectorAll('.project-card').length);
-        console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-modal-listener]').length);
-        console.log("Boutons d'expansion:", document.querySelectorAll('.expand-btn').length);
+        console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-listener-attached]').length);
+        console.log("Slideshows:", document.querySelectorAll('.slideshow-container').length);
         console.log("Cache DOM:", domCache);
-        console.log("========================");
-    };
-
-    window.testModal = function() {
-        const firstCard = document.querySelector('.project-card');
-        if (firstCard) {
-            console.log("Test de la modal...");
-            openProjectModal(firstCard);
-        } else {
-            console.log("Aucune carte trouvée");
-        }
+        console.log("===================");
     };
 
     window.testImageModal = function() {
         const firstCard = document.querySelector('.project-card');
-        if (firstCard) {
+        if (firstCard && window.openImageModal) {
             console.log("Test du modal d'images...");
             window.openImageModal(firstCard);
         } else {
-            console.log("Aucune carte trouvée");
+            console.log("Aucune carte trouvée ou modal non configuré");
         }
     };
 
-    window.forceClose = function() {
-        if (isImageModalOpen) {
+    window.forceCloseModals = function() {
+        if (isImageModalOpen && window.closeImageModal) {
             window.closeImageModal();
         }
-        if (isModalOpen) {
-            closeProjectModal();
+        if (domCache.videoModal?.style.display === 'flex' && window.closeVideoModal) {
+            window.closeVideoModal();
         }
     };
 });
