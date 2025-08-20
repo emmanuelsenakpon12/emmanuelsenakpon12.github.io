@@ -1999,16 +1999,14 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .video-overlay {
   position: absolute;
-  top: var(--spacing-sm);
-  left: var(--spacing-sm);
+  bottom: var(--spacing-sm);
+  right: var(--spacing-sm);
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius);
   font-size: 0.8rem;
-  z-index: 10; /* Assure que l'overlay reste visible */
 }
-
 
 /* === YOUTUBE EMBED === */
 .youtube-embed {
@@ -2953,13 +2951,11 @@ img, video { max-width: 100%; height: auto; display: block; }
     font-size: 1rem;
   }
   
-  @media (max-width: 768px) {
-    .video-overlay {
-      top: var(--spacing-xs);
-      left: var(--spacing-xs);
-      padding: 2px var(--spacing-xs);
-      font-size: 0.7rem;
-    }
+  .video-overlay {
+    bottom: var(--spacing-xs);
+    right: var(--spacing-xs);
+    padding: 2px var(--spacing-xs);
+    font-size: 0.7rem;
   }
   
   .gif-overlay {

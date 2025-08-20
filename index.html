@@ -62,27 +62,31 @@
                     <div class="logo">
                         <span class="initials">MS</span>
                     </div>
-                    <span class="name">Mohamed Amine Sobhi</span>
+                    <span class="name" data-fr="Mohamed Amine Sobhi" data-en="Mohamed Amine Sobhi">Mohamed Amine Sobhi</span>
                 </div>
                 
                 <nav class="nav" id="main-nav">
                     <ul class="nav-list">
-                        <li><a href="#accueil">Accueil</a></li>
-                        <li><a href="#apropos">À propos</a></li>
-                        <li><a href="#competences">Compétences</a></li>
-                        <li><a href="#projets">Projets</a></li>
-                        <li><a href="#certifications">Certifications</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#accueil" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                        <li><a href="#apropos" data-fr="À propos" data-en="About">À propos</a></li>
+                        <li><a href="#competences" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+                        <li><a href="#projets" data-fr="Projets" data-en="Projects">Projets</a></li>
+                        <li><a href="#certifications" data-fr="Certifications" data-en="Certifications">Certifications</a></li>
+                        <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
                     </ul>
                 </nav>
                 
                 <div class="header-actions">
                     <button class="theme-toggle" id="theme-toggle" aria-label="Changer le thème">
-                        <div class="theme-icon">
-                            <div class="icon-wrapper"></div>
-                        </div>
+                        <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
                     </button>
-                    <button class="lang-toggle" aria-label="Changer la langue">FR</button>
+                    <button class="lang-toggle" id="lang-toggle" aria-label="Changer la langue">FR</button>
                     <button class="menu-toggle" id="menu-toggle" aria-label="Menu mobile">
                         <div class="hamburger">
                             <div class="line"></div>
@@ -291,12 +295,12 @@
                             <span class="tool-name">Power BI</span>
                         </div>
 
-                        <!-- Tableau -->
+                        <!-- SQL -->
                         <div class="tool-item">
                             <div class="tool-icon">
-                                <img src="./assets/images/tools/tableau.png" alt="Tableau" class="tool-logo">
+                                <img src="./assets/images/tools/sql.png" alt="SQL" class="tool-logo">
                             </div>
-                            <span class="tool-name">Tableau</span>
+                            <span class="tool-name">SQL</span>
                         </div>
 
                         <!-- Microsoft Excel -->
@@ -331,12 +335,12 @@
                             <span class="tool-name">Amazon Web Services</span>
                         </div>
 
-                        <!-- phpMyAdmin -->
+                        <!-- python -->
                         <div class="tool-item">
                             <div class="tool-icon">
-                                <img src="./assets/images/tools/phpmyadmin.png" alt="phpMyAdmin" class="tool-logo">
+                                <img src="./assets/images/tools/python.png" alt="Python" class="tool-logo">
                             </div>
-                            <span class="tool-name">phpMyAdmin</span>
+                            <span class="tool-name">Python</span>
                         </div>
 
                         <!-- Tensorflow -->
