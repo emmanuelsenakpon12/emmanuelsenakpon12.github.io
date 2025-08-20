@@ -794,15 +794,16 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: var(--shadow-xl, 0 12px 35px rgba(0, 0, 0, 0.12));
 }
 
+/* Ajustements pour les étiquettes professionnelles */
 .tag-1 {
   top: 70px;
-  right: -50px;
+  right: -90px; /* Distance uniforme de la photo */
   animation: floatGentle 4s ease-in-out infinite;
 }
 
 .tag-2 {
   bottom: 90px;
-  left: -40px;
+  left: -90px; /* Même distance de la photo que tag-1 */
   animation: floatGentle 4s ease-in-out infinite;
   animation-delay: -2s;
 }
