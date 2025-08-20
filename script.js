@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Vérifier si EmailJS est disponible
         if (typeof emailjs !== 'undefined') {
             emailjs.init(EMAIL_CONFIG.publicKey);
-            console.log("✅ EmailJS initialisé avec succès");
+            console.log(" EmailJS initialisé avec succès");
             return true;
         } else {
             console.warn("⚠️ EmailJS non disponible - fallback vers mailto");
@@ -701,13 +701,13 @@ document.addEventListener("DOMContentLoaded", function () {
         
         emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, templateParams)
             .then(function(response) {
-                console.log('✅ Email envoyé avec succès:', response);
+                console.log(' Email envoyé avec succès:', response);
                 
                 // Succès
                 if (statusDiv) {
                     statusDiv.innerHTML = `
                         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <span style="color: #28a745; font-size: 18px;">✅</span>
+                            <span style="color: #28a745; font-size: 18px;"></span>
                             <span>Message envoyé avec succès ! Merci pour votre message.</span>
                         </div>
                     `;
@@ -734,7 +734,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 8000);
                 
             }, function(error) {
-                console.error('❌ Erreur lors de l\'envoi:', error);
+                console.error(' Erreur lors de l\'envoi:', error);
                 
                 // Erreur - fallback vers mailto
                 if (statusDiv) {
@@ -768,7 +768,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (statusDiv) {
             statusDiv.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <span style="color: #007bff; font-size: 18px;">📧</span>
+                    <span style="color: #007bff; font-size: 18px;"></span>
                     <span>Ouverture de votre client email...</span>
                 </div>
             `;
@@ -896,13 +896,13 @@ document.addEventListener("DOMContentLoaded", function () {
         setupTheme();
         setupKeyboardHandlers();
         setupSectionAnimations();
-        setupContactForm(); // ✅ Avec EmailJS intégré
+        setupContactForm(); //  Avec EmailJS intégré
         
         // Gérer l'URL initiale
         handleInitialURL();
         
-        console.log("✅ Initialisation terminée avec succès !");
-        console.log("📧 EmailJS configuré avec les paramètres :", EMAIL_CONFIG);
+        console.log(" Initialisation terminée avec succès !");
+        console.log(" EmailJS configuré avec les paramètres :", EMAIL_CONFIG);
     }
 
     // Masquer le loading et initialiser
@@ -957,15 +957,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 message: testData.message
             })
             .then(function(response) {
-                console.log('✅ Test EmailJS réussi:', response);
-                alert('✅ Test EmailJS réussi ! Vérifiez votre boîte email.');
+                console.log(' Test EmailJS réussi:', response);
+                alert(' Test EmailJS réussi ! Vérifiez votre boîte email.');
             }, function(error) {
-                console.error('❌ Test EmailJS échoué:', error);
-                alert('❌ Test EmailJS échoué. Vérifiez la console pour plus de détails.');
+                console.error(' Test EmailJS échoué:', error);
+                alert(' Test EmailJS échoué. Vérifiez la console pour plus de détails.');
             });
         } else {
-            console.error('❌ EmailJS non disponible');
-            alert('❌ EmailJS non disponible. Assurez-vous que le script est chargé.');
+            console.error(' EmailJS non disponible');
+            alert(' EmailJS non disponible. Assurez-vous que le script est chargé.');
         }
     };
 
