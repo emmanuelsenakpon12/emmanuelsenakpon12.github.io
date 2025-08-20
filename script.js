@@ -705,12 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 // Succès
                 if (statusDiv) {
-                    statusDiv.innerHTML = `
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <span style="color: #28a745; font-size: 18px;"></span>
-                            <span>Message envoyé avec succès ! Merci pour votre message.</span>
-                        </div>
-                    `;
+                    statusDiv.textContent = 'Message envoyé avec succès ! Merci pour votre message.';
                     statusDiv.className = 'form-status success';
                 }
                 
