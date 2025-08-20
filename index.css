@@ -803,7 +803,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .tag-2 {
   bottom: 70px;
-  left: 10px; /* Plus éloigné de la photo, même distance que tag-1 */
+  left: 40px; /* Plus éloigné de la photo, même distance que tag-1 */
   animation: floatGentle 4s ease-in-out infinite;
   animation-delay: -2s;
 }
