@@ -316,12 +316,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 .popup-content {
-  background-color: white;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   min-width: 320px;
-  max-width: 500px;
+  max-width: 520px;
   width: 100%;
   opacity: 0;
   transform: translateY(20px);
@@ -350,6 +351,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 .popup-header h3 {
   font-size: 1.5rem;
   font-weight: 600;
+  color: white;
 }
 
 .popup-close-btn {
@@ -381,7 +383,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 .popup-body p {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: var(--spacing-md);
   font-size: 1rem;
@@ -391,9 +393,14 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: 0;
 }
 
+.popup-body strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
 .popup-subtitle {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -1992,14 +1999,16 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .video-overlay {
   position: absolute;
-  bottom: var(--spacing-sm);
-  right: var(--spacing-sm);
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius);
   font-size: 0.8rem;
+  z-index: 10; /* Assure que l'overlay reste visible */
 }
+
 
 /* === YOUTUBE EMBED === */
 .youtube-embed {
@@ -2944,11 +2953,13 @@ img, video { max-width: 100%; height: auto; display: block; }
     font-size: 1rem;
   }
   
-  .video-overlay {
-    bottom: var(--spacing-xs);
-    right: var(--spacing-xs);
-    padding: 2px var(--spacing-xs);
-    font-size: 0.7rem;
+  @media (max-width: 768px) {
+    .video-overlay {
+      top: var(--spacing-xs);
+      left: var(--spacing-xs);
+      padding: 2px var(--spacing-xs);
+      font-size: 0.7rem;
+    }
   }
   
   .gif-overlay {
