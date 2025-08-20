@@ -796,7 +796,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 /* Ajustements pour les étiquettes professionnelles */
 .tag-1 {
-  top: 70px;
+  top: 90px;
   right: -90px; /* Distance uniforme de la photo */
   animation: floatGentle 4s ease-in-out infinite;
 }
