@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Initialisation du portfolio...");
 
+    // === CONFIGURATION EMAILJS ===
+    const EMAIL_CONFIG = {
+        publicKey: '0EwW99k0FwpYAFKg2',
+        serviceId: 'service_11ipabe',
+        templateId: 'template_qatv289'
+    };
+
     // Variables globales simplifiées
     let modalBackdrop = null;
     let modalContainer = null;
@@ -24,6 +31,19 @@ document.addEventListener("DOMContentLoaded", function () {
             this.contactForm = document.getElementById("contact-form");
         }
     };
+
+    // === INITIALISATION EMAILJS ===
+    function initializeEmailJS() {
+        // Vérifier si EmailJS est disponible
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init(EMAIL_CONFIG.publicKey);
+            console.log("✅ EmailJS initialisé avec succès");
+            return true;
+        } else {
+            console.warn("⚠️ EmailJS non disponible - fallback vers mailto");
+            return false;
+        }
+    }
 
     // Fonction utilitaire pour débounce
     function debounce(func, wait) {
@@ -654,10 +674,127 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === FORMULAIRE CONTACT ===
+    // === ENVOI AVEC EMAILJS ===
+    function sendEmailWithEmailJS(data, form) {
+        const statusDiv = document.getElementById('form-status');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        // Afficher le loading
+        if (statusDiv) {
+            statusDiv.textContent = 'Envoi en cours...';
+            statusDiv.className = 'form-status loading';
+        }
+        
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span>Envoi...</span>';
+        }
+        
+        // Paramètres pour EmailJS
+        const templateParams = {
+            from_name: data.name,
+            from_email: data.email,
+            subject: data.subject,
+            message: data.message
+        };
+        
+        emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, templateParams)
+            .then(function(response) {
+                console.log('✅ Email envoyé avec succès:', response);
+                
+                // Succès
+                if (statusDiv) {
+                    statusDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span style="color: #28a745; font-size: 18px;">✅</span>
+                            <span>Message envoyé avec succès ! Merci pour votre message.</span>
+                        </div>
+                    `;
+                    statusDiv.className = 'form-status success';
+                }
+                
+                // Analytics (si disponible)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit', {
+                        event_category: 'engagement',
+                        event_label: 'contact_form_success'
+                    });
+                }
+                
+                // Reset du formulaire
+                form.reset();
+                
+                // Masquer le message après 8 secondes
+                setTimeout(() => {
+                    if (statusDiv) {
+                        statusDiv.textContent = '';
+                        statusDiv.className = 'form-status';
+                    }
+                }, 8000);
+                
+            }, function(error) {
+                console.error('❌ Erreur lors de l\'envoi:', error);
+                
+                // Erreur - fallback vers mailto
+                if (statusDiv) {
+                    statusDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span style="color: #dc3545; font-size: 18px;">⚠️</span>
+                            <span>Erreur lors de l'envoi. Redirection vers votre client email...</span>
+                        </div>
+                    `;
+                    statusDiv.className = 'form-status error';
+                }
+                
+                // Fallback après 2 secondes
+                setTimeout(() => {
+                    sendEmailWithMailto(data, form);
+                }, 2000);
+            })
+            .finally(function() {
+                // Restaurer le bouton
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Envoyer</span><div class="btn-icon"><div class="icon"></div></div>';
+                }
+            });
+    }
+
+    // === FALLBACK MAILTO ===
+    function sendEmailWithMailto(data, form) {
+        const statusDiv = document.getElementById('form-status');
+        
+        if (statusDiv) {
+            statusDiv.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span style="color: #007bff; font-size: 18px;">📧</span>
+                    <span>Ouverture de votre client email...</span>
+                </div>
+            `;
+            statusDiv.className = 'form-status info';
+        }
+        
+        const subject = encodeURIComponent(data.subject);
+        const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
+        window.location.href = `mailto:etudeefr@gmail.com?subject=${subject}&body=${body}`;
+        
+        // Masquer le message après 4 secondes
+        setTimeout(() => {
+            if (statusDiv) {
+                statusDiv.textContent = '';
+                statusDiv.className = 'form-status';
+            }
+        }, 4000);
+    }
+
+    // === FORMULAIRE CONTACT AMÉLIORÉ ===
     function setupContactForm() {
         const { contactForm } = domCache;
         if (!contactForm) return;
+
+        // Initialiser EmailJS
+        const emailJSAvailable = initializeEmailJS();
 
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -694,16 +831,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             if (isValid) {
-                const statusDiv = document.getElementById('form-status');
-                if (statusDiv) {
-                    statusDiv.textContent = 'Message envoyé avec succès !';
-                    statusDiv.className = 'form-status success';
+                // Essayer d'envoyer avec EmailJS si disponible
+                if (emailJSAvailable && typeof emailjs !== 'undefined') {
+                    sendEmailWithEmailJS(data, this);
+                } else {
+                    // Fallback vers mailto
+                    sendEmailWithMailto(data, this);
                 }
-                contactForm.reset();
-                
-                const subject = encodeURIComponent(data.subject);
-                const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
-                window.location.href = `mailto:etudeefr@gmail.com?subject=${subject}&body=${body}`;
             }
         });
     }
@@ -762,12 +896,13 @@ document.addEventListener("DOMContentLoaded", function () {
         setupTheme();
         setupKeyboardHandlers();
         setupSectionAnimations();
-        setupContactForm();
+        setupContactForm(); // ✅ Avec EmailJS intégré
         
         // Gérer l'URL initiale
         handleInitialURL();
         
-        console.log("Initialisation terminée avec succès !");
+        console.log("✅ Initialisation terminée avec succès !");
+        console.log("📧 EmailJS configuré avec les paramètres :", EMAIL_CONFIG);
     }
 
     // Masquer le loading et initialiser
@@ -789,6 +924,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Cartes projets:", document.querySelectorAll('.project-card').length);
         console.log("Cartes avec listeners:", document.querySelectorAll('.project-card[data-modal-listener]').length);
         console.log("Cache DOM:", domCache);
+        console.log("EmailJS disponible:", typeof emailjs !== 'undefined');
+        console.log("EmailJS config:", EMAIL_CONFIG);
         console.log("========================");
     };
 
@@ -799,6 +936,36 @@ document.addEventListener("DOMContentLoaded", function () {
             openProjectModal(firstCard);
         } else {
             console.log("Aucune carte trouvée");
+        }
+    };
+
+    window.testEmailJS = function() {
+        const testData = {
+            name: "Test User",
+            email: "test@example.com",
+            subject: "Test EmailJS",
+            message: "Ceci est un test d'envoi EmailJS depuis la console."
+        };
+        
+        console.log("🧪 Test EmailJS en cours...");
+        
+        if (typeof emailjs !== 'undefined') {
+            emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, {
+                from_name: testData.name,
+                from_email: testData.email,
+                subject: testData.subject,
+                message: testData.message
+            })
+            .then(function(response) {
+                console.log('✅ Test EmailJS réussi:', response);
+                alert('✅ Test EmailJS réussi ! Vérifiez votre boîte email.');
+            }, function(error) {
+                console.error('❌ Test EmailJS échoué:', error);
+                alert('❌ Test EmailJS échoué. Vérifiez la console pour plus de détails.');
+            });
+        } else {
+            console.error('❌ EmailJS non disponible');
+            alert('❌ EmailJS non disponible. Assurez-vous que le script est chargé.');
         }
     };
 

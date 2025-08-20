@@ -2286,6 +2286,38 @@ img, video { max-width: 100%; height: auto; display: block; }
 .contact-value a {
   color: inherit;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+/* === ICÔNES DE CONTACT === */
+.contact-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: var(--border-radius);
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.contact-icon svg {
+  stroke: white;
+  transition: transform 0.3s ease;
+}
+
+.contact-value:hover .contact-icon {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3);
+}
+
+.contact-value:hover .contact-icon svg {
+  transform: scale(1.1);
 }
 
 .contact-form {
@@ -2293,6 +2325,14 @@ img, video { max-width: 100%; height: auto; display: block; }
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: var(--content-padding);
+}
+
+/* === AJOUT POUR FORM-INTRO === */
+.form-intro {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .form-group {
@@ -2330,6 +2370,27 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
 }
 
+/* === GESTION DES ERREURS === */
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.05);
+}
+
+.form-group input.error:focus,
+.form-group textarea.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.error-message {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  min-height: 1.2rem;
+}
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: var(--text-muted);
@@ -2339,6 +2400,65 @@ img, video { max-width: 100%; height: auto; display: block; }
   resize: vertical;
   min-height: 120px;
   line-height: 1.5;
+}
+
+/* === BOUTON ET ICÔNE === */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon svg {
+  stroke: white;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover:not(:disabled) .btn-icon svg {
+  transform: translateX(3px);
+}
+
+/* === MESSAGES DE STATUT === */
+.form-status {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.form-status:not(:empty) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-status.loading {
+  background-color: rgba(0, 122, 204, 0.1);
+  color: var(--primary-color);
+  border-color: rgba(0, 122, 204, 0.2);
+}
+
+.form-status.success {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border-color: rgba(40, 167, 69, 0.2);
+}
+
+.form-status.error {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.2);
+}
+
+.form-status.info {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border-color: rgba(255, 193, 7, 0.2);
 }
 
 /* === RESPONSIVE DESIGN === */
