@@ -1,4 +1,4 @@
-/* === VARIABLES CSS OPTIMISÉES === */
+/* === VARIABLES CSS  === */
 :root {
   /* === COULEURS PRINCIPALES === */
   --primary-color: #007acc;
@@ -38,13 +38,13 @@
   --border-radius-lg: 1rem;
   --border-radius-xl: 1.5rem;
 
-  /* === TRANSITIONS SIMPLIFIÉES === */
+  /* === TRANSITIONS  === */
   --transition-instant: all 0.1s ease-out;
   --transition-fast: all 0.15s ease-out;
   --transition: all 0.3s ease-in-out;
   --transition-slow: all 0.5s ease-in-out;
 
-  /* === SYSTÈME D'ESPACEMENT UNIFIÉ === */
+  /* === SYSTÈME D'ESPACEMENT  === */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -123,7 +123,7 @@
   to { opacity: 0; transform: translateY(-20px) scale(0.98); }
 }
 
-/* === SUPPRESSION TOTALE DE TOUS LES EFFETS DE FLOU === */
+
 *,
 *::before,
 *::after {
@@ -247,7 +247,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   padding: 0 var(--section-content-spacing);
 }
 
-/* === ARRIÈRE-PLAN DÉCORATIF === */
+/* === ARRIÈRE-PLAN  === */
 .main-container::before {
   content: '';
   position: fixed;
@@ -801,7 +801,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: var(--shadow-xl, 0 12px 35px rgba(0, 0, 0, 0.12));
 }
 
-/* Ajustements pour les étiquettes professionnelles */
+/* etiquettes professionnelles */
 .tag-1 {
   top: 50px;
   right: -140px; /* Plus éloigné de la photo */
@@ -810,7 +810,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .tag-2 {
   bottom: 70px;
-  left: 50px; /* Plus proche de la photo, même distance que tag-1 */
+  left: 50px; 
   animation: floatGentle 4s ease-in-out infinite;
   animation-delay: -2s;
 }
@@ -1009,7 +1009,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: 0;
 }
 
-/* Items académiques (côté droit) */
+/* Items académiques */
 .timeline-item.academic {
   justify-content: flex-start;
 }
@@ -1019,7 +1019,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-right: 0;
 }
 
-/* Items professionnels (côté gauche) */
+/* Items professionnels  */
 .timeline-item.professional {
   justify-content: flex-end;
 }
@@ -1046,7 +1046,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-color: var(--primary-color);
 }
 
-/* Flèches pointant vers le centre */
+
 .timeline-item.academic .timeline-content::before {
   content: '';
   position: absolute;
@@ -1073,7 +1073,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-left: 8px solid var(--bg-glass);
 }
 
-/* Marqueurs sur la ligne centrale */
+
 .timeline-marker {
   position: absolute;
   left: 50%;
@@ -1644,7 +1644,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   color: white;
 }
 
-/* === BADGE D'EXPANSION MODERNE === */
+/* === BADGE D'EXPANSION  === */
 .expand-badge {
   position: absolute;
   top: 15px;
@@ -1666,7 +1666,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   user-select: none;
 }
 
-/* Badge avec icône d'expansion */
+/* Badge et icône d'expansion */
 .expand-badge::before {
   content: "⤢";
   margin-right: 6px;
@@ -1676,13 +1676,13 @@ img, video { max-width: 100%; height: auto; display: block; }
   transition: transform 0.3s ease;
 }
 
-/* Animation au survol de la carte */
+/* Animation  carte */
 .project-card:hover .expand-badge {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Animation au survol du badge */
+/* Animation  badge */
 .expand-badge:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 122, 204, 0.4);
@@ -1692,7 +1692,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   transform: rotate(90deg);
 }
 
-/* Version alternative avec effet glassmorphisme */
+
 .expand-badge-glass {
   position: absolute;
   top: 15px;
@@ -1731,7 +1731,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3);
 }
 
-/* Version minimaliste */
+
 .expand-badge-minimal {
   position: absolute;
   top: 15px;
@@ -1777,7 +1777,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-left-color: var(--primary-dark);
 }
 
-/* Version avec animation pulsante */
+
 .expand-badge-pulse {
   position: absolute;
   top: 15px;
@@ -1818,7 +1818,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 6px 25px rgba(34, 197, 94, 0.4);
 }
 
-/* Version badge notification */
+
 .expand-badge-notify {
   position: absolute;
   top: 12px;
@@ -1878,23 +1878,23 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* Centre l'image */
+  object-position: center; 
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  display: block; /* Force l'affichage en bloc */
+  display: block; 
 }
 
 .slide.active {
   opacity: 1;
 }
 
-/* Images du slideshow dans les modals - affichage optimal */
+
 .modal-media-content .slide,
 .modal-media .slide {
-  object-fit: contain; /* Dans la modal, on veut voir toute l'image */
+  object-fit: contain; 
 }
 
 .slide-dots {
@@ -1938,15 +1938,15 @@ img, video { max-width: 100%; height: auto; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* Centre la vidéo */
+  object-position: center; 
   cursor: pointer;
-  display: block; /* Force l'affichage en bloc */
+  display: block; 
 }
 
-/* Vidéos dans les modals - affichage optimal */
+
 .modal-media-content .project-video,
 .modal-media .project-video {
-  object-fit: contain; /* Dans la modal, on veut voir toute la vidéo */
+  object-fit: contain; 
 }
 
 .video-controls {
@@ -2112,7 +2112,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   font-size: 0.9rem;
 }
 
-/* === MODAL VIDÉO SÉPARÉE === */
+/* === MODAL VIDÉO  === */
 .video-modal-overlay {
   position: fixed;
   top: 0;
@@ -2482,7 +2482,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   padding: var(--content-padding);
 }
 
-/* === AJOUT POUR FORM-INTRO === */
+
 .form-intro {
   color: var(--text-secondary);
   margin-bottom: var(--spacing-lg);

@@ -8,13 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
         templateId: 'template_qatv289'
     };
 
-    // Variables globales simplifiées
+    // Variables globales 
     let modalBackdrop = null;
     let modalContainer = null;
     let isModalOpen = false;
     let originalProjectsHTML = new Map();
 
-    // Cache DOM pour performance
+    // Cache DOM  performance
     const domCache = {
         popup: null,
         videoModal: null,
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // === INITIALISATION EMAILJS ===
     function initializeEmailJS() {
-        // Vérifier si EmailJS est disponible
+
         if (typeof emailjs !== 'undefined') {
             emailjs.init(EMAIL_CONFIG.publicKey);
             console.log(" EmailJS initialisé avec succès");
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Fonction utilitaire pour débounce
+    // Fonction  pour débounce
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
-        // Event listeners unifiés
+        // Event listeners 
         const closeElements = popup.querySelectorAll('#close-popup, #popup-ok-btn');
         closeElements.forEach(el => el?.addEventListener("click", closePopup));
         
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (e.target === popup) closePopup();
         });
 
-        // Fonction globale pour fermeture
+        // Fonction globale  fermeture
         window.closePopup = closePopup;
     }
 
@@ -114,17 +114,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // === CRÉATION ÉLÉMENTS MODAUX ===
     function createModalElements() {
-        // Créer le backdrop
+        // Crée le backdrop
         modalBackdrop = document.createElement('div');
         modalBackdrop.className = 'modal-backdrop';
         document.body.appendChild(modalBackdrop);
         
-        // Créer le conteneur
+        // Crée le conteneur
         modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
         document.body.appendChild(modalContainer);
         
-        // Event listeners unifiés pour fermeture
+        // Event listeners  fermeture
         [modalBackdrop, modalContainer].forEach(element => {
             element.addEventListener('click', function(e) {
                 if (e.target === element) {
@@ -175,10 +175,10 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBodyScroll(true);
         toggleSlideshows('stop');
         
-        // Créer la modal
+        // Créer  modal
         createModalFromCard(projectCard);
         
-        // Afficher la modal
+        // Afficher  modal
         modalBackdrop.classList.add('active');
         modalContainer.classList.add('active');
         
@@ -186,38 +186,38 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = projectCard.querySelector('h3')?.textContent || '';
         updateURL(title);
         
-        // CORRECTION: Réinitialiser les slideshows UNIQUEMENT dans la modal après animation
+        //  Réinitit les slideshows  dans la modal après animation
         setTimeout(() => {
             initModalSlideshows();
         }, 350);
     }
 
-    // === CRÉATION MODAL À PARTIR D'UNE CARTE ===
+    // === MODAL À PARTIR D'UNE CARTE ===
     function createModalFromCard(projectCard) {
         const title = projectCard.querySelector('h3')?.textContent || '';
         const originalHTML = originalProjectsHTML.get(title);
         
-        // Utiliser le HTML original si disponible, sinon le HTML actuel
+        
         const htmlToUse = originalHTML || projectCard.outerHTML;
         
-        // Créer un élément temporaire pour parser le HTML
+        
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlToUse;
         const cardElement = tempDiv.firstElementChild;
         
-        // Cloner et nettoyer
+        
         const modalCard = cardElement.cloneNode(true);
         modalCard.className = 'modal-card';
         modalCard.removeAttribute('data-category');
         modalCard.style.display = '';
         modalCard.style.opacity = '';
         
-        // Extraire les éléments
+        
         const projectMedia = modalCard.querySelector('.project-media');
         const projectInfo = modalCard.querySelector('.project-info');
         
         if (projectMedia && projectInfo) {
-            // Restructurer pour la modal
+            
             modalCard.innerHTML = `
                 <div class="modal-media">
                     ${projectMedia.outerHTML.replace('project-media', 'modal-media-content')}
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
         }
         
-        // Ajouter bouton de fermeture
+        
         const closeBtn = document.createElement('button');
         closeBtn.className = 'modal-close';
         closeBtn.innerHTML = '×';
@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
         closeBtn.addEventListener('click', closeProjectModal);
         modalCard.appendChild(closeBtn);
         
-        // Ajouter à la modal
+        
         modalContainer.innerHTML = '';
         modalContainer.appendChild(modalCard);
         
@@ -383,12 +383,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
-            // Éviter les doublons
+            
             if (card.hasAttribute('data-modal-listener')) return;
             card.setAttribute('data-modal-listener', 'true');
             
             card.addEventListener('click', function(e) {
-                // Éviter les clics sur les boutons internes
+                
                 if (e.target.closest(`
                     a, 
                     button:not(.modal-close), 
@@ -709,7 +709,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     statusDiv.className = 'form-status success';
                 }
                 
-                // Analytics (si disponible)
+                // Analytics 
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'form_submit', {
                         event_category: 'engagement',
@@ -720,7 +720,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Reset du formulaire
                 form.reset();
                 
-                // Masquer le message après 8 secondes
+                
                 setTimeout(() => {
                     if (statusDiv) {
                         statusDiv.textContent = '';
@@ -783,7 +783,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 4000);
     }
 
-    // === FORMULAIRE CONTACT AMÉLIORÉ ===
+    // === FORMULAIRE CONTACT  ===
     function setupContactForm() {
         const { contactForm } = domCache;
         if (!contactForm) return;
@@ -826,11 +826,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             if (isValid) {
-                // Essayer d'envoyer avec EmailJS si disponible
+                
                 if (emailJSAvailable && typeof emailjs !== 'undefined') {
                     sendEmailWithEmailJS(data, this);
                 } else {
-                    // Fallback vers mailto
+                    
                     sendEmailWithMailto(data, this);
                 }
             }
@@ -891,16 +891,16 @@ document.addEventListener("DOMContentLoaded", function () {
         setupTheme();
         setupKeyboardHandlers();
         setupSectionAnimations();
-        setupContactForm(); //  Avec EmailJS intégré
+        setupContactForm(); 
         
-        // Gérer l'URL initiale
+        
         handleInitialURL();
         
         console.log(" Initialisation terminée avec succès !");
         console.log(" EmailJS configuré avec les paramètres :", EMAIL_CONFIG);
     }
 
-    // Masquer le loading et initialiser
+    
     setTimeout(() => {
         const loading = document.getElementById('loading');
         if (loading) {
