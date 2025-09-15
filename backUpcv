@@ -1,0 +1,181 @@
+\documentclass[a4paper,10.99pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fontawesome5}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{lmodern}
+\usepackage{graphicx}
+
+% Configuration ultra-compacte pour une seule page
+\geometry{top=0.4in, bottom=0.3in, left=0.5in, right=0.5in}
+\pagestyle{empty}
+
+% Couleurs modernes
+\definecolor{primary}{HTML}{1A5276}
+\definecolor{secondary}{HTML}{3498DB}
+\definecolor{text}{HTML}{2C3E50}
+\definecolor{lightgray}{HTML}{F8F9F9}
+
+% Configuration des liens
+\hypersetup{
+    colorlinks=true,
+    urlcolor=secondary,
+    linkcolor=secondary,
+    pdfborder={0 0 0}
+}
+
+% Espacement minimal ultra-optimisé
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{1pt}
+
+% Style des sections ultra-compact
+\titleformat{\section}
+{\normalsize\bfseries\color{primary}}
+{}
+{0em}
+{\MakeUppercase}[\vspace{-2pt}\titlerule\vspace{1pt}]
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+
+% Commandes personnalisées ultra-compactes
+\newcommand{\cventry}[4]{
+    \textbf{\small #1} \hfill \textcolor{secondary}{\textit{\small #2}}\\
+    {\small\textit{\textcolor{text}{#3}}}\\
+    {\footnotesize #4}
+    \vspace{2pt}
+}
+
+\newcommand{\skill}[1]{\textbf{#1}}
+
+\begin{document}
+
+% En-tête étendu horizontalement
+\begin{tabularx}{\textwidth}{X}
+\centering
+{\Large\bfseries\color{primary}Mohamed Amine Sobhi} \quad {\Large\color{text}Alternant en Data et Gestion de Projet SI}\\[2pt]
+% Informations de contact sur deux lignes compactes
+{\footnotesize
+\faEnvelope\ \href{mailto:etudeefr@gmail.com}{etudeefr@gmail.com} \quad
+\faPhone\ 06 02 40 13 55 \quad
+\faMapMarkerAlt\ Amiens / Argenteuil, France \quad
+\faLinkedin\ \href{https://www.linkedin.com/in/mohamed-amine-s-34b1b61bb/}{LinkedIn} \quad
+\faGlobe\ \href{https://med063.github.io/portfolio/}{Portfolio} \quad
+\faFilePdf\ \href{https://drive.google.com/file/d/1NGJ4YV4Jyikqx6eX56RjL754Biv9jQsu/view?usp=sharing}{Civique \& Bénévolat}
+}
+\end{tabularx}
+
+\vspace{2pt}
+
+% Profil ultra-compact
+\section{Profil}
+{\footnotesize Étudiant en \textbf{Master MIAGE, parcours Ingénierie des Données de la Décision} à l'UPJV, recherchant une alternance en \textbf{Data Engineering, Data Science ou Inteligence artificielle} à partir de septembre 2025 (1 semaine entreprise / 1 semaine cours). Compétent en développement de pipelines de données, gestion de projet SI et exploitation de données. Mobile en Île-de-France et Hauts-de-France.}
+
+% Formation ultra-compacte
+\section{Formation \& Certifications}
+\cventry{Licence Informatique - Diplôme obtenu}{09/2024 – 06/2025}{Université de Picardie Jules Verne (UPJV), Amiens}{}
+
+{\footnotesize\textbf{Certifications :}
+\raisebox{-0.2ex}
+{\includegraphics[height=2.2ex]{IBM_logo.svg.png}}\hspace{0.4em}\href{https://www.credly.com/badges/79c2f766-0c3d-48f6-b2ef-426f96b2f8b0/public_url}{Python for Data Science} •
+{\includegraphics[height=2.2ex]{IBM_logo.svg.png}}\hspace{0.4em}\href{https://www.credly.com/badges/b650b515-a668-4fcc-87e8-2273a556a927/public_url}{Spark for Scala Analytics} • 
+ {\includegraphics[height=1.7ex]{Anthropic.png}}\hspace{0.2em}\href{https://verify.skilljar.com/c/jvpcea9jyj8q}{ \hspace{0.6em}AI Fluency} 
+ • 
+\href{https://www.linkedin.com/learning/certificates/427fe056aa5674d2e7a0d7634a215a65d9da36b9211a51bd39f7f4a4863a6920}{Machine Learning}
+}
+
+% Expériences ultra-compactes
+\section{Expériences Professionnelles}
+\cventry{Stagiaire R\&D en IA Médicale : Computer Vision \& Deep Learning \href{https://med063.github.io/portfolio/}{\faExternalLink}}{04–06/2025}{Laboratoire MIS de l'UPJV et CHU Amiens Picardie}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item Déploiement de réseaux de neurones pour l'analyse de données STL 3D et la segmentation volumique prédictive des structures osseuses
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées :}}} \textbf{Python, NumPy, SciPy}, VTK, Tkinter, \textbf{PyVista, TensorFlow, OpenCV}
+\end{itemize}
+}
+
+\cventry{Stagiaire en développement ETL et intégration ERP}{10–11/2023}{ADN Software, Meyreuil}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item Extraction, transformation et chargement  des données clients, paramétrage Sage, rédaction de livrables fonctionnels, Support technique}
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} \textbf{ SQL, MySQL, SQL Server, Microsoft Excel}, Sage 100
+\end{itemize}
+}
+
+% Projets ultra-compacts
+\section{Projets Académiques \& Personnels}
+\cventry{Pipeline ETL et Analyse Sentimentale en Temps Réel \href{https://med063.github.io/portfolio/}{\faExternalLink}}{2025}{Apache Spark}{
+\begin{itemize}[leftmargin=1.2em, itemsep=0pt, topsep=0pt]
+\item Construction d'un \textbf{pipeline ETL distribué} : ingestion données massives, transformation HashingTF et modèles ML sur cluster
+\item Architecture \textbf{streaming temps réel} avec DStream processing et mini-batches pour des classifications sentimentales sur des flux Twitter
+\item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} Apache Spark, Scala, Spark MLlib, Spark Streaming, TwitterUtils, RDD, DataFrame, Naïve Bayes, OAuth
+\end{itemize}
+}
+
+\vspace{0.4em}
+\cventry{Extraction automatique NLP de données de surveillance sanitaire des eaux de baignade \href{https://med063.github.io/portfolio/}{\faExternalLink}}{2025}{Projet personnel}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item \textbf{OCR} de bulletins d'analyse de l'ARS Grand Est , \textbf{LLM vision-langage pour l'extraction automatique} de paramètres microbiologiques
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} \textbf{Python, PyTorch, Pandas, Hugging Face, LLM (Llama 3.2-Vision), NLP,} JSON
+\end{itemize}
+}
+\vspace{0.4em}
+\cventry{Automatisation end-to-end des workflows métiers et reporting BI des soutenances \href{https://med063.github.io/portfolio/}{\faExternalLink}}{2025}{Projet personnel}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item Automatisation du suivi des évaluations et intégration des flux de données
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} \textbf{Power Automate, Power BI (Power Query, Power Pivot, DAX)}, SharePoint, Teams, Forms,  Excel
+\end{itemize}
+}
+\vspace{0.4em}
+
+\cventry{Détection de caries dentaires par réseaux de neurones convolutionnels \href{https://med063.github.io/portfolio/}{\faExternalLink}}{2025}{Projet au sein de l’UPJV}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item Classification d'images dentaires avec un modèle basé sur des CNN et déploiement via une API Flask
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} Python, TensorFlow, Keras, Flask, NumPy, Matplotlib
+\end{itemize}
+}
+\vspace{0.4em}
+
+\cventry{Développement d’un Système d’Information Logistique et déploiement avec Docker\href{https://med063.github.io/portfolio/}{\faExternalLink}}{2024}{Projet au sein de l'UPJV}{
+\begin{itemize}[leftmargin=0.8em, itemsep=0pt, topsep=0pt]
+  \item Modélisation MERISE, requêtes SQL avancées (jointures complexes, agrégations, vues ...)  et interface d'administration de la base de données
+  \item \textbf{\textit{\textcolor{primary}{Technologies utilisées:}}} PHP/OCI8, SQL,  Oracle, Docker Bridge Network, HTML, CSS,  JavaScript, Bash
+\end{itemize}
+}
+
+% Compétences ultra-compactes en tableau
+\section{Compétences Techniques}
+{\footnotesize
+\begin{tabularx}{\textwidth}{X|X}
+\textbf{Langages \& Frameworks :} & \textbf{IA \& Machine Learning :} \\[0.5em]
+\skill{Python • SQL • Java • Scala • C • Shell (Bash/Zsh)} & \skill{LLMs :} GPT • Claude • Gemini • Llama • Mistral \\
+\skill{XML • PHP • HTML • CSS • JavaScript} &  RAG, Prompt Engineering, Fine Tuning (LoRA, QLoRA) \\[0.35em]
+\skill{.NET • Symfony} & \skill{ML :} Classification, Régression, Clustering, Naïve Bayes \\
+& \skill{DL :} CNN • RNN • RL • Transformers \\
+\hline \\[-0.5em]
+\textbf{Big Data \& Bases de Données :} & \textbf{Développement • Collaboration • DevOps :} \\[0.5em]
+\skill{Apache Spark (RDD, DataFrames, Streaming, MLlib)} & \skill{Systèmes :} Linux/Unix (Ubuntu/MacOS) • Windows \\[0.30em]
+\skill{Apache Hadoop • Apache Hive • ETL Batch/Streaming} & \skill{Git • GitHub • Docker • Kubernetes} \\
+\skill{SGBD :} MySQL • Oracle • PostgreSQL • Db2 & \skill{Visual Studio Code • Jupyter • Conda} \\
+\skill{Power BI (DAX, Power Query) • Power Automate} & \skill{UML • MERISE • Agile/Scrum} \\
+& \skill{Office 365 • Teams • Figma • SharePoint} \\
+\end{tabularx}\\[0.78em] 
+\hspace{0.9em}\textbf{Frameworks \& Librairies Python :} TensorFlow • Keras • PyTorch • scikit-learn • Pandas • NumPy • OpenCV • PySpark 
+}
+
+% Langues et liens ultra-compacts
+\section{Langues \& Ressources}
+{\footnotesize
+\begin{tabularx}{\textwidth}{X|X}
+\faLanguage\ \textbf{Anglais :} niveau C1  
+\href{https://drive.google.com/file/d/1tPNgc16glAMR_QjdpOBosNLmnxRkCXay/view}{ • Certificat CECR} 
+& \faFilePdf\ \href{https://drive.google.com/file/d/1S1mCHHyYsdIMMqr6vlqGlkjwvcrkP_60/view?usp=sharing}{Recommandations de compétences} 
+\end{tabularx}
+}
+\end{document}
