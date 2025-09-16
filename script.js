@@ -611,31 +611,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // === GESTION THÈME ===
-    function setupTheme() {
-        const themeToggle = document.getElementById('theme-toggle');
-        if (!themeToggle) return;
+  // === GESTION THÈME ===
+function setupTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
 
-        try {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-        } catch (e) {
-            console.warn('LocalStorage non disponible');
-        }
-
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('dark-theme');
-            
-            const isDark = document.body.classList.contains('dark-theme');
-            try {
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            } catch (e) {
-                console.warn('Impossible de sauvegarder le thème');
-            }
-        });
-    }
+    //  thème clair
+    document.body.classList.remove('dark-theme');
+    
+    // O bouton de basculement
+    themeToggle.style.display = 'none';
+    
+    //  bouton désactive
+    // themeToggle.disabled = true;
+}
 
     // === GESTION CLAVIER GLOBALE ===
     function setupKeyboardHandlers() {
