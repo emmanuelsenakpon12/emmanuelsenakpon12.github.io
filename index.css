@@ -781,12 +781,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   pointer-events: none;
 }
 
-@keyframes floatGentle {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-5px); } 
-  100% { transform: translateY(0px); }
-}
-
 .professional-tag {
   position: absolute;
   display: inline-flex;
@@ -798,7 +792,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-radius: var(--border-radius-full, 50px);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
-  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* hover plus doux */
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
@@ -807,19 +801,19 @@ img, video { max-width: 100%; height: auto; display: block; }
   box-shadow: var(--shadow-xl, 0 12px 35px rgba(0, 0, 0, 0.12));
 }
 
-/* Étiquettes professionnelles */
+/* etiquettes professionnelles */
 .tag-1 {
   top: 50px;
-  right: -140px;
-  animation: floatGentle 20s ease-in-out infinite; 
-  animation-delay: -10s;
+  right: -140px; /* Plus éloigné de la photo */
+  animation: floatGentle 20s ease-in-out infinite;
+  animation-delay: -12s;
 }
 
 .tag-2 {
   bottom: 70px;
-  left: 50px;
-  animation: floatGentle 20s ease-in-out infinite; 
-  animation-delay: -15s;
+  left: 50px; 
+  animation: floatGentle 20s ease-in-out infinite;
+  animation-delay: -12s;
 }
 
 .tag-icon {
