@@ -812,7 +812,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   bottom: 70px;
   left: 50px; 
   animation: floatGentle 9s ease-in-out infinite;
-  animation-delay: -2s;
+  animation-delay: -3s;
 }
 
 .tag-icon {
