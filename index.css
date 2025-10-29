@@ -805,13 +805,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 .tag-1 {
   top: 50px;
   right: -140px; /* Plus éloigné de la photo */
-  animation: floatGentle 4s ease-in-out infinite;
+  animation: floatGentle 9s ease-in-out infinite;
 }
 
 .tag-2 {
   bottom: 70px;
   left: 50px; 
-  animation: floatGentle 4s ease-in-out infinite;
+  animation: floatGentle 9s ease-in-out infinite;
   animation-delay: -2s;
 }
 
