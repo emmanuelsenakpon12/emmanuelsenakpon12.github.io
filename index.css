@@ -792,7 +792,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-radius: var(--border-radius-full, 50px);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
