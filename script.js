@@ -761,7 +761,7 @@ function setupTheme() {
         
         const subject = encodeURIComponent(data.subject);
         const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
-        window.location.href = `mailto:etudeefr@gmail.com?subject=${subject}&body=${body}`;
+        window.location.href = `mailto:emmanuelsenakpon@gmail.com?subject=${subject}&body=${body}`;
         
         // Masquer le message après 4 secondes
         setTimeout(() => {
