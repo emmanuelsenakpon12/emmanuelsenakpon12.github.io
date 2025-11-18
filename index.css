@@ -1,9 +1,9 @@
 /* === VARIABLES CSS  === */
 :root {
   /* === COULEURS PRINCIPALES === */
-  --primary-color: #007acc;
-  --primary-light: #66bfff;
-  --primary-dark: #005a99;
+  --primary-color: hsl(245, 48%, 9%);
+  --primary-light: #22292e;
+  --primary-dark: #1c2227;
   --secondary-color: #22c55e;
   --accent-color: #06b6d4;
 
