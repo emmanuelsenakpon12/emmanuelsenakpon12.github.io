@@ -1,28 +1,28 @@
 /* === VARIABLES CSS  === */
 :root {
   /* === COULEURS PRINCIPALES === */
-  --primary-color: hsl(245, 48%, 9%);
+  --primary-color: hsl(151, 58%, 17%);
   --primary-light: #22292e;
   --primary-dark: #1c2227;
-  --secondary-color: #22c55e;
-  --accent-color: #06b6d4;
+  --secondary-color: #114e30;
+  --accent-color: #124c32;
 
   /* === COULEURS DE FOND === */
-  --bg-primary: #7192a1;
+  --bg-primary: #96a2a7;
   --bg-secondary: #4a535f;
-  --bg-tertiary: #7aa9bb;
+  --bg-tertiary: #a9c4cf;
   --bg-glass: rgba(106, 125, 134, 0.95);
-  --bg-glass-hover: rgba(70, 106, 89, 0.98);
+  --bg-glass-hover: rgba(118, 152, 137, 0.98);
 
   /* === COULEURS DE TEXTE === */
   --text-primary: #192133;
-  --text-secondary: #334155;
+  --text-secondary: #1d503e;
   --text-muted: #64748b;
 
   /* === GRADIENTS === */
-  --gradient-primary: linear-gradient(135deg, #007acc, #66bfff);
+  --gradient-primary: linear-gradient(135deg, #135c58, #1c564f);
   --gradient-secondary: linear-gradient(135deg, #22c55e, #16a34a);
-  --gradient-accent: linear-gradient(135deg, #06b6d4, #0ea5e9);
+  --gradient-accent: linear-gradient(135deg, #1c4f3e, #11724d);
   --gradient-bg: linear-gradient(135deg, #f1f5f9, #e2e8f0);
 
   /* === OMBRES === */
@@ -30,7 +30,7 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 15px rgba(0, 122, 204, 0.3);
+  --shadow-glow: 0 0 15px rgba(18, 65, 47, 0.3);
 
   /* === BORDURES === */
   --border-color: rgba(0, 0, 0, 0.1);
