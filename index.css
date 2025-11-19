@@ -291,7 +291,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(96, 215, 148, 0.95);
+  background-color: rgba(232, 248, 239, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -358,7 +358,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   position: absolute;
   top: var(--spacing-lg);
   right: var(--spacing-lg);
-  background-color: rgba(7, 112, 51, 0.2);
+  background-color: rgba(227, 249, 236, 0.2);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -439,7 +439,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   left: 0;
   right: 0;
   z-index: var(--z-header);
-  background-color: rgba(22, 73, 53, 0.98);
+  background-color: rgba(111, 244, 191, 0.98);
   border-bottom: 1px solid var(--border-color);
   transition: var(--transition);
   color: #ffffff;
@@ -598,7 +598,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   top: 100%;
   left: 0;
   right: 0;
-  background-color: rgba(15, 23, 42, 0.98);
+  background-color: rgba(195, 203, 221, 0.98);
   border-top: 1px solid var(--border-color);
   padding: var(--spacing-lg);
 }
@@ -1365,7 +1365,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246, 246, 246, 0.2), transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -1730,7 +1730,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 .expand-badge-glass:hover {
-  background: rgba(68, 248, 224, 0.25);
+  background: rgba(233, 249, 247, 0.25);
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3);
 }
@@ -1867,7 +1867,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 .expand-badge-notify:hover {
   background-color: var(--primary-color);
-  box-shadow: 0 4px 15px rgba(72, 244, 218, 0.4);
+  box-shadow: 0 4px 15px rgba(232, 251, 248, 0.4);
 }
 
 /* === SLIDESHOW === */
