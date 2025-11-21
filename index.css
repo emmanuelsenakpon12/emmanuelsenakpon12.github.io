@@ -2,14 +2,14 @@
 :root {
   /* === COULEURS PRINCIPALES === */
   --primary-color: hsl(151, 58%, 17%);
-  --primary-light: #22292e;
+  --primary-light: #f8f8f8;
   --primary-dark: #1c2227;
   --secondary-color: #114e30;
   --accent-color: #124c32;
 
   /* === COULEURS DE FOND === */
-  --bg-primary: #96a2a7;
-  --bg-secondary: #4a535f;
+  --bg-primary: #f8fafb;
+  --bg-secondary: #e0e4ea;
   --bg-tertiary: #a9c4cf;
   --bg-glass: rgba(106, 125, 134, 0.95);
   --bg-glass-hover: rgba(118, 152, 137, 0.98);
